@@ -203,4 +203,4 @@ const SipCalculator = () => {
   );
 };
 
-export default SipCalculator;
+export default SipCalculator
