@@ -70,7 +70,7 @@ const Home = () => {
 
             {/* Tool 2 */}
             <motion.div whileHover={{ scale: 1.05 }} className="relative">
-              <Link to="/PortfolioMaker" className="block h-full bg-white/5 backdrop-blur-lg border border-orange-500/50 p-10 rounded-[2rem] hover:bg-white/10">
+              <Link to="/PortfolioTemplates" className="block h-full bg-white/5 backdrop-blur-lg border border-orange-500/50 p-10 rounded-[2rem] hover:bg-white/10">
                 <div className="absolute top-4 right-6 bg-[#F39221] text-xs font-black px-3 py-1 rounded-full text-black">HOT</div>
                 <div className="text-5xl mb-6">💼</div>
                 <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Portfolio Maker</h4>
@@ -91,7 +91,7 @@ const Home = () => {
 
             {/* Tool 4 */}
             <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/job-portal" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
+              <Link to="/jobportal" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
                 <Briefcase className="w-12 h-12 mb-6 text-emerald-400" />
                 <h4 className="text-2xl font-bold mb-2 text-emerald-400">Job Portal</h4>
                 <p className="text-slate-400 text-sm mb-6">Find the best talent or your next big opportunity.</p>
@@ -101,22 +101,22 @@ const Home = () => {
 
             {/* Tool 5 */}
             <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/buy-domain" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
+              <a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
                 <Globe className="w-12 h-12 mb-6 text-purple-400" />
                 <h4 className="text-2xl font-bold mb-2 text-purple-400">Buy Domain</h4>
                 <p className="text-slate-400 text-sm mb-6">Secure your unique digital address today.</p>
                 <div className="w-12 h-1 bg-purple-400 rounded-full"></div>
-              </Link>
+              </a>
             </motion.div>
 
             {/* Tool 6 (Placeholder for Landing Page) */}
             <motion.div whileHover={{ scale: 1.02 }}>
-              <div className="h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem]" onClick={()=> nav('/landingpage')}>
+              <Link to="//landingpage" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10" >
                 <div className="text-5xl mb-6">🚀</div>
                 <h4 className="text-2xl font-bold mb-2 text-slate-300">Landing Page</h4>
                 <p className="text-slate-400 text-sm mb-6">Deploy conversion-ready storefronts.</p>
                 <div className="w-12 h-1 bg-slate-500 rounded-full"></div>
-              </div>
+              </Link>
             </motion.div>
           </div>
         </div>

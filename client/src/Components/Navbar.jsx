@@ -1,14 +1,27 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
-// Icons for a professional touch
 import { LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
   const nav = useNavigate();
   const { user, logout } = useAuth();
   const mobileDetailsRef = useRef(null);
-
+ const MARQUEE_ITEMS = ["Influencer Marketing","Brand Partnerships","Content Strategy","Audience Growth","Campaign Analytics","ROI Tracking","Creator Economy","Authentic Reach"];
+const style = `
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-container {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-container:hover {
+      animation-play-state: paused;
+    }
+  `;
   const handleLinkClick = () => {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
@@ -19,6 +32,20 @@ const Navbar = () => {
   };
 
   return (
+    <>
+   <style>{style}</style>
+      
+      {/* MARQUEE */}
+      <div className="overflow-hidden bg-slate-900 py-2.5 border-b border-white/5 select-none">
+        <div className="marquee-container">
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            <div key={i} className="flex items-center mx-6 text-white/70 text-[10px] font-black uppercase tracking-[0.2em]">
+              <div className="w-1 h-1 bg-[#F39221] rounded-full mr-4 shadow-[0_0_8px_#F39221]" />
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
     <div className="navbar bg-base-100 text-base-content shadow-md px-4 lg:px-20 font-montserrat sticky top-0 z-[100]">
       <div className="navbar-start">
         <div className="dropdown">
@@ -38,7 +65,7 @@ const Navbar = () => {
                   <li><Link to="/PortfolioMaker" onClick={handleLinkClick}>Portfolio Maker</Link></li>
                   <li><Link to="/influencer-form" onClick={handleLinkClick}>Influencer Form</Link></li>
                   <li><Link to="/jobportal" onClick={handleLinkClick}>Job Portal</Link></li>
-                  <li><Link to="/buysubdomain" onClick={handleLinkClick}>Buy Domain</Link></li>
+                  <li><a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>Buy Domain</a></li>
                   <li><Link to="/landingpage" onClick={handleLinkClick}>Landing Page</Link></li>
                 </ul>
               </details>
@@ -82,8 +109,8 @@ const Navbar = () => {
               <li><Link to="/PortfolioMaker" className="hover:text-orange-600" onClick={handleLinkClick}>Portfolio Maker</Link></li>
               <li><Link to="/influencer" className="hover:text-orange-600" onClick={handleLinkClick}>Influencer Form</Link></li>
               <li><Link to="/jobportal" className="hover:text-orange-600" onClick={handleLinkClick}>Job Portal</Link></li>
-              <li><Link to="/buysubdomain" className="hover:text-orange-600" onClick={handleLinkClick}>Buy Domain</Link></li>
-              <li><Link to="/landing-page" className="hover:text-orange-600" onClick={handleLinkClick}>Landing Page</Link></li>
+              <li><a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600" onClick={handleLinkClick}>Buy Domain</a></li>
+              <li><Link to="/landingpage" className="hover:text-orange-600" onClick={handleLinkClick}>Landing Page</Link></li>
             </ul>
           </li>
            <li><Link to="/about" className="hover:text-orange-600" onClick={handleLinkClick}>About</Link></li>
@@ -153,6 +180,7 @@ const Navbar = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

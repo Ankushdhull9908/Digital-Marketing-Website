@@ -1,218 +1,195 @@
 import React, { useState, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
-import { Mail, Download, Eye, Edit3, Plus, Trash2, Layout, X } from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  ChevronLeft, Eye, Download, User, Briefcase, 
+  Code, Mail, Palette, ArrowRight, ExternalLink 
+} from "lucide-react";
 
 const PortfolioMaker = () => {
-  const [activeTab, setActiveTab] = useState("edit");
-  const [skillInput, setSkillInput] = useState("");
-  const contentRef = useRef();
-
-  const [formData, setFormData] = useState({
-    name: "Anuj Hooda",
-    role: "Full Stack Web Developer",
-    email: "anuj.dev@example.com",
-    about: "I build high-performance web applications with a focus on clean code and interactive user experiences.",
-    skills: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+  const { templateId } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  
+  // State for all 5 pages of content
+  const [data, setData] = useState({
+    name: "Keshav Goel",
+    profession: "Web Developer",
+    bio: "I craft high-performance web applications with a focus on user experience.",
+    skills: ["React", "Tailwind CSS", "Node.js"],
     projects: [
-      { title: "E-Commerce Platform", desc: "A modern storefront with real-time inventory and Stripe integration." },
-      { title: "Interactive Portfolio", desc: "A recursive portfolio builder for developers." }
-    ]
+      { title: "E-Commerce App", desc: "A full-stack shopping platform." },
+      { title: "Portfolio Engine", desc: "A tool to generate websites." }
+    ],
+    contact: "contact@keshav.dev",
+    rollNumber: "2515203"
   });
 
-  // FIXED: Correct implementation of useReactToPrint
-  const handlePrint = useReactToPrint({
-    contentRef: contentRef, // Note: newer versions use contentRef, older use content: () => contentRef.current
-    documentTitle: `${formData.name}_Portfolio`,
-  });
-
-  const updateField = (field, value) => setFormData({ ...formData, [field]: value });
-
-  // Skill Management
-  const addSkill = (e) => {
-    if (e) e.preventDefault();
-    if (skillInput.trim() && !formData.skills.includes(skillInput.trim())) {
-      setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()] });
-      setSkillInput("");
+  // Dynamic Themes based on Profession
+  const getTheme = () => {
+    switch (data.profession) {
+      case "Web Developer": 
+        return { bg: "bg-slate-900", text: "text-white", accent: "bg-emerald-500", font: "font-mono" };
+      case "Designer": 
+        return { bg: "bg-white", text: "text-slate-900", accent: "bg-purple-600", font: "font-serif" };
+      case "Marketing": 
+        return { bg: "bg-orange-50", text: "text-slate-800", accent: "bg-[#F39221]", font: "font-sans" };
+      default: 
+        return { bg: "bg-white", text: "text-slate-900", accent: "bg-[#3D7E8C]", font: "font-sans" };
     }
   };
 
-  const removeSkill = (skillToRemove) => {
-    setFormData({ ...formData, skills: formData.skills.filter(s => s !== skillToRemove) });
-  };
+  const theme = getTheme();
 
-  // Project Management
-  const updateProject = (index, field, value) => {
-    const newProjects = [...formData.projects];
-    newProjects[index][field] = value;
-    setFormData({ ...formData, projects: newProjects });
-  };
-
-  const addProject = () => {
-    setFormData({
-      ...formData,
-      projects: [...formData.projects, { title: "New Project", desc: "Project description..." }]
-    });
+  // PDF Download Logic (Using Browser Print to PDF)
+  const handleDownloadPDF = () => {
+    const originalTitle = document.title;
+    document.title = `${data.name}_Portfolio`;
+    window.print();
+    document.title = originalTitle;
   };
 
   return (
-    <div data-theme="light" className="min-h-96 bg-white text-slate-800 font-sans">
+    <div className="min-h-screen bg-[#F8FAFB] flex flex-col font-montserrat overflow-hidden">
       
-      {/* Header */}
-      <header className="navbar bg-white border-b border-slate-100 px-6 md:px-12 sticky top-0 z-50">
-        <div className="flex-1">
-          <span className="text-xl font-black tracking-tighter text-slate-900 italic">
-            PORTFOLIO<span className="text-primary">.LAB</span>
-          </span>
+      {/* --- TOP BAR (Hidden during Print) --- */}
+      <nav className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-50 print:hidden">
+        <div className="flex items-center gap-4">
+          <Link to="/templates" className="hover:text-[#F39221] transition-colors"><ChevronLeft /></Link>
+          <h1 className="font-black text-sm uppercase tracking-widest">Editor v2.0</h1>
         </div>
-        <div className="flex-none">
-          {/* FIXED: handlePrint is now called as a function */}
-          <button onClick={() => handlePrint()} className="btn btn-primary btn-sm rounded-lg shadow-md gap-2">
-            <Download size={16} />
-            <span className="hidden sm:inline">Export PDF</span>
+        <div className="flex gap-2">
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="btn btn-ghost btn-sm">
+            {isSidebarOpen ? "Hide Controls" : "Show Controls"}
+          </button>
+          <button onClick={handleDownloadPDF} className="btn btn-sm bg-slate-900 text-white hover:bg-black border-none gap-2">
+            <Download size={16} /> Save as PDF
           </button>
         </div>
-      </header>
+      </nav>
 
-      <div className="flex flex-col lg:flex-row h-[calc(88vh-64px)] overflow-hidden">
-        
-        {/* --- EDITOR PANEL --- */}
-        <aside className={`flex-1 overflow-y-auto p-6 md:p-10 bg-white ${activeTab === 'preview' ? 'hidden lg:block' : 'block'}`}>
-          <div className="max-w-xl mx-auto space-y-8">
-            <header>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-1">Configuration</h2>
-              <p className="text-2xl font-bold text-slate-900">Customizer</p>
-            </header>
+      <div className="flex flex-1 overflow-hidden">
+        {/* --- SIDEBAR CONTROLS (Hidden during Print) --- */}
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <motion.aside 
+              initial={{ x: -300 }} 
+              animate={{ x: 0 }} 
+              exit={{ x: -300 }}
+              className="w-80 bg-white border-r border-slate-200 flex flex-col print:hidden"
+            >
+              <div className="p-6 space-y-6 overflow-y-auto">
+                <section>
+                  <label className="text-[10px] font-black text-slate-400 uppercase">Step 1: Basics</label>
+                  <input 
+                    className="input input-bordered w-full mt-2" 
+                    value={data.name} 
+                    onChange={(e) => setData({...data, name: e.target.value})} 
+                  />
+                  <select 
+                    className="select select-bordered w-full mt-2"
+                    value={data.profession}
+                    onChange={(e) => setData({...data, profession: e.target.value})}
+                  >
+                    <option>Web Developer</option>
+                    <option>Designer</option>
+                    <option>Marketing</option>
+                  </select>
+                </section>
 
-            {/* Basic Info */}
-            <div className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="form-control">
-                  <label className="label font-bold text-[11px] uppercase text-slate-500 mb-1">Full Name</label>
-                  <input type="text" value={formData.name} onChange={(e) => updateField("name", e.target.value)} className="input border-none bg-slate-100 focus:ring-2 ring-primary/20" />
-                </div>
-                <div className="form-control">
-                  <label className="label font-bold text-[11px] uppercase text-slate-500 mb-1">Email</label>
-                  <input type="email" value={formData.email} onChange={(e) => updateField("email", e.target.value)} className="input border-none bg-slate-100 focus:ring-2 ring-primary/20" />
-                </div>
+                <section>
+                  <label className="text-[10px] font-black text-slate-400 uppercase">Step 2: Projects</label>
+                  <input 
+                    className="input input-bordered w-full mt-2" 
+                    placeholder="Project Title"
+                    value={data.projects[0].title} 
+                    onChange={(e) => {
+                      const newProjects = [...data.projects];
+                      newProjects[0].title = e.target.value;
+                      setData({...data, projects: newProjects});
+                    }}
+                  />
+                </section>
+
+                <section>
+                  <label className="text-[10px] font-black text-slate-400 uppercase">Step 3: Contact</label>
+                  <input 
+                    className="input input-bordered w-full mt-2" 
+                    value={data.contact} 
+                    onChange={(e) => setData({...data, contact: e.target.value})} 
+                  />
+                </section>
               </div>
-              <div className="form-control">
-                <label className="label font-bold text-[11px] uppercase text-slate-500 mb-1">Bio</label>
-                <textarea value={formData.about} onChange={(e) => updateField("about", e.target.value)} className="textarea border-none bg-slate-100 focus:ring-2 ring-primary/20 h-20" />
-              </div>
-            </div>
+            </motion.aside>
+          )}
+        </AnimatePresence>
 
-            {/* Skill Tag Creator */}
-            <section className="pt-6 border-t border-slate-100">
-              <label className="label font-bold text-[11px] uppercase text-slate-500 mb-1">Expertise Tags</label>
-              <form onSubmit={addSkill} className="flex gap-2 mb-4">
-                <input 
-                  type="text" 
-                  placeholder="Add skill (e.g. JavaScript)" 
-                  value={skillInput}
-                  onChange={(e) => setSkillInput(e.target.value)}
-                  className="input input-sm flex-1 border-none bg-slate-100 focus:ring-2 ring-primary/20"
-                />
-                <button type="submit" className="btn btn-sm btn-square btn-primary"><Plus size={16}/></button>
-              </form>
-              <div className="flex flex-wrap gap-2">
-                {formData.skills.map((skill, i) => (
-                  <span key={i} className="badge badge-lg bg-slate-100 border-none py-4 gap-2 text-xs font-bold">
-                    {skill}
-                    <X size={12} className="cursor-pointer hover:text-error" onClick={() => removeSkill(skill)} />
-                  </span>
+        {/* --- MAIN PREVIEW CANVAS --- */}
+        <main className="flex-1 bg-slate-200 p-4 md:p-12 overflow-y-auto print:p-0 print:bg-white">
+          <div id="portfolio-content" className={`w-full max-w-4xl mx-auto shadow-2xl print:shadow-none min-h-[1200px] ${theme.bg} ${theme.text} ${theme.font} transition-all duration-700`}>
+            
+            {/* PAGE 1: HERO (NAME) */}
+            <section className="h-screen flex flex-col justify-center items-center text-center p-20">
+              <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
+                <div className={`w-20 h-1 mb-10 mx-auto ${theme.accent}`} />
+                <h1 className="text-8xl font-black tracking-tighter mb-4">{data.name}</h1>
+                <p className="text-xl uppercase tracking-[0.4em] opacity-60">{data.profession}</p>
+              </motion.div>
+            </section>
+
+            {/* PAGE 2: PROFESSION & BIO */}
+            <section className="min-h-screen flex flex-col justify-center p-20 border-t border-white/10">
+              <h2 className="text-5xl font-black mb-10 italic">About Me</h2>
+              <p className="text-3xl leading-tight max-w-2xl">{data.bio}</p>
+              <div className="flex gap-4 mt-12">
+                {data.skills.map(s => <span key={s} className={`px-6 py-2 rounded-full border border-current opacity-50`}>{s}</span>)}
+              </div>
+            </section>
+
+            {/* PAGE 3: PROJECTS */}
+            <section className="min-h-screen p-20 border-t border-white/10">
+              <h2 className="text-5xl font-black mb-20">Selected Work</h2>
+              <div className="grid grid-cols-1 gap-20">
+                {data.projects.map((p, i) => (
+                  <div key={i} className="group cursor-pointer">
+                    <p className="text-sm opacity-50 mb-2">0{i+1} — PROJECT</p>
+                    <h3 className="text-6xl font-bold group-hover:pl-4 transition-all duration-500">{p.title}</h3>
+                    <p className="text-xl mt-4 opacity-70">{p.desc}</p>
+                  </div>
                 ))}
               </div>
             </section>
 
-            {/* Project Experience */}
-            <section className="pt-6 border-t border-slate-100">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-bold text-slate-900">Projects</h3>
-                <button onClick={addProject} className="btn btn-ghost btn-xs text-primary">+ Add</button>
-              </div>
-              <div className="space-y-4">
-                {formData.projects.map((proj, idx) => (
-                  <div key={idx} className="relative group p-4 rounded-xl bg-slate-100 border border-transparent hover:border-primary/20 transition-all">
-                    <input 
-                      className="bg-transparent font-bold text-slate-800 w-full outline-none mb-1" 
-                      value={proj.title} 
-                      onChange={(e) => updateProject(idx, "title", e.target.value)}
-                    />
-                    <textarea 
-                      className="bg-transparent w-full text-xs text-slate-500 outline-none resize-none h-10" 
-                      value={proj.desc} 
-                      onChange={(e) => updateProject(idx, "desc", e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
+            {/* PAGE 4: CREDENTIALS */}
+            <section className="h-screen flex flex-col justify-center items-center p-20 border-t border-white/10">
+                <div className="text-center">
+                    <h2 className="text-sm uppercase tracking-widest opacity-40 mb-4">Academic ID</h2>
+                    <p className="text-6xl font-black tracking-widest">{data.rollNumber}</p>
+                </div>
             </section>
-          </div>
-        </aside>
 
-        {/* --- PREVIEW PANEL --- */}
-        <main className={`flex-1 bg-slate-50 p-4 md:p-8 overflow-y-auto overflow-x-hidden ${activeTab === 'edit' ? 'hidden lg:flex' : 'flex'} flex-col items-center border-l border-slate-100`}>
-          <div className="flex items-center gap-2 mb-6 text-slate-400">
-            <Layout size={16} />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">Live Preview</span>
-          </div>
+            {/* PAGE 5: CONTACT */}
+            <section className="h-screen flex flex-col justify-center items-center p-20 border-t border-white/10 relative overflow-hidden">
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute text-[20rem] font-black opacity-[0.03] whitespace-nowrap">
+                HELLO HELLO HELLO
+              </motion.div>
+              <h2 className="text-7xl font-black mb-10 z-10">Let's Talk.</h2>
+              <a href={`mailto:${data.contact}`} className="text-2xl border-b-2 border-current z-10">{data.contact}</a>
+            </section>
 
-          <div className="w-full flex justify-center origin-top scale-[0.55] sm:scale-75 md:scale-90 lg:scale-100 transition-transform duration-300">
-            <div className="w-[210mm] min-h-[297mm] bg-white shadow-2xl mb-20">
-              <div ref={contentRef} className="p-16 md:p-20 text-slate-900">
-                
-                <div className="border-b-4 border-slate-900 pb-10 mb-12">
-                  <h1 className="text-6xl font-black uppercase tracking-tighter leading-none mb-2">{formData.name}</h1>
-                  <p className="text-xl font-medium text-primary tracking-wide">{formData.role}</p>
-                  <div className="mt-4 text-xs font-bold text-slate-400 flex items-center gap-2">
-                    <Mail size={12}/> {formData.email}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-12 gap-12">
-                  <div className="col-span-8 space-y-12">
-                    <section>
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 mb-4">Profile</h3>
-                      <p className="text-sm leading-relaxed text-slate-700">{formData.about}</p>
-                    </section>
-                    <section>
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 mb-6">Experience</h3>
-                      <div className="space-y-8">
-                        {formData.projects.map((proj, i) => (
-                          <div key={i}>
-                            <h4 className="font-bold text-lg mb-1">{proj.title}</h4>
-                            <p className="text-sm text-slate-500 leading-relaxed">{proj.desc}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  </div>
-                  <div className="col-span-4 space-y-12">
-                    <section>
-                      <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 mb-4">Skills</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {formData.skills.map((s, i) => (
-                          <span key={i} className="px-2 py-1 bg-slate-100 text-[9px] font-bold uppercase tracking-tighter rounded">
-                            {s}
-                          </span>
-                        ))}
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </main>
       </div>
 
-      {/* Toggle */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:hidden z-[100]">
-        <div className="tabs tabs-boxed bg-white/90 backdrop-blur-md border border-slate-200 p-1 shadow-2xl">
-          <button className={`tab tab-sm font-bold ${activeTab === 'edit' ? 'tab-active btn-primary text-white' : ''}`} onClick={() => setActiveTab('edit')}>Edit</button>
-          <button className={`tab tab-sm font-bold ${activeTab === 'preview' ? 'tab-active btn-primary text-white' : ''}`} onClick={() => setActiveTab('preview')}>Preview</button>
-        </div>
-      </div>
+      {/* --- PRINT CSS --- */}
+      <style>{`
+        @media print {
+          .no-scrollbar { overflow: visible !important; }
+          body { background: white !important; }
+          @page { margin: 0; size: auto; }
+          section { page-break-after: always; height: 100vh !important; }
+        }
+      `}</style>
     </div>
   );
 };

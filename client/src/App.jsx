@@ -15,6 +15,7 @@ import AuthPage from './Pages/AuthPage'
 import Dashboard from './Pages/Dashboard'
 import InfluencerPage from './Pages/InfluencerPage'
 import LandingPage from './Pages/LandingPage'
+import PortfolioTemplates from './Pages/PortfolioTemplates'
 
 function App() {
 
@@ -28,7 +29,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/resume-builder' element={<ResumeBuilder/>}></Route>
         <Route path='/TemplateSelect' element={<TemplateSelect/>}></Route>
-        <Route path='/PortfolioMaker' element={<PortfolioMaker/>}></Route>
+        <Route path='/PortfolioTemplates' element={<PortfolioTemplates/>}></Route>
+        <Route path="/portfolio-maker/:templateId" element={<PortfolioMaker />} />
         <Route path='/jobportal' element={<JobPortal/>}></Route>
         <Route path='/about' element={<AboutUs/>}/>
         <Route path='/influencer-form' element={<InfluencerPage/>}/>
