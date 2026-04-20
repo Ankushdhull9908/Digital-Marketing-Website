@@ -187,4 +187,4 @@ const style = `
   );
 };
 
-export default Navbar;
+export default Navbar
