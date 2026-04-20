@@ -2,7 +2,7 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
+/* Optional: Pause on hover so users can read */
 .animate-marquee {
   display: flex;
   width: max-content;
