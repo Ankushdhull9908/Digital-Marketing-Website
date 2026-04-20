@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
-// Icons for a professional touch
+// Icons for a professional touch.
 import { LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
