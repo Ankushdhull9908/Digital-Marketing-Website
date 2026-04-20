@@ -42,7 +42,7 @@ const PortfolioTemplates = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
         
-        {/* --- MODERN HERO SECTION --- */}
+        {/* --- MODERN HERO SECTION -- */}
         <header className="max-w-3xl mb-24">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
