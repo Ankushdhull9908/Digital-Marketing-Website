@@ -29,8 +29,6 @@ const Navbar = () => {
           </label>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
             <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
-            <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
-            <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
             <li><Link to="/services" onClick={handleLinkClick}>Our Services</Link></li>
             <li>
               <details ref={mobileDetailsRef}>
@@ -45,6 +43,8 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
+             <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
+            <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
           </ul>
         </div>
 
@@ -68,8 +68,6 @@ const Navbar = () => {
 
         <ul className="menu menu-horizontal px-1 gap-2 font-medium">
           <li><Link to="/" className="hover:text-orange-600" onClick={handleLinkClick}>Home</Link></li>
-          <li><Link to="/about" className="hover:text-orange-600" onClick={handleLinkClick}>About</Link></li>
-          <li><Link to="/contact" className="hover:text-orange-600" onClick={handleLinkClick}>Contact</Link></li>
           <li><Link to="/services" className="hover:text-orange-600" onClick={handleLinkClick}>Our Services</Link></li>
 
           <li className="dropdown dropdown-hover">
@@ -88,6 +86,8 @@ const Navbar = () => {
               <li><Link to="/landing-page" className="hover:text-orange-600" onClick={handleLinkClick}>Landing Page</Link></li>
             </ul>
           </li>
+           <li><Link to="/about" className="hover:text-orange-600" onClick={handleLinkClick}>About</Link></li>
+          <li><Link to="/contact" className="hover:text-orange-600" onClick={handleLinkClick}>Contact</Link></li>
         </ul>
       </div>
 
