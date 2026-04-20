@@ -109,7 +109,7 @@ const style = `
             <ul tabIndex={0} className="dropdown-content z-[50] menu p-2 shadow-xl bg-base-100 rounded-box w-52 top-full border border-base-200">
               <li><Link to="/resume-builder" className="hover:text-orange-600" onClick={handleLinkClick}>Resume Builder</Link></li>
               <li><Link to="/PortfolioMaker" className="hover:text-orange-600" onClick={handleLinkClick}>Portfolio Maker</Link></li>
-              <li><Link to="/influencer" className="hover:text-orange-600" onClick={handleLinkClick}>Influencer Form</Link></li>
+              <li><Link to="/influencer-form" className="hover:text-orange-600" onClick={handleLinkClick}>Influencer Form</Link></li>
               <li><Link to="/jobportal" className="hover:text-orange-600" onClick={handleLinkClick}>Job Portal</Link></li>
               <li><a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600" onClick={handleLinkClick}>Buy Domain</a></li>
               <li><Link to="/landingpage" className="hover:text-orange-600" onClick={handleLinkClick}>Landing Page</Link></li>
