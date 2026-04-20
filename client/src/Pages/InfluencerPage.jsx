@@ -731,7 +731,7 @@ export default function InfluencerPage() {
                   <label className="ip-label">Primary Audience Gender</label>
                   <select className="ip-select" defaultValue="">
                     <option value="" disabled>Select</option>
-                    <option>Mostly Male</option><option>Mostly Female</option><option>Mixed</option>
+                    <option>Mostly Male</option><option>Mostly Female</option><option>Other</option>
                   </select>
                 </div>
               </div>

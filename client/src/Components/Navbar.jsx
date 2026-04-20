@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
+
 import { LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
