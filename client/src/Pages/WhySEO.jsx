@@ -45,7 +45,7 @@ const WhySEO = () => {
   return (
     <div className="min-h-screen bg-white font-montserrat text-slate-900 overflow-x-hidden">
       
-      {/* --- HERO SECTION --- */}
+      {/* --- HERO's SECTION --- */}
       <header className="relative py-20 px-6 bg-slate-50 border-b border-slate-100 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
           <motion.div 
