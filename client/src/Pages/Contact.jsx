@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 const Contact = () => {
-  // Brand Colors: Teal: #3D7E8C | Orange: #F39221
+  // Brand Colors: Teal: #3D7E8C | Orange: #F3922
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
