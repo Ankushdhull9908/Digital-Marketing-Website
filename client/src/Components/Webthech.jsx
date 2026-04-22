@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion'; // Step 1: Import motion
+import { motion } from 'framer-motion'; // Step 1 Import motion
 import { 
   CheckCircle2, TrendingUp, Users, Target, BarChart3, 
   ShieldCheck, ArrowRight, Lightbulb, Search, Rocket, 
