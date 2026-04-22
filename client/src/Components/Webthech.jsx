@@ -228,38 +228,59 @@ const Webthech = () => {
           </motion.div>
          
 {/* --- SECTION 5: CLIENT LOGOS --- */}
-<div className="mt-20 overflow-hidden relative py-10">
-  {/* Soft Edge Overlays (Optional, but keeps logos from hitting the screen edge abruptly) */}
-  <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-  <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-3xl md:text-5xl font-black mb-4 tracking-tight"
+    >
+      Our <span className="text-[#3D7E8C]">Clients</span>
+    </motion.h2>
+    <div className="w-20 h-1.5 bg-[#F39221] mx-auto rounded-full"></div>
+  </div>
 
-  <motion.div
-    className="flex whitespace-nowrap"
-    animate={{ x: ["0%", "-50%"] }} 
-    transition={{
-      repeat: Infinity,
-      ease: "linear",
-      duration: 120, // Adjust speed for 69 images
-    }}
-    style={{ width: "fit-content" }}
-  >
-    {[...Array(2)].map((_, groupIdx) => (
-      <div key={groupIdx} className="flex items-center gap-12 px-6">
-        {Array.from({ length: 69 }, (_, i) => i + 1).map((num) => (
-          <motion.img
-            key={`${groupIdx}-${num}`}
-            src={`/logos/${num}.png`} 
-            alt=""
-            // Translate up and scale slightly on hover
-            whileHover={{ y: -10, scale: 1.1 }}
-            className="h-12 md:h-16 w-auto object-contain flex-shrink-0 cursor-pointer transition-shadow"
-            onError={(e) => { e.target.style.display = 'none'; }} 
-          />
-        ))}
-      </div>
-    ))}
-  </motion.div>
-</div>
+  <div className="relative overflow-hidden py-4">
+    {/* Soft Edge Overlays */}
+    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+    <motion.div
+      className="flex whitespace-nowrap"
+      animate={{ x: ["0%", "-50%"] }} 
+      transition={{
+        repeat: Infinity,
+        ease: "linear",
+        duration: 80, // Slower duration = smoother visual flow
+      }}
+      style={{ width: "fit-content" }}
+    >
+      {[...Array(2)].map((_, groupIdx) => (
+        <div key={groupIdx} className="flex items-center">
+          {Array.from({ length: 69 }, (_, i) => i + 1).map((num) => (
+            <div 
+              key={`${groupIdx}-${num}`} 
+              className="px-6 md:px-8" // Reduced gap for a tighter look
+            >
+              <motion.img
+                src={`/logos/${num}.png`} 
+                alt={`Client Logo ${num}`}
+                whileHover={{ 
+                  y: -5, 
+                  scale: 1.05 
+                }}
+                // Removed grayscale and opacity for full vibrant color
+                className="h-10 md:h-14 w-auto max-w-[130px] object-contain flex-shrink-0 cursor-pointer transition-transform duration-300 ease-out"
+                onError={(e) => { e.target.parentElement.style.display = 'none'; }} 
+              />
+            </div>
+          ))}
+        </div>
+      ))}
+    </motion.div>
+  </div>
+</section>
 </div>
       </section>
     </div>
