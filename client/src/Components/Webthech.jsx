@@ -228,8 +228,9 @@ const Webthech = () => {
           </motion.div>
          
 {/* --- SECTION 5: CLIENT LOGOS --- */}
-<section className="py-20 bg-white">
-  <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
+<section className="pt-20 pb-4 bg-white">
+  {/* Header with increased bottom margin */}
+  <div className="max-w-7xl mx-auto px-6 mb-20 text-center"> 
     <motion.h2 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -238,21 +239,21 @@ const Webthech = () => {
     >
       Our <span className="text-[#3D7E8C]">Clients</span>
     </motion.h2>
-    <div className="w-20 h-1.5 bg-[#F39221] mx-auto rounded-full"></div>
+    <div className="w-24 h-1.5 bg-[#F39221] mx-auto rounded-full"></div>
   </div>
 
   <div className="relative overflow-hidden py-4">
-    {/* Soft Edge Overlays */}
-    <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
-    <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+    {/* Enhanced Edge Overlays */}
+    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
 
     <motion.div
-      className="flex whitespace-nowrap"
+      className="flex whitespace-nowrap will-change-transform"
       animate={{ x: ["0%", "-50%"] }} 
       transition={{
         repeat: Infinity,
         ease: "linear",
-        duration: 80, // Slower duration = smoother visual flow
+        duration: 120,
       }}
       style={{ width: "fit-content" }}
     >
@@ -261,17 +262,17 @@ const Webthech = () => {
           {Array.from({ length: 69 }, (_, i) => i + 1).map((num) => (
             <div 
               key={`${groupIdx}-${num}`} 
-              className="px-6 md:px-8" // Reduced gap for a tighter look
+              className="px-10 md:px-14 flex-shrink-0"
             >
               <motion.img
                 src={`/logos/${num}.png`} 
                 alt={`Client Logo ${num}`}
                 whileHover={{ 
-                  y: -5, 
-                  scale: 1.05 
+                  y: -10, 
+                  scale: 1.1,
+                  filter: "drop-shadow(0px 15px 20px rgba(0,0,0,0.08))"
                 }}
-                // Removed grayscale and opacity for full vibrant color
-                className="h-10 md:h-14 w-auto max-w-[130px] object-contain flex-shrink-0 cursor-pointer transition-transform duration-300 ease-out"
+                className="h-16 md:h-24 w-auto max-w-[180px] md:max-w-[220px] object-contain cursor-pointer transition-all duration-300 ease-out"
                 onError={(e) => { e.target.parentElement.style.display = 'none'; }} 
               />
             </div>
