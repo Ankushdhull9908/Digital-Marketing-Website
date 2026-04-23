@@ -16,7 +16,7 @@ const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
         <Icon size={28} />
       </div>
 
-      {/* Title & Descriptio */}
+      {/* Title & Description*/}
       <h3 className="text-2xl font-black mb-3 group-hover:text-[#F39221] transition-colors tracking-tight text-slate-900">
         {title}
       </h3>
