@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 
 const Webthech = () => {
-  // Brand Colors: Teal: #3D7E8C | Orange: #F39221
+  //Brand Colors: Teal: #3D7E8C | Orange: #F39221
 
   const highlights = [
     { text: "Experienced Digital Marketing Experts", icon: <Users size={20} /> },
