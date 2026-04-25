@@ -79,7 +79,7 @@ const style = `
 
         <Link className="flex items-center gap-2" to="/" onClick={handleLinkClick}>
           <img 
-            src="src/assets/logo.png" 
+            src="/logos/logo.png"
             alt="WebTech Logo" 
             className="h-10 w-auto object-contain lg:h-16 rounded" 
           />
