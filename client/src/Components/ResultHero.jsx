@@ -5,9 +5,11 @@ import {
   ChevronDown, MessageSquare, Globe, Smartphone, 
   Share2, Zap, ArrowRight 
 } from 'lucide-react';
+import { useAuth } from "../context/Context";
 
 const ResultHero = () => {
   // Brand Colors: Teal: #3D7E8C | Orange: #F39221
+  const { faqs, clients, loading } = useAuth();
 
   const results = [
     "Higher Google Rankings", "More Website Traffic", 
@@ -296,11 +298,7 @@ const ResultHero = () => {
             variants={staggerContainer}
             className="space-y-4"
           >
-            {[
-              { q: "Why choose Webtech Services?", a: "We provide customized, result-driven strategies that help businesses grow faster by focusing on ROI." },
-              { q: "How long does SEO take?", a: "SEO is a long-term investment. It usually takes 3–6 months depending on competition." },
-              { q: "Do you provide Google Ads?", a: "Yes, we run high-performing PPC campaigns specializing in lead generation." }
-            ].map((faq, i) => (
+            {faqs.map((faq, i) => (
               <motion.details 
                 key={i} 
                 variants={fadeInUp}
@@ -309,12 +307,12 @@ const ResultHero = () => {
                 <summary className="flex items-center justify-between font-black text-slate-800 list-none">
                   <div className="flex items-center gap-3">
                     <HelpCircle className="text-[#3D7E8C]" size={20} />
-                    {faq.q}
+                    {faq.question}
                   </div>
                   <ChevronDown className="group-open:rotate-180 transition-transform text-slate-400" size={20} />
                 </summary>
                 <p className="mt-4 text-slate-600 font-medium leading-relaxed pl-8 border-l-2 border-[#3D7E8C]">
-                  {faq.a}
+                  {faq.answer}
                 </p>
               </motion.details>
             ))}

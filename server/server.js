@@ -2,6 +2,10 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
+import packageRoutes from "./routes/packages.js";
+import clientRoutes from "./routes/clients.js";
+import faqRoutes from "./routes/faqs.js";
+import contactRoutes from "./routes/contact.js";
 
 const app = express();
 
@@ -13,6 +17,10 @@ connectDB();
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/packages", packageRoutes);
+app.use("/api/clients", clientRoutes);
+app.use("/api/faqs", faqRoutes);
+app.use("/api/contact", contactRoutes);
 
 // test
 app.get("/", (req, res) => {

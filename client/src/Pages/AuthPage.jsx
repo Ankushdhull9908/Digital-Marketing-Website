@@ -9,6 +9,8 @@ function AuthPage() {
   // State to trigger the entrance animation after the component mounts
   const [isLoaded, setIsLoaded] = useState(false);
 
+  var API = "https://digital-marketing-temp.onrender.com" ? "https://digital-marketing-temp.onrender.com": "http://localhost:5000"
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -25,8 +27,8 @@ function AuthPage() {
   const handleSubmit = async () => {
     try {
       const url = isLogin
-        ? "http://localhost:5000/api/auth/login"
-        : "http://localhost:5000/api/auth/signup";
+        ? `${API}/api/auth/login`
+        :`${API}/api/auth/signup`;
 
       const res = await fetch(url, {
         method: "POST",
