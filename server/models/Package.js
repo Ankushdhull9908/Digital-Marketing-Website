@@ -20,6 +20,12 @@ const packageSchema = new mongoose.Schema(
       enum: ["monthly", "yearly", "one-time"],
       default: "monthly",
     },
+    // Displayed after price, e.g. "/ month" or "/- " (leave empty for one-time)
+    suffix: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     description: {
       type: String,
       trim: true,
@@ -29,8 +35,14 @@ const packageSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    // Marks this card as "Popular" — renders the orange featured badge
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+    // Optional short badge label e.g. "HOT", "Best Value" (separate from featured)
     badge: {
-      type: String, // e.g. "HOT", "Popular", "Best Value"
+      type: String,
       default: null,
     },
     isActive: {
@@ -39,7 +51,7 @@ const packageSchema = new mongoose.Schema(
     },
     order: {
       type: Number,
-      default: 0, // for controlling display order
+      default: 0,
     },
   },
   { timestamps: true }

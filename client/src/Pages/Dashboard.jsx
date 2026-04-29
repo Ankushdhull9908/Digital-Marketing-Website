@@ -221,43 +221,88 @@ function ClientsPanel() {
 function PackagesPanel() {
   const [pkgs, setPkgs]   = useState([]);
   const [modal, setModal] = useState(null);
-  const [form, setForm]   = useState({ title:"", price:"", billingCycle:"monthly", description:"", features:"", badge:"" });
+  const [form, setForm]   = useState({
+    title: "",
+    price: "",
+    billingCycle: "monthly",
+    suffix: "",
+    description: "",
+    features: "",
+    featured: false,
+    badge: "",
+  });
   const [editId, setEditId] = useState(null);
-
-  const load = () => get("/packages").then(setPkgs);
+ 
+  const load = () => get("/packages?all=true").then(setPkgs);
   useEffect(() => { load(); }, []);
-
-  const openAdd  = () => { setForm({ title:"", price:"", billingCycle:"monthly", description:"", features:"", badge:"" }); setEditId(null); setModal("add"); };
-  const openEdit = (p)  => {
-    setForm({ title: p.title, price: p.price, billingCycle: p.billingCycle, description: p.description, features: p.features.join(", "), badge: p.badge||"" });
-    setEditId(p._id); setModal("edit");
+ 
+  const openAdd = () => {
+    setForm({
+      title: "",
+      price: "",
+      billingCycle: "monthly",
+      suffix: "",
+      description: "",
+      features: "",
+      featured: false,
+      badge: "",
+    });
+    setEditId(null);
+    setModal("add");
   };
-
+ 
+  const openEdit = (p) => {
+    setForm({
+      title: p.title,
+      price: p.price,
+      billingCycle: p.billingCycle,
+      suffix: p.suffix || "",
+      description: p.description || "",
+      features: p.features.join(", "),
+      featured: p.featured || false,
+      badge: p.badge || "",
+    });
+    setEditId(p._id);
+    setModal("edit");
+  };
+ 
   const save = async () => {
-    const body = { ...form, price: Number(form.price), features: form.features.split(",").map(s => s.trim()).filter(Boolean) };
+    const body = {
+      ...form,
+      price: Number(form.price),
+      features: form.features.split(",").map(s => s.trim()).filter(Boolean),
+      featured: Boolean(form.featured),
+    };
     if (editId) await put(`/packages/${editId}`, body);
     else        await post("/packages", body);
-    setModal(null); load();
+    setModal(null);
+    load();
   };
-
+ 
   const remove = async (id) => { await del(`/packages/${id}`); load(); };
   const toggle = async (p)  => { await put(`/packages/${p._id}`, { isActive: !p.isActive }); load(); };
-
+ 
   return (
     <>
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex justify-between items-center">
           <h3 className="font-bold text-slate-800">Pricing Packages</h3>
-          <button onClick={openAdd} className="flex items-center gap-1.5 bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700">
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-1.5 bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700"
+          >
             <Plus size={15} /> Add Package
           </button>
         </div>
+ 
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-50/50 text-slate-400 text-xs uppercase tracking-wider">
             <tr>
               <th className="px-5 py-3">Package</th>
               <th className="px-5 py-3">Price</th>
+              <th className="px-5 py-3">Suffix</th>
               <th className="px-5 py-3">Billing</th>
+              <th className="px-5 py-3">Featured</th>
               <th className="px-5 py-3">Features</th>
               <th className="px-5 py-3">Status</th>
               <th className="px-5 py-3 text-right">Actions</th>
@@ -267,15 +312,35 @@ function PackagesPanel() {
             {pkgs.map(p => (
               <tr key={p._id} className="hover:bg-slate-50 transition-colors">
                 <td className="px-5 py-4">
-                  <p className="font-semibold text-slate-700">{p.title} {p.badge && <Badge text={p.badge} color="red" />}</p>
+                  <p className="font-semibold text-slate-700">
+                    {p.title}{" "}
+                    {p.badge && <Badge text={p.badge} color="red" />}
+                  </p>
                   <p className="text-xs text-slate-400 mt-0.5">{p.description}</p>
                 </td>
-                <td className="px-5 py-4 font-bold text-slate-700">₹{p.price.toLocaleString("en-IN")}</td>
-                <td className="px-5 py-4"><Badge text={p.billingCycle} color="blue" /></td>
-                <td className="px-5 py-4 text-xs text-slate-500">{p.features.slice(0, 2).join(", ")}{p.features.length > 2 ? "…" : ""}</td>
+                <td className="px-5 py-4 font-bold text-slate-700">
+                  ₹{p.price.toLocaleString("en-IN")}
+                </td>
+                <td className="px-5 py-4 text-slate-500 text-xs">
+                  {p.suffix || <span className="text-slate-300">—</span>}
+                </td>
+                <td className="px-5 py-4">
+                  <Badge text={p.billingCycle} color="blue" />
+                </td>
+                <td className="px-5 py-4">
+                  {p.featured
+                    ? <Badge text="Popular" color="amber" />
+                    : <span className="text-slate-300 text-xs">—</span>}
+                </td>
+                <td className="px-5 py-4 text-xs text-slate-500">
+                  {p.features.slice(0, 2).join(", ")}{p.features.length > 2 ? "…" : ""}
+                </td>
                 <td className="px-5 py-4">
                   <button onClick={() => toggle(p)}>
-                    <Badge text={p.isActive ? "Active" : "Hidden"} color={p.isActive ? "green" : "amber"} />
+                    <Badge
+                      text={p.isActive ? "Active" : "Hidden"}
+                      color={p.isActive ? "green" : "amber"}
+                    />
                   </button>
                 </td>
                 <td className="px-5 py-4">
@@ -289,23 +354,107 @@ function PackagesPanel() {
           </tbody>
         </table>
       </div>
-
+ 
       {modal && (
-        <Modal title={modal === "edit" ? "Edit Package" : "Add Package"} onClose={() => setModal(null)} onSave={save}>
-          <div><label className="label-sm">Title</label><input className={inp} value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="Starter" /></div>
+        <Modal
+          title={modal === "edit" ? "Edit Package" : "Add Package"}
+          onClose={() => setModal(null)}
+          onSave={save}
+        >
+          {/* Title */}
+          <div>
+            <label className="label-sm">Title</label>
+            <input
+              className={inp}
+              value={form.title}
+              onChange={e => setForm({ ...form, title: e.target.value })}
+              placeholder="Social Media Management"
+            />
+          </div>
+ 
+          {/* Price + Billing Cycle */}
           <div className="grid grid-cols-2 gap-3">
-            <div><label className="label-sm">Price (₹)</label><input className={inp} type="number" value={form.price} onChange={e => setForm({...form, price: e.target.value})} placeholder="4999" /></div>
-            <div><label className="label-sm">Billing Cycle</label>
-              <select className={inp} value={form.billingCycle} onChange={e => setForm({...form, billingCycle: e.target.value})}>
+            <div>
+              <label className="label-sm">Price (₹)</label>
+              <input
+                className={inp}
+                type="number"
+                value={form.price}
+                onChange={e => setForm({ ...form, price: e.target.value })}
+                placeholder="4000"
+              />
+            </div>
+            <div>
+              <label className="label-sm">Billing Cycle</label>
+              <select
+                className={inp}
+                value={form.billingCycle}
+                onChange={e => setForm({ ...form, billingCycle: e.target.value })}
+              >
                 <option value="monthly">Monthly</option>
                 <option value="yearly">Yearly</option>
                 <option value="one-time">One-time</option>
               </select>
             </div>
           </div>
-          <div><label className="label-sm">Description</label><input className={inp} value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Perfect for small businesses" /></div>
-          <div><label className="label-sm">Features (comma-separated)</label><input className={inp} value={form.features} onChange={e => setForm({...form, features: e.target.value})} placeholder="5 Pages, Basic SEO, 1 Month Support" /></div>
-          <div><label className="label-sm">Badge (optional, e.g. HOT)</label><input className={inp} value={form.badge} onChange={e => setForm({...form, badge: e.target.value})} placeholder="HOT" /></div>
+ 
+          {/* Suffix — shown after price on the card */}
+          <div>
+            <label className="label-sm">Price Suffix (e.g. "/ month" or leave blank for "/-")</label>
+            <input
+              className={inp}
+              value={form.suffix}
+              onChange={e => setForm({ ...form, suffix: e.target.value })}
+              placeholder="/ month"
+            />
+          </div>
+ 
+          {/* Description */}
+          <div>
+            <label className="label-sm">Description</label>
+            <input
+              className={inp}
+              value={form.description}
+              onChange={e => setForm({ ...form, description: e.target.value })}
+              placeholder="We manage your social media platforms..."
+            />
+          </div>
+ 
+          {/* Features */}
+          <div>
+            <label className="label-sm">Features (comma-separated)</label>
+            <input
+              className={inp}
+              value={form.features}
+              onChange={e => setForm({ ...form, features: e.target.value })}
+              placeholder="Post Creation, Monthly Calendar, 12–15 Posts"
+            />
+          </div>
+ 
+          {/* Featured toggle */}
+          <div className="flex items-center gap-3">
+            <input
+              id="featured-toggle"
+              type="checkbox"
+              className="checkbox checkbox-sm"
+              checked={form.featured}
+              onChange={e => setForm({ ...form, featured: e.target.checked })}
+            />
+            <label htmlFor="featured-toggle" className="label-sm cursor-pointer">
+              Mark as <span className="text-amber-500 font-bold">Popular</span> (shows orange "Popular" badge on card)
+            </label>
+          </div>
+ 
+          {/* Optional badge label */}
+          <div>
+            <label className="label-sm">Extra Badge Label (optional, e.g. HOT)</label>
+            <input
+              className={inp}
+              value={form.badge}
+              onChange={e => setForm({ ...form, badge: e.target.value })}
+              placeholder="HOT"
+            />
+          </div>
         </Modal>
       )}
     </>
