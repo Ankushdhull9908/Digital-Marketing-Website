@@ -8,7 +8,7 @@ const ResumeBuilder = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const resumeRef = useRef();
 
-  // FIX: Standard configuration for react-to-print
+  // FIX: standard configuration for react-to-print
   const handlePrint = useReactToPrint({
     contentRef: resumeRef, // use contentRef for latest versions
     documentTitle: "Keshav_Goel_2515203_Resume",
