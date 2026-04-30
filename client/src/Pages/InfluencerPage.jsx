@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-var API = "https://digital-marketing-temp.onrender.com/api"
-  ? "https://digital-marketing-temp.onrender.com/api"
-  : "http://localhost:5000/api";
+var API = "https://digital-marketing-temp.onrender.com/api/influencer"
+  ? "https://digital-marketing-temp.onrender.com/api/influencer"
+  : "http://localhost:5000/api/influencer";
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
@@ -612,7 +612,7 @@ export default function InfluencerPage() {
       fetch(`${API}/campaigns`).then(r => r.json()).then(setLiveCampaigns).catch(console.error);
     }
     if (role === "brand") {
-      fetch(`${API}/influencer`).then(r => r.json()).then(setLiveInfluencers).catch(console.error);
+      fetch(`${API}/influencers`).then(r => r.json()).then(setLiveInfluencers).catch(console.error);
     }
   }, [role]);
 
@@ -629,7 +629,7 @@ export default function InfluencerPage() {
     setLoading(true);
     try {
       const body = { ...inf, platforms, niches, followers, avgViews, highestView, audienceAge, audienceGender };
-      const res  = await fetch(`${API}/influencer`, {
+      const res  = await fetch(`${API}/influencers`, {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
       });
       const data = await res.json();
@@ -662,7 +662,7 @@ export default function InfluencerPage() {
       setMyCampaignId(data._id);
       showToast("✅ Brand campaign posted! Influencers can now apply.");
       // Refresh influencers list
-      fetch(`${API}/influencer`).then(r => r.json()).then(setLiveInfluencers);
+      fetch(`${API}/influencers`).then(r => r.json()).then(setLiveInfluencers);
     } catch (err) {
       showToast("❌ " + err.message);
     } finally {
