@@ -16,6 +16,10 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null); // null | true | false
 
+  var API = "https://digital-marketing-temp.onrender.com/api"
+  ? "https://digital-marketing-temp.onrender.com/api"
+  : "http://localhost:5000/api";
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -31,7 +35,7 @@ const Contact = () => {
     setSuccess(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
