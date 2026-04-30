@@ -3,16 +3,21 @@ import "./JobPortal.css";
 
 const API = "http://localhost:5000/api" || "https://digital-marketing-temp.onrender.com/api";
 
+//  || "https://digital-marketing-temp.onrender.com/api"
+
 const CATEGORIES = ["All", "Frontend", "Backend", "Fullstack", "Design", "Marketing"];
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
-const authHeaders = () => ({
+/*const authHeaders = () => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-});
+  // Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+});*/
 
 const apiFetch = (url, opts = {}) =>
-  fetch(API + url, { headers: authHeaders(), ...opts }).then((r) => r.json());
+  fetch(API + url, {
+    headers: { "Content-Type": "application/json" },
+    ...opts,
+  }).then((r) => r.json());
 
 const STATUS_COLOR = {
   pending:     { bg: "#FEF3C7", text: "#92400E", label: "Pending" },

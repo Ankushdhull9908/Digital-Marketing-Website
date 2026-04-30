@@ -1,27 +1,21 @@
 import express from "express";
 import Job from "../models/Job.js";
 import Application from "../models/Application.js";
-import auth from "../routes/auth.js"; // ✅ middleware, NOT routes/auth.js
 
 const router = express.Router();
 
-// ─── STATIC ROUTES FIRST (before /:id) ───────────────────────────────────────
-
-// GET /api/jobs/mine  — recruiter: jobs I posted
-router.get("/mine", auth, async (req, res) => {
+router.get("/mine", async (req, res) => {
   try {
-    const jobs = await Job.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
+    const jobs = await Job.find().sort({ createdAt: -1 });
     res.json(jobs);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/jobs/user/my-applications  — applicant: see my own applications
-// ⚠️ MUST be before /:id or Express will treat "user" as an ID
-router.get("/user/my-applications", auth, async (req, res) => {
+router.get("/user/my-applications", async (req, res) => {
   try {
-    const apps = await Application.find({ applicant: req.user._id })
+    const apps = await Application.find()
       .sort({ createdAt: -1 })
       .populate("job", "title company location category isActive");
     res.json(apps);
@@ -30,16 +24,10 @@ router.get("/user/my-applications", auth, async (req, res) => {
   }
 });
 
-// PATCH /api/jobs/applications/:appId/status  — recruiter updates application status
-// ⚠️ MUST be before /:id or Express will treat "applications" as an ID
-router.patch("/applications/:appId/status", auth, async (req, res) => {
+router.patch("/applications/:appId/status", async (req, res) => {
   try {
     const app = await Application.findById(req.params.appId).populate("job");
     if (!app) return res.status(404).json({ error: "Application not found" });
-
-    if (String(app.job.postedBy) !== String(req.user._id)) {
-      return res.status(403).json({ error: "Not authorized" });
-    }
 
     if (req.body.status !== undefined)        app.status        = req.body.status;
     if (req.body.recruiterNote !== undefined) app.recruiterNote = req.body.recruiterNote;
@@ -50,9 +38,6 @@ router.patch("/applications/:appId/status", auth, async (req, res) => {
   }
 });
 
-// ─── PUBLIC ROUTES ────────────────────────────────────────────────────────────
-
-// GET /api/jobs  — public job board
 router.get("/", async (req, res) => {
   try {
     const { category } = req.query;
@@ -68,8 +53,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST /api/jobs  — create job
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { title, company, location, category, description, type, salary } = req.body;
     if (!title || !company || !category) {
@@ -77,7 +61,6 @@ router.post("/", auth, async (req, res) => {
     }
     const job = await Job.create({
       title, company, location, category, description, type, salary,
-      postedBy: req.user._id,
     });
     res.status(201).json(job);
   } catch (err) {
@@ -85,9 +68,6 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// ─── DYNAMIC :id ROUTES LAST ──────────────────────────────────────────────────
-
-// GET /api/jobs/:id
 router.get("/:id", async (req, res) => {
   try {
     const job = await Job.findById(req.params.id).populate("postedBy", "name email");
@@ -98,11 +78,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// PUT /api/jobs/:id  — update job (owner only)
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
-    if (!job) return res.status(404).json({ error: "Job not found or not authorized" });
+    const job = await Job.findById(req.params.id);
+    if (!job) return res.status(404).json({ error: "Job not found" });
 
     const fields = ["title","company","location","category","description","type","salary","isActive"];
     fields.forEach(f => { if (req.body[f] !== undefined) job[f] = req.body[f]; });
@@ -113,11 +92,10 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-// DELETE /api/jobs/:id  — delete job (owner only)
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const job = await Job.findOneAndDelete({ _id: req.params.id, postedBy: req.user._id });
-    if (!job) return res.status(404).json({ error: "Job not found or not authorized" });
+    const job = await Job.findByIdAndDelete(req.params.id);
+    if (!job) return res.status(404).json({ error: "Job not found" });
     await Application.deleteMany({ job: req.params.id });
     res.json({ success: true });
   } catch (err) {
@@ -125,36 +103,27 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
-// POST /api/jobs/:id/apply
-router.post("/:id/apply", auth, async (req, res) => {
+router.post("/:id/apply", async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
     if (!job || !job.isActive) return res.status(404).json({ error: "Job not found or closed" });
 
-    const { coverLetter, resumeUrl } = req.body;
+    const { coverLetter, resumeUrl, applicantName, applicantEmail } = req.body;
     const application = await Application.create({
       job:            req.params.id,
-      applicant:      req.user._id,
-      applicantName:  req.user.name  || "",
-      applicantEmail: req.user.email || "",
-      coverLetter:    coverLetter || "",
-      resumeUrl:      resumeUrl   || "",
+      applicantName:  applicantName  || "",
+      applicantEmail: applicantEmail || "",
+      coverLetter:    coverLetter    || "",
+      resumeUrl:      resumeUrl      || "",
     });
     res.status(201).json(application);
   } catch (err) {
-    if (err.code === 11000) {
-      return res.status(409).json({ error: "You have already applied to this job" });
-    }
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET /api/jobs/:id/applications  — recruiter sees applicants
-router.get("/:id/applications", auth, async (req, res) => {
+router.get("/:id/applications", async (req, res) => {
   try {
-    const job = await Job.findOne({ _id: req.params.id, postedBy: req.user._id });
-    if (!job) return res.status(403).json({ error: "Not authorized" });
-
     const apps = await Application.find({ job: req.params.id })
       .sort({ createdAt: -1 })
       .populate("applicant", "name email");

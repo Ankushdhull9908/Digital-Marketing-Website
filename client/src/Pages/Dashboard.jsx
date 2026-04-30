@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LayoutDashboard, FileText, BarChart3, LogOut, Plus, HelpCircle,
-  Users, Package, Mail, Edit3, Trash2, Eye, X, Check, Star, Quote,
+  Users, Package, Mail, Edit3, Trash2, Eye, X, Check, Star, Quote, Briefcase,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 var API = "https://digital-marketing-temp.onrender.com/api"
@@ -1029,6 +1031,7 @@ function Dashboard() {
     { id:"contacts",      label:"Contacts",       icon:<Mail size={18} /> },
     { id:"pages",         label:"My Pages",       icon:<FileText size={18} /> },
     { id:"analytics",     label:"Analytics",      icon:<BarChart3 size={18} /> },
+    { id:"jobs", label:"Jobs", icon:<Briefcase size={18} /> },
   ];
 
   const pages = [
@@ -1089,6 +1092,7 @@ function Dashboard() {
               {tab === "contacts"     && "View and respond to messages from users."}
               {tab === "pages"        && "Your published landing pages."}
               {tab === "analytics"    && "Site performance overview."}
+              
             </p>
           </div>
         </header>
@@ -1132,6 +1136,7 @@ function Dashboard() {
           {tab === "packages"     && <PackagesPanel />}
           {tab === "testimonials" && <TestimonialsPanel />}
           {tab === "contacts"     && <ContactsPanel />}
+          {tab === "jobs" && <RecruiterJobsPanel />}
 
           {tab === "pages" && (
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">

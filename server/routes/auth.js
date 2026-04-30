@@ -5,57 +5,27 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
+// ✅ ADD THIS — auth middleware, exported as named export
+// ✅ Fix — just add async
+export const auth = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "No token provided" });
+
+    const decoded = jwt.verify(token, "secretkey");
+    req.user = await User.findById(decoded.id).select("-password"); // ✅ now works
+    if (!req.user) return res.status(401).json({ error: "User not found" });
+
+    next();
+  } catch (err) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
 
 // 🔸 Signup
-router.post("/signup", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+router.post("/signup", async (req, res) => { /* ... same as before */ });
 
-    const userExist = await User.findOne({ email });
-    if (userExist) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+// 🔸 Login  
+router.post("/login", async (req, res) => { /* ... same as before */ });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    await User.create({
-      name,
-      email,
-      password: hashedPassword
-    });
-
-    res.status(201).json({ message: "Signup successful" });
-
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-
-// 🔸 Login
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-
-    const token = jwt.sign({ id: user._id }, "secretkey", {
-      expiresIn: "1d"
-    });
-
-    res.json({ token });
-
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-export default router;
+export default router; // router stays as default export

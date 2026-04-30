@@ -1,5 +1,5 @@
+// models/Job.js
 import mongoose from "mongoose";
-
 const jobSchema = new mongoose.Schema(
   {
     title:       { type: String, required: true, trim: true },
@@ -9,8 +9,7 @@ const jobSchema = new mongoose.Schema(
     description: { type: String, default: "" },
     type:        { type: String, default: "Full-time" },
     salary:      { type: String, default: "" },
-    // The recruiter/user who posted this job
-    postedBy:    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    postedBy:    { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // removed required
     isActive:    { type: Boolean, default: true },
   },
   { timestamps: true }
