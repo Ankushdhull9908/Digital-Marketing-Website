@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
+const API = "http://localhost:5000/api/influencer"||"https://digital-marketing-temp.onrender.com/api/influencer";
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
@@ -549,78 +550,154 @@ const PLATFORMS = [
   { id: "linkedin",  label: "LinkedIn",  icon: "💼" },
   { id: "facebook",  label: "Facebook",  icon: "📘" },
 ];
-
 const NICHES = [
   "Fitness & Gym","Food & Cooking","Travel","Tech & Gadgets",
   "Fashion","Beauty","Finance","Gaming","Health & Wellness",
   "Lifestyle","Parenting","Education","Comedy","Music","Automotive",
 ];
-
 const BRAND_NICHES = [
   "Gym & Fitness","Food & Beverage","Travel & Tourism","Tech Products",
   "Fashion & Apparel","Beauty & Skincare","Finance & Crypto","Gaming",
   "Health & Wellness","Lifestyle","Parenting","EdTech","Entertainment","Automotive",
 ];
 
-const MOCK_BRANDS = [
-  { name: "FitZone Pro", niche: "Gym & Fitness", icon: "💪", budget: "₹50K–2L", location: "Mumbai" },
-  { name: "TasteIt", niche: "Food & Beverage", icon: "🍕", budget: "₹20K–80K", location: "Delhi" },
-  { name: "WanderLux", niche: "Travel", icon: "✈️", budget: "₹1L–5L", location: "Remote" },
-  { name: "TechFlow", niche: "Tech Products", icon: "📱", budget: "₹30K–1L", location: "Bangalore" },
-];
-
-const MOCK_INFLUENCERS = [
-  { name: "Rahul Sharma", niche: "Gym & Fitness", icon: "🏋️", followers: "250K", avgViews: "80K", platform: "YouTube" },
-  { name: "Priya Mehta", niche: "Food & Cooking", icon: "👩‍🍳", followers: "180K", avgViews: "55K", platform: "Instagram" },
-  { name: "Arjun Nair", niche: "Tech", icon: "💻", followers: "420K", avgViews: "120K", platform: "YouTube" },
-  { name: "Sneha Verma", niche: "Fashion", icon: "👗", followers: "310K", avgViews: "95K", platform: "Instagram" },
-];
-
 function formatRange(val) {
   if (val >= 10000000) return (val / 10000000).toFixed(1) + "Cr+";
-  if (val >= 100000) return (val / 100000).toFixed(1) + "L";
-  if (val >= 1000) return (val / 1000).toFixed(0) + "K";
+  if (val >= 100000)   return (val / 100000).toFixed(1) + "L";
+  if (val >= 1000)     return (val / 1000).toFixed(0) + "K";
   return val;
 }
 
 export default function InfluencerPage() {
-  const [role, setRole] = useState(null);
-  const [platforms, setPlatforms] = useState([]);
-  const [niches, setNiches] = useState([]);
+  const [role, setRole]               = useState(null);
+  const [platforms, setPlatforms]     = useState([]);
+  const [niches, setNiches]           = useState([]);
   const [brandNiches, setBrandNiches] = useState([]);
-  const [followers, setFollowers] = useState(50000);
-  const [avgViews, setAvgViews] = useState(20000);
+  const [followers, setFollowers]     = useState(50000);
+  const [avgViews, setAvgViews]       = useState(20000);
   const [highestView, setHighestView] = useState(100000);
-  const [browseFilter, setBrowseFilter] = useState("All");
-  const [toast, setToast] = useState(false);
+  const [audienceAge, setAudienceAge]       = useState("");
+  const [audienceGender, setAudienceGender] = useState("");
+  const [browseFilter, setBrowseFilter]     = useState("All");
+  const [toast, setToast]             = useState("");
+  const [loading, setLoading]         = useState(false);
 
-  // influencer form state
-  const [inf, setInf] = useState({ name:"", handle:"", email:"", phone:"", bio:"", location:"", engRate:"", collab:"", rate:"" });
-  // brand form state
-  const [brand, setBrand] = useState({ company:"", contact:"", email:"", phone:"", website:"", budget:"", timeline:"", desc:"", deliverables:"" });
+  // live data from backend
+  const [liveCampaigns,   setLiveCampaigns]   = useState([]);  // brands to browse (influencer sees)
+  const [liveInfluencers, setLiveInfluencers] = useState([]);  // influencers to browse (brand sees)
 
-  const togglePlatform = (id) => setPlatforms(p => p.includes(id) ? p.filter(x=>x!==id) : [...p,id]);
-  const toggleNiche = (n) => setNiches(p => p.includes(n) ? p.filter(x=>x!==n) : [...p,n]);
+  // saved profile ids (stored in localStorage so the same browser session can track)
+  const [myInfluencerId, setMyInfluencerId] = useState(() => localStorage.getItem("myInfluencerId") || null);
+  const [myCampaignId,   setMyCampaignId]   = useState(() => localStorage.getItem("myCampaignId")   || null);
+
+  // apply modal
+  const [applyModal, setApplyModal]   = useState(null); // campaign object
+  const [applyMsg,   setApplyMsg]     = useState("");
+
+  const [inf, setInf] = useState({
+    name:"", handle:"", email:"", phone:"", bio:"",
+    location:"", engRate:"", collabType:"", ratePerPost:"", pastCollaborations:"",
+  });
+  const [brand, setBrand] = useState({
+    company:"", contact:"", email:"", phone:"", website:"",
+    niche:"", influencerTier:"", platformPref:"", audienceLocation:"",
+    budget:"", timeline:"", description:"", deliverables:"", collabType:"", specialNotes:"",
+  });
+
+  // Load browse data when role changes
+  useEffect(() => {
+    if (role === "influencer") {
+      fetch(`${API}/campaigns`).then(r => r.json()).then(setLiveCampaigns).catch(console.error);
+    }
+    if (role === "brand") {
+      fetch(`${API}/influencers`).then(r => r.json()).then(setLiveInfluencers).catch(console.error);
+    }
+  }, [role]);
+
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 3500); };
+
+  const togglePlatform  = (id) => setPlatforms(p => p.includes(id) ? p.filter(x=>x!==id) : [...p,id]);
+  const toggleNiche     = (n)  => setNiches(p => p.includes(n) ? p.filter(x=>x!==n) : [...p,n]);
   const toggleBrandNiche = (n) => setBrandNiches(p => p.includes(n) ? p.filter(x=>x!==n) : [...p,n]);
 
-  const handleSubmit = (e) => {
+  // ── Submit influencer profile ──
+  const handleInfluencerSubmit = async (e) => {
     e.preventDefault();
-    setToast(true);
-    setTimeout(() => setToast(false), 3500);
+    if (!inf.name || !inf.handle || !inf.email) return showToast("❌ Name, handle and email are required");
+    setLoading(true);
+    try {
+      const body = { ...inf, platforms, niches, followers, avgViews, highestView, audienceAge, audienceGender };
+      const res  = await fetch(`${API}/influencers`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      localStorage.setItem("myInfluencerId", data._id);
+      setMyInfluencerId(data._id);
+      showToast("✅ Influencer profile created! You can now apply to brand campaigns.");
+      // Refresh campaigns list
+      fetch(`${API}/campaigns`).then(r => r.json()).then(setLiveCampaigns);
+    } catch (err) {
+      showToast("❌ " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const browseItems = role === "influencer" ? MOCK_BRANDS : MOCK_INFLUENCERS;
-  const browseFilters = role === "influencer"
-    ? ["All", ...new Set(MOCK_BRANDS.map(b=>b.niche))]
-    : ["All", ...new Set(MOCK_INFLUENCERS.map(i=>i.niche))];
+  // ── Submit brand campaign ──
+  const handleBrandSubmit = async (e) => {
+    e.preventDefault();
+    if (!brand.company || !brand.email) return showToast("❌ Company name and email are required");
+    setLoading(true);
+    try {
+      const body = { ...brand, niches: brandNiches };
+      const res  = await fetch(`${API}/campaigns`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      localStorage.setItem("myCampaignId", data._id);
+      setMyCampaignId(data._id);
+      showToast("✅ Brand campaign posted! Influencers can now apply.");
+      // Refresh influencers list
+      fetch(`${API}/influencers`).then(r => r.json()).then(setLiveInfluencers);
+    } catch (err) {
+      showToast("❌ " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const filteredBrowse = browseFilter === "All"
-    ? browseItems
-    : browseItems.filter(i => (i.niche||"").toLowerCase().includes(browseFilter.toLowerCase()));
+  // ── Influencer applies to a campaign ──
+  const handleApply = async () => {
+    if (!myInfluencerId) return showToast("❌ Please create your influencer profile first (scroll up & submit)");
+    if (!applyModal)     return;
+    try {
+      const res = await fetch(`${API}/campaigns/${applyModal._id}/apply`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ influencerId: myInfluencerId, message: applyMsg }),
+      });
+      const data = await res.json();
+      if (res.status === 409) return showToast("⚠️ You've already applied to this campaign");
+      if (!res.ok) throw new Error(data.error);
+      showToast("✅ Application sent to " + applyModal.company + "!");
+      setApplyModal(null); setApplyMsg("");
+    } catch (err) {
+      showToast("❌ " + err.message);
+    }
+  };
+
+  // ── Filter browse items ──
+  const browseFilters = role === "influencer"
+    ? ["All", ...new Set(liveCampaigns.map(b => b.niche).filter(Boolean))]
+    : ["All", ...new Set(liveInfluencers.flatMap(i => i.niches).filter(Boolean))];
+
+  const filteredCampaigns   = browseFilter === "All" ? liveCampaigns : liveCampaigns.filter(b => b.niche === browseFilter);
+  const filteredInfluencers = browseFilter === "All" ? liveInfluencers : liveInfluencers.filter(i => i.niches?.includes(browseFilter));
 
   return (
     <>
-      <style>{styles}</style>
+      <style>{styles /* your existing styles string */}</style>
       <div className="ip-root">
 
         {/* Header */}
@@ -632,42 +709,43 @@ export default function InfluencerPage() {
 
         {/* Toggle */}
         <div className="ip-toggle-wrap">
-          <button className={`ip-toggle-btn ${role==="influencer"?"active":""}`} onClick={()=>setRole("influencer")}>
+          <button className={`ip-toggle-btn ${role==="influencer"?"active":""}`} onClick={()=>{setRole("influencer");setBrowseFilter("All");}}>
             <span className="ip-toggle-icon">🎙️</span> I'm an Influencer
           </button>
-          <button className={`ip-toggle-btn ${role==="brand"?"active":""}`} onClick={()=>setRole("brand")}>
+          <button className={`ip-toggle-btn ${role==="brand"?"active":""}`} onClick={()=>{setRole("brand");setBrowseFilter("All");}}>
             <span className="ip-toggle-icon">🏢</span> I'm a Brand
           </button>
         </div>
 
-        {/* INFLUENCER FORM */}
+        {/* ── INFLUENCER FORM ── */}
         {role === "influencer" && (
           <div className="ip-card" key="inf">
             <div className="ip-card-header">
               <div className="ip-card-icon">🎙️</div>
               <div>
                 <div className="ip-card-title">Influencer Profile</div>
-                <div className="ip-card-desc">Tell brands who you are and what you bring to the table</div>
+                <div className="ip-card-desc">
+                  {myInfluencerId ? "✅ Profile saved — scroll down to apply to campaigns" : "Fill in your details to get discovered by brands"}
+                </div>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              {/* Personal */}
+            <form onSubmit={handleInfluencerSubmit}>
               <div className="ip-section-title">Personal Info</div>
               <div className="ip-form-grid">
                 <div className="ip-field">
-                  <label className="ip-label">Full Name</label>
+                  <label className="ip-label">Full Name *</label>
                   <input className="ip-input" placeholder="Rahul Sharma" value={inf.name} onChange={e=>setInf({...inf,name:e.target.value})} />
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Primary Handle</label>
+                  <label className="ip-label">Primary Handle *</label>
                   <div className="ip-input-wrap">
                     <span className="ip-input-icon">@</span>
                     <input className="ip-input" placeholder="yourhandle" value={inf.handle} onChange={e=>setInf({...inf,handle:e.target.value})} />
                   </div>
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Email</label>
+                  <label className="ip-label">Email *</label>
                   <input className="ip-input" type="email" placeholder="you@email.com" value={inf.email} onChange={e=>setInf({...inf,email:e.target.value})} />
                 </div>
                 <div className="ip-field">
@@ -684,13 +762,11 @@ export default function InfluencerPage() {
                 </div>
                 <div className="ip-field span2">
                   <label className="ip-label">Bio / About You</label>
-                  <textarea className="ip-textarea" placeholder="Tell brands your story, values and content focus..." value={inf.bio} onChange={e=>setInf({...inf,bio:e.target.value})} />
+                  <textarea className="ip-textarea" placeholder="Tell brands your story..." value={inf.bio} onChange={e=>setInf({...inf,bio:e.target.value})} />
                 </div>
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Platforms */}
               <div className="ip-section-title">Platforms</div>
               <div className="ip-platforms">
                 {PLATFORMS.map(p => (
@@ -701,44 +777,40 @@ export default function InfluencerPage() {
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Stats */}
               <div className="ip-section-title">Audience Stats</div>
               <div className="ip-form-grid">
                 <div className="ip-field span2">
-                  <label className="ip-label">Total Followers / Subscribers: <span style={{color:"white",fontWeight:700}}>{formatRange(followers)}</span></label>
+                  <label className="ip-label">Followers: <span style={{color:"white",fontWeight:700}}>{formatRange(followers)}</span></label>
                   <input type="range" className="ip-range" min="1000" max="10000000" step="1000" value={followers} onChange={e=>setFollowers(Number(e.target.value))} />
                   <div className="ip-range-labels"><span>1K</span><span>1Cr+</span></div>
                 </div>
                 <div className="ip-field span2">
-                  <label className="ip-label">Average Views per Post: <span style={{color:"white",fontWeight:700}}>{formatRange(avgViews)}</span></label>
+                  <label className="ip-label">Avg Views/Post: <span style={{color:"white",fontWeight:700}}>{formatRange(avgViews)}</span></label>
                   <input type="range" className="ip-range" min="100" max="5000000" step="100" value={avgViews} onChange={e=>setAvgViews(Number(e.target.value))} />
                   <div className="ip-range-labels"><span>100</span><span>50L+</span></div>
                 </div>
                 <div className="ip-field span2">
-                  <label className="ip-label">Highest Views on a Single Post: <span style={{color:"white",fontWeight:700}}>{formatRange(highestView)}</span></label>
+                  <label className="ip-label">Highest Views: <span style={{color:"white",fontWeight:700}}>{formatRange(highestView)}</span></label>
                   <input type="range" className="ip-range" min="1000" max="50000000" step="1000" value={highestView} onChange={e=>setHighestView(Number(e.target.value))} />
                   <div className="ip-range-labels"><span>1K</span><span>5Cr+</span></div>
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Audience Age Group</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select range</option>
+                  <label className="ip-label">Audience Age</label>
+                  <select className="ip-select" value={audienceAge} onChange={e=>setAudienceAge(e.target.value)}>
+                    <option value="">Select</option>
                     <option>13–17</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45+</option>
                   </select>
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Primary Audience Gender</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select</option>
+                  <label className="ip-label">Audience Gender</label>
+                  <select className="ip-select" value={audienceGender} onChange={e=>setAudienceGender(e.target.value)}>
+                    <option value="">Select</option>
                     <option>Mostly Male</option><option>Mostly Female</option><option>Other</option>
                   </select>
                 </div>
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Niches */}
               <div className="ip-section-title">Content Niches</div>
               <div className="ip-niches">
                 {NICHES.map(n => (
@@ -747,51 +819,58 @@ export default function InfluencerPage() {
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Collaboration */}
               <div className="ip-section-title">Collaboration Preferences</div>
               <div className="ip-form-grid">
                 <div className="ip-field">
-                  <label className="ip-label">Preferred Collab Type</label>
-                  <select className="ip-select" value={inf.collab} onChange={e=>setInf({...inf,collab:e.target.value})}>
-                    <option value="" disabled>Select</option>
-                    <option>Paid Partnership</option><option>Barter / Free Product</option><option>Affiliate</option><option>Long-term Ambassador</option><option>Open to all</option>
+                  <label className="ip-label">Collab Type</label>
+                  <select className="ip-select" value={inf.collabType} onChange={e=>setInf({...inf,collabType:e.target.value})}>
+                    <option value="">Select</option>
+                    <option>Paid Partnership</option><option>Barter / Free Product</option>
+                    <option>Affiliate</option><option>Long-term Ambassador</option><option>Open to all</option>
                   </select>
                 </div>
                 <div className="ip-field">
                   <label className="ip-label">Rate per Post (₹)</label>
-                  <input className="ip-input" placeholder="e.g. 15000" value={inf.rate} onChange={e=>setInf({...inf,rate:e.target.value})} />
+                  <input className="ip-input" placeholder="e.g. 15000" value={inf.ratePerPost} onChange={e=>setInf({...inf,ratePerPost:e.target.value})} />
                 </div>
                 <div className="ip-field span2">
-                  <label className="ip-label">Past Brand Collaborations</label>
-                  <textarea className="ip-textarea" placeholder="Mention brands you've worked with previously..." style={{minHeight:70}} />
+                  <label className="ip-label">Past Collaborations</label>
+                  <textarea className="ip-textarea" placeholder="Brands you've worked with..." style={{minHeight:70}} value={inf.pastCollaborations} onChange={e=>setInf({...inf,pastCollaborations:e.target.value})} />
                 </div>
               </div>
 
-              <button type="submit" className="ip-submit">🚀 Create My Influencer Profile</button>
+              <button type="submit" className="ip-submit" disabled={loading}>
+                {loading ? "⏳ Saving..." : myInfluencerId ? "🔄 Update My Profile" : "🚀 Create My Influencer Profile"}
+              </button>
             </form>
 
-            {/* Browse Brands */}
+            {/* Browse Campaigns */}
             <hr className="ip-divider" />
-            <div className="ip-section-title">Browse Brands Looking for Influencers</div>
+            <div className="ip-section-title">Browse Brand Campaigns</div>
             <div className="ip-filter-row">
               {browseFilters.map(f => (
                 <div key={f} className={`ip-filter-chip ${browseFilter===f?"active":""}`} onClick={()=>setBrowseFilter(f)}>{f}</div>
               ))}
             </div>
+            {filteredCampaigns.length === 0 && (
+              <p style={{color:"rgba(148,163,184,0.5)",fontSize:"0.85rem",textAlign:"center",padding:"20px 0"}}>No campaigns available yet</p>
+            )}
             <div className="ip-cards-grid">
-              {filteredBrowse.map((b,i) => (
-                <div key={i} className="ip-mini-card">
+              {filteredCampaigns.map((b) => (
+                <div key={b._id} className="ip-mini-card" onClick={() => setApplyModal(b)}>
                   <div className="ip-mini-card-top">
-                    <div className="ip-avatar">{b.icon}</div>
+                    <div className="ip-avatar">🏢</div>
                     <div>
-                      <div className="ip-mini-name">{b.name}</div>
-                      <div className="ip-mini-tag">{b.niche}</div>
+                      <div className="ip-mini-name">{b.company}</div>
+                      <div className="ip-mini-tag">{b.niche || b.niches?.[0] || "Brand"}</div>
                     </div>
                   </div>
                   <div className="ip-mini-stats">
-                    <div className="ip-mini-stat"><span>{b.budget}</span>Budget</div>
-                    <div className="ip-mini-stat"><span>{b.location}</span>Location</div>
+                    <div className="ip-mini-stat"><span>{b.budget ? `₹${b.budget}` : "—"}</span>Budget</div>
+                    <div className="ip-mini-stat"><span>{b.timeline || "—"}</span>Timeline</div>
+                  </div>
+                  <div style={{marginTop:10,fontSize:"0.75rem",color:"rgba(96,165,250,0.8)",fontWeight:600}}>
+                    Tap to Apply →
                   </div>
                 </div>
               ))}
@@ -799,23 +878,24 @@ export default function InfluencerPage() {
           </div>
         )}
 
-        {/* BRAND FORM */}
+        {/* ── BRAND FORM ── */}
         {role === "brand" && (
           <div className="ip-card" key="brand">
             <div className="ip-card-header">
               <div className="ip-card-icon">🏢</div>
               <div>
-                <div className="ip-card-title">Brand Profile</div>
-                <div className="ip-card-desc">Tell us what kind of influencer you're looking to recruit</div>
+                <div className="ip-card-title">Brand Campaign</div>
+                <div className="ip-card-desc">
+                  {myCampaignId ? "✅ Campaign live — scroll down to see influencers" : "Post your campaign and get discovered by influencers"}
+                </div>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              {/* Company */}
+            <form onSubmit={handleBrandSubmit}>
               <div className="ip-section-title">Company Details</div>
               <div className="ip-form-grid">
                 <div className="ip-field">
-                  <label className="ip-label">Company / Brand Name</label>
+                  <label className="ip-label">Company / Brand Name *</label>
                   <input className="ip-input" placeholder="Acme Corp" value={brand.company} onChange={e=>setBrand({...brand,company:e.target.value})} />
                 </div>
                 <div className="ip-field">
@@ -823,7 +903,7 @@ export default function InfluencerPage() {
                   <input className="ip-input" placeholder="Ananya Singh" value={brand.contact} onChange={e=>setBrand({...brand,contact:e.target.value})} />
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Business Email</label>
+                  <label className="ip-label">Business Email *</label>
                   <input className="ip-input" type="email" placeholder="marketing@company.com" value={brand.email} onChange={e=>setBrand({...brand,email:e.target.value})} />
                 </div>
                 <div className="ip-field">
@@ -837,54 +917,48 @@ export default function InfluencerPage() {
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Influencer Requirements */}
               <div className="ip-section-title">Influencer Requirements</div>
               <div className="ip-form-grid">
                 <div className="ip-field">
-                  <label className="ip-label">Influencer Type / Niche</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select niche</option>
+                  <label className="ip-label">Influencer Niche</label>
+                  <select className="ip-select" value={brand.niche} onChange={e=>setBrand({...brand,niche:e.target.value})}>
+                    <option value="">Select niche</option>
                     {BRAND_NICHES.map(n=><option key={n}>{n}</option>)}
                   </select>
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Preferred Influencer Tier</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select tier</option>
-                    <option>Nano (1K–10K)</option>
-                    <option>Micro (10K–100K)</option>
-                    <option>Mid-Tier (100K–500K)</option>
-                    <option>Macro (500K–1M)</option>
-                    <option>Mega / Celebrity (1M+)</option>
-                    <option>Open to all</option>
+                  <label className="ip-label">Preferred Tier</label>
+                  <select className="ip-select" value={brand.influencerTier} onChange={e=>setBrand({...brand,influencerTier:e.target.value})}>
+                    <option value="">Select tier</option>
+                    <option>Nano (1K–10K)</option><option>Micro (10K–100K)</option>
+                    <option>Mid-Tier (100K–500K)</option><option>Macro (500K–1M)</option>
+                    <option>Mega / Celebrity (1M+)</option><option>Open to all</option>
                   </select>
                 </div>
                 <div className="ip-field">
                   <label className="ip-label">Platform Preference</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select platform</option>
+                  <select className="ip-select" value={brand.platformPref} onChange={e=>setBrand({...brand,platformPref:e.target.value})}>
+                    <option value="">Select platform</option>
                     {PLATFORMS.map(p=><option key={p.id}>{p.label}</option>)}
                     <option>No preference</option>
                   </select>
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Target Audience Location</label>
-                  <input className="ip-input" placeholder="e.g. Pan India / Mumbai" />
+                  <label className="ip-label">Audience Location</label>
+                  <input className="ip-input" placeholder="Pan India / Mumbai" value={brand.audienceLocation} onChange={e=>setBrand({...brand,audienceLocation:e.target.value})} />
                 </div>
                 <div className="ip-field">
                   <label className="ip-label">Campaign Budget (₹)</label>
                   <input className="ip-input" placeholder="e.g. 50000" value={brand.budget} onChange={e=>setBrand({...brand,budget:e.target.value})} />
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Campaign Timeline</label>
-                  <input className="ip-input" placeholder="e.g. 2 weeks / Ongoing" value={brand.timeline} onChange={e=>setBrand({...brand,timeline:e.target.value})} />
+                  <label className="ip-label">Timeline</label>
+                  <input className="ip-input" placeholder="e.g. 2 weeks" value={brand.timeline} onChange={e=>setBrand({...brand,timeline:e.target.value})} />
                 </div>
               </div>
 
-              {/* Niche multi-select */}
               <hr className="ip-divider" />
-              <div className="ip-section-title">Content Categories Needed</div>
+              <div className="ip-section-title">Content Categories</div>
               <div className="ip-niches">
                 {BRAND_NICHES.map(n => (
                   <div key={n} className={`ip-niche-tag ${brandNiches.includes(n)?"selected":""}`} onClick={()=>toggleBrandNiche(n)}>{n}</div>
@@ -892,44 +966,39 @@ export default function InfluencerPage() {
               </div>
 
               <hr className="ip-divider" />
-
-              {/* Campaign Details */}
               <div className="ip-section-title">Campaign Details</div>
               <div className="ip-form-grid">
                 <div className="ip-field span2">
-                  <label className="ip-label">Campaign / Product Description</label>
-                  <textarea className="ip-textarea" placeholder="Describe your product, campaign goals, and what you're looking to achieve..." value={brand.desc} onChange={e=>setBrand({...brand,desc:e.target.value})} />
+                  <label className="ip-label">Campaign Description</label>
+                  <textarea className="ip-textarea" placeholder="Describe your product and goals..." value={brand.description} onChange={e=>setBrand({...brand,description:e.target.value})} />
                 </div>
                 <div className="ip-field">
-                  <label className="ip-label">Deliverables Expected</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select</option>
-                    <option>Instagram Post + Story</option>
-                    <option>YouTube Dedicated Video</option>
-                    <option>YouTube Integration</option>
-                    <option>TikTok Video</option>
-                    <option>Reels Only</option>
-                    <option>Custom Package</option>
+                  <label className="ip-label">Deliverables</label>
+                  <select className="ip-select" value={brand.deliverables} onChange={e=>setBrand({...brand,deliverables:e.target.value})}>
+                    <option value="">Select</option>
+                    <option>Instagram Post + Story</option><option>YouTube Dedicated Video</option>
+                    <option>YouTube Integration</option><option>TikTok Video</option>
+                    <option>Reels Only</option><option>Custom Package</option>
                   </select>
                 </div>
                 <div className="ip-field">
                   <label className="ip-label">Collaboration Type</label>
-                  <select className="ip-select" defaultValue="">
-                    <option value="" disabled>Select</option>
-                    <option>One-time Campaign</option>
-                    <option>Long-term / Brand Ambassador</option>
-                    <option>Affiliate Marketing</option>
-                    <option>Barter / Product Gifting</option>
+                  <select className="ip-select" value={brand.collabType} onChange={e=>setBrand({...brand,collabType:e.target.value})}>
+                    <option value="">Select</option>
+                    <option>One-time Campaign</option><option>Long-term / Brand Ambassador</option>
+                    <option>Affiliate Marketing</option><option>Barter / Product Gifting</option>
                     <option>Event Coverage</option>
                   </select>
                 </div>
                 <div className="ip-field span2">
-                  <label className="ip-label">Special Requirements or Notes</label>
-                  <textarea className="ip-textarea" placeholder="Any specific do's and don'ts, content guidelines, or special notes for influencers..." style={{minHeight:70}} />
+                  <label className="ip-label">Special Notes</label>
+                  <textarea className="ip-textarea" placeholder="Any do's and don'ts for influencers..." style={{minHeight:70}} value={brand.specialNotes} onChange={e=>setBrand({...brand,specialNotes:e.target.value})} />
                 </div>
               </div>
 
-              <button type="submit" className="ip-submit">🚀 Post Brand Campaign</button>
+              <button type="submit" className="ip-submit" disabled={loading}>
+                {loading ? "⏳ Posting..." : myCampaignId ? "🔄 Update Campaign" : "🚀 Post Brand Campaign"}
+              </button>
             </form>
 
             {/* Browse Influencers */}
@@ -940,19 +1009,23 @@ export default function InfluencerPage() {
                 <div key={f} className={`ip-filter-chip ${browseFilter===f?"active":""}`} onClick={()=>setBrowseFilter(f)}>{f}</div>
               ))}
             </div>
+            {filteredInfluencers.length === 0 && (
+              <p style={{color:"rgba(148,163,184,0.5)",fontSize:"0.85rem",textAlign:"center",padding:"20px 0"}}>No influencers registered yet</p>
+            )}
             <div className="ip-cards-grid">
-              {filteredBrowse.map((inf,i) => (
-                <div key={i} className="ip-mini-card">
+              {filteredInfluencers.map((inf) => (
+                <div key={inf._id} className="ip-mini-card">
                   <div className="ip-mini-card-top">
-                    <div className="ip-avatar">{inf.icon}</div>
+                    <div className="ip-avatar">🎙️</div>
                     <div>
                       <div className="ip-mini-name">{inf.name}</div>
-                      <div className="ip-mini-tag">{inf.niche} · {inf.platform}</div>
+                      <div className="ip-mini-tag">@{inf.handle} · {inf.platforms?.[0] || "Creator"}</div>
                     </div>
                   </div>
                   <div className="ip-mini-stats">
-                    <div className="ip-mini-stat"><span>{inf.followers}</span>Followers</div>
-                    <div className="ip-mini-stat"><span>{inf.avgViews}</span>Avg Views</div>
+                    <div className="ip-mini-stat"><span>{formatRange(inf.followers)}</span>Followers</div>
+                    <div className="ip-mini-stat"><span>{formatRange(inf.avgViews)}</span>Avg Views</div>
+                    {inf.ratePerPost && <div className="ip-mini-stat"><span>₹{inf.ratePerPost}</span>Per Post</div>}
                   </div>
                 </div>
               ))}
@@ -961,13 +1034,41 @@ export default function InfluencerPage() {
         )}
 
         {!role && (
-          <div style={{color:"rgba(148,163,184,0.5)",fontSize:"0.9rem",marginTop:20,animation:"fadeIn 1s ease"}}>
+          <div style={{color:"rgba(148,163,184,0.5)",fontSize:"0.9rem",marginTop:20}}>
             ↑ Choose your role above to get started
           </div>
         )}
 
+        {/* Apply Modal */}
+        {applyModal && (
+          <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:9999}}>
+            <div style={{background:"#0f2044",border:"1px solid rgba(96,165,250,0.3)",borderRadius:20,padding:"32px",maxWidth:480,width:"90%"}}>
+              <h3 style={{fontFamily:"Sora,sans-serif",color:"white",fontSize:"1.1rem",marginBottom:8}}>
+                Apply to {applyModal.company}
+              </h3>
+              <p style={{color:"rgba(148,163,184,0.7)",fontSize:"0.82rem",marginBottom:20}}>
+                {applyModal.description || "No description provided."}
+              </p>
+              <textarea
+                style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(96,165,250,0.3)",borderRadius:12,padding:"12px 14px",color:"white",fontSize:"0.9rem",minHeight:100,outline:"none",resize:"vertical"}}
+                placeholder="Introduce yourself and why you're a great fit for this campaign..."
+                value={applyMsg}
+                onChange={e => setApplyMsg(e.target.value)}
+              />
+              <div style={{display:"flex",gap:12,marginTop:16}}>
+                <button onClick={() => {setApplyModal(null);setApplyMsg("");}} style={{flex:1,padding:"12px",borderRadius:12,border:"1px solid rgba(96,165,250,0.3)",background:"transparent",color:"rgba(148,163,184,0.8)",cursor:"pointer",fontFamily:"Sora,sans-serif",fontWeight:600}}>
+                  Cancel
+                </button>
+                <button onClick={handleApply} style={{flex:2,padding:"12px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#2563eb,#3b82f6)",color:"white",cursor:"pointer",fontFamily:"Sora,sans-serif",fontWeight:700,fontSize:"0.95rem"}}>
+                  🚀 Send Application
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {toast && (
-          <div className="ip-toast">✅ Profile submitted successfully! We'll be in touch soon.</div>
+          <div className="ip-toast">{toast}</div>
         )}
       </div>
     </>

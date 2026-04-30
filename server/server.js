@@ -8,6 +8,7 @@ import faqRoutes from "./routes/faqs.js";
 import contactRoutes from "./routes/contact.js";
 import TestimonialRoutes from './routes/Testimonials.js'
 import JobRoutes from './routes/Jobs.js'
+import influencerRoutes from './routes/influencer.js'
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/api/faqs", faqRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/testimonials", TestimonialRoutes);
 app.use("/api/jobs",JobRoutes );
+app.use("/api/influencer", influencerRoutes);
 
 // test
 app.get("/", (req, res) => {
