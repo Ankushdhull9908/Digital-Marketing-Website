@@ -56,10 +56,10 @@ const Footer = () => {
           >
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">L</span>
+                <span className="text-white font-bold text-xl"><img src='/logos/logo.png'/></span>
               </div>
               <span className="text-2xl font-bold text-gray-900 tracking-tight">
-                Logo<span className="text-blue-600">Type</span>
+                WEB<span className="text-blue-600">Techie</span>
               </span>
             </div>
             <p className="text-gray-500 leading-relaxed max-w-xs">
