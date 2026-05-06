@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Search, Megaphone, Target, PenTool, MessageSquare, 
   Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight 
 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
   <motion.div 
@@ -45,6 +46,25 @@ const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
 );
 
 const OurServices = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      // Find the element by ID (e.g., #special-section)
+      const element = document.getElementById(hash.replace('#', ''));
+      
+      if (element) {
+        // Use a slight timeout to ensure images/layout are rendered
+        const timer = setTimeout(() => {
+          element.scrollIntoView({ 
+            behavior: "smooth", 
+            block: "start" 
+          });
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [hash]);
   const marketingServices = [
     {
       icon: Search,
@@ -151,7 +171,7 @@ const OurServices = () => {
       </section>
 
       {/* --- DIGITAL MARKETING --- */}
-      <section className="py-24 px-6">
+      <section id="special-section" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-16">
             <h2 className="text-[#F39221] text-3xl font-black">Digital Marketing</h2>

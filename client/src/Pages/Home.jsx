@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Share2, Layout, MapPin, ArrowRight, Zap, Target,
@@ -12,6 +12,7 @@ import { useAuth } from "../context/Context";
 
 const Home = () => {
   const { faqs, packages, clients, loading } = useAuth();
+  const { hash } = useLocation();
 
 
   console.log('FAQS')
@@ -36,16 +37,27 @@ const [currentIndex, setCurrentIndex] = useState(0);
     hidden:  { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
-
+  
+useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        // Timeout ensures the DOM is fully rendered before scrolling
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [hash]);
   const nav = useNavigate();
 
   const services = [
-    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#3D7E8C]",   bg: "bg-[#3D7E8C]/10"  },
-    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10"  },
-    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       },
-    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     },
-    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-red-500",     bg: "bg-red-50"        },
-    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-emerald-500", bg: "bg-emerald-50"    },
+    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#3D7E8C]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
+    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10" ,link:"/OurServices#special-section"},  
+    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       ,link:"/WhySEO" },
+    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     ,link:"/WhySEO" },
+    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-red-500",     bg: "bg-red-50"        ,link:"/WhySEO" },
+    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-emerald-500", bg: "bg-emerald-50"    ,link:"/WhySEO" },
   ];
 
   return (
@@ -211,7 +223,7 @@ const [currentIndex, setCurrentIndex] = useState(0);
                 </div>
                 <h4 className="text-2xl font-bold mb-4 text-slate-800">{service.title}</h4>
                 <p className="text-slate-500 leading-relaxed font-medium mb-6">{service.desc}</p>
-                <Link to="/services" className="text-sm font-bold text-[#3D7E8C] flex items-center gap-2 group-hover:gap-3 transition-all">
+                <Link to={service.link} className="text-sm font-bold text-[#3D7E8C] flex items-center gap-2 group-hover:gap-3 transition-all" >
                   Learn more <ArrowRight size={16} />
                 </Link>
               </motion.div>
