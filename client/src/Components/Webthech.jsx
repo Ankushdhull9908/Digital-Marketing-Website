@@ -54,42 +54,66 @@ const Webthech = () => {
       <section className="py-24 px-6 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto">
           
-          {/* --- SECTION 1: WHY CHOOSE US --- */}
-          <div className="mb-24">
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col md:flex-row items-center gap-4 mb-12"
-            >
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
-                <span className="text-[#3D7E8C]">🔷</span> Why Choose Webtech?
-              </h2>
-              <div className="hidden md:block h-px flex-1 bg-slate-100"></div>
-            </motion.div>
+         {/* --- SECTION 1: WHY CHOOSE US --- */}
+<div className="mb-24">
+  <motion.div 
+    initial={{ opacity: 0, x: -30 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    className="flex flex-col md:flex-row items-center gap-4 mb-12"
+  >
+    <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
+       Why Choose Webtech?
+    </h2>
+    <div className="hidden md:block h-px flex-1 bg-slate-100"></div>
+  </motion.div>
 
-            <motion.div 
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-            >
-              {highlights.map((item, index) => (
-                <motion.div 
-                  key={index} 
-                  variants={fadeInUp}
-                  whileHover={{ y: -5 }}
-                  className="flex items-center gap-4 p-6 rounded-2xl bg-[#F8FAFB] border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
-                    {item.icon}
-                  </div>
-                  <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors">{item.text}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+  {/* Container for List (Left) and Image (Right) */}
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    
+    {/* List of Highlights */}
+    <motion.div 
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+    >
+      {highlights.map((item, index) => (
+        <motion.div 
+          key={index} 
+          variants={fadeInUp}
+          whileHover={{ y: -5 }}
+          className="flex items-center gap-4 p-6 rounded-2xl bg-[#F8FAFB] border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
+        >
+          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
+            {item.icon}
           </div>
+          <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors">
+            {item.text}
+          </span>
+        </motion.div>
+      ))}
+    </motion.div>
+
+    {/* Image on the Right */}
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.8 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      className="relative"
+    >
+      <img 
+        src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" 
+        alt="Digital Marketing Team" 
+        className="rounded-[2rem] shadow-2xl w-full object-cover"
+      />
+      {/* Decorative orange blob behind image */}
+      <div className="absolute -z-10 -bottom-6 -left-6 w-32 h-32 bg-[#F39221]/20 rounded-full blur-2xl"></div>
+    </motion.div>
+
+  </div>
+</div>
 
           {/* --- SECTION 2: GROW YOUR BUSINESS --- */}
           <motion.div 
@@ -147,7 +171,7 @@ const Webthech = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">
-                <span className="text-[#3D7E8C]">🔷</span> Our Success Process
+                 Our Success Process
               </h2>
               <p className="text-slate-500 font-medium">From blueprint to big-scale growth.</p>
             </motion.div>
@@ -195,7 +219,7 @@ const Webthech = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3D7E8C]/20 to-transparent"></div>
             <div className="relative z-10">
               <motion.h2 variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl md:text-5xl font-black mb-8">
-                <span className="text-[#F39221]">🔷</span> Industries We Work With
+                Industries We Work With
               </motion.h2>
               <motion.div 
                 variants={staggerContainer}

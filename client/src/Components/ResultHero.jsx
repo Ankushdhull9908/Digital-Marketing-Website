@@ -46,7 +46,7 @@ const ResultHero = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-[#3D7E8C]">🔷</span> Results You Can Expect
+               Results You Can Expect
             </h2>
             <p className="text-slate-500 font-medium">Data-backed growth for your digital footprint.</p>
           </motion.div>
@@ -155,7 +155,7 @@ const ResultHero = () => {
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-black text-center tracking-tight mb-12"
           >
-            <span className="text-[#3D7E8C]">🔷</span> Client Testimonials
+             Client Testimonials
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -237,7 +237,7 @@ const ResultHero = () => {
              className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-black mb-4">
-              <span className="text-[#3D7E8C]">🔷</span> FAQ Section
+               FAQ Section
             </h2>
             <p className="text-slate-500 font-medium">Quick answers to boost your SEO knowledge.</p>
           </motion.div>

@@ -15,7 +15,18 @@ const Home = () => {
 
 
   console.log('FAQS')
-
+const carouselImages = [
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1504868584819-f8e905263543?q=80&w=2076&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
+  ];
+const [currentIndex, setCurrentIndex] = useState(0);
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [carouselImages.length]);
   // ── animation variants ───────────────────────────────────────────────────
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -39,78 +50,48 @@ const Home = () => {
 
   return (
     <div className="bg-[#F8FAFB] text-slate-800 min-h-screen font-montserrat overflow-x-hidden selection:bg-[#F39221]/30 no-scrollbar">
+ {/* ── TOP CAROUSEL & BANNERS ────────────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 pt-6 flex flex-col gap-6">
+        
+        {/* Simple Framer Motion Carousel */}
+        <div className="w-full h-[300px] md:h-[350px] rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-white relative bg-slate-200">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentIndex}
+              src={carouselImages[currentIndex]}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </AnimatePresence>
+          
+          {/* Overlay Text */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12">
+            <motion.h2 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-white text-3xl md:text-5xl font-black italic tracking-tighter"
+            >
+              EMPOWERING <span className="text-[#F39221]">DIGITAL</span> BRANDS.
+            </motion.h2>
+          </div>
 
-      {/* ── FEATURED BUILD TOOLS ─────────────────────────────────────────── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="py-24 px-6 bg-slate-900 rounded-[3rem] mx-4 my-10 text-white relative overflow-hidden"
-      >
-        <div className="max-w-6xl mx-auto relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Professional Build Tools</h2>
-          <p className="text-slate-400 font-medium mb-16">Free resources to kickstart your professional journey.</p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/resume-builder" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
-                <div className="text-5xl mb-6">📝</div>
-                <h4 className="text-2xl font-bold mb-2 text-[#3D7E8C]">Resume Builder</h4>
-                <p className="text-slate-400 text-sm mb-6">Create high-performance, ATS-friendly resumes.</p>
-                <div className="w-12 h-1 bg-[#3D7E8C] rounded-full"></div>
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.05 }} className="relative">
-              <Link to="/PortfolioTemplates" className="block h-full bg-white/5 backdrop-blur-lg border border-orange-500/50 p-10 rounded-[2rem] hover:bg-white/10">
-                <div className="absolute top-4 right-6 bg-[#F39221] text-xs font-black px-3 py-1 rounded-full text-black">HOT</div>
-                <div className="text-5xl mb-6">💼</div>
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Portfolio Maker</h4>
-                <p className="text-slate-400 text-sm mb-6">Stunning visual portfolios designed to convert.</p>
-                <div className="w-12 h-1 bg-[#F39221] rounded-full"></div>
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/influencer-form" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
-                <Users className="w-12 h-12 mb-6 text-blue-400" />
-                <h4 className="text-2xl font-bold mb-2 text-blue-400">Influencer Form</h4>
-                <p className="text-slate-400 text-sm mb-6">Connect with top creators for your brand growth.</p>
-                <div className="w-12 h-1 bg-blue-400 rounded-full"></div>
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/jobportal" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
-                <Briefcase className="w-12 h-12 mb-6 text-emerald-400" />
-                <h4 className="text-2xl font-bold mb-2 text-emerald-400">Job Portal</h4>
-                <p className="text-slate-400 text-sm mb-6">Find the best talent or your next big opportunity.</p>
-                <div className="w-12 h-1 bg-emerald-400 rounded-full"></div>
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
-                <Globe className="w-12 h-12 mb-6 text-purple-400" />
-                <h4 className="text-2xl font-bold mb-2 text-purple-400">Buy Domain</h4>
-                <p className="text-slate-400 text-sm mb-6">Secure your unique digital address today.</p>
-                <div className="w-12 h-1 bg-purple-400 rounded-full"></div>
-              </a>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/landingpage" className="block h-full bg-white/5 backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] hover:bg-white/10">
-                <div className="text-5xl mb-6">🚀</div>
-                <h4 className="text-2xl font-bold mb-2 text-slate-300">Landing Page</h4>
-                <p className="text-slate-400 text-sm mb-6">Deploy conversion-ready storefronts.</p>
-                <div className="w-12 h-1 bg-slate-500 rounded-full"></div>
-              </Link>
-            </motion.div>
+          {/* Indicators */}
+          <div className="absolute bottom-6 right-8 flex gap-2">
+            {carouselImages.map((_, i) => (
+              <div 
+                key={i} 
+                className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "w-8 bg-[#F39221]" : "w-2 bg-white/50"}`}
+              />
+            ))}
           </div>
         </div>
-      </motion.section>
 
+       
+      </div>
       {/* ── HERO SECTION ─────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-16 px-6 overflow-hidden">
         <motion.div
@@ -142,6 +123,77 @@ const Home = () => {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* ── FEATURED BUILD TOOLS ─────────────────────────────────────────── */}
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="py-24 px-6  rounded-[3rem] mx-4 my-10 text-white relative overflow-hidden"
+      >
+        <div className="max-w-6xl mx-auto relative z-10 text-center">
+          <h2 className="text-4xl md:text-5xl font-black text-black tracking-tight mb-4">Professional Build <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#3D7E8C]/70">Tools</span></h2>
+          <p className=" text-black font-medium mb-16">Free resources to kickstart your professional journey.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left " >
+            <motion.div whileHover={{ scale: 1.02 }} >
+              <Link to="/resume-builder" className="block h-full  bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
+                <div className="text-5xl mb-6">📝</div>
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Resume Builder</h4>
+                <p className="text-white text-sm mb-6">Create high-performance, ATS-friendly resumes.</p>
+                <div className="w-12 h-1 bg-[#F39221] rounded-full"></div>
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.05 }} className="relative">
+              <Link to="/PortfolioTemplates" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-orange-500/50 p-10 rounded-[2rem] ">
+                <div className="absolute top-4 right-6 bg-[#F39221] text-xs font-black px-3 py-1 rounded-full text-black">HOT</div>
+                <div className="text-5xl mb-6">💼</div>
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Portfolio Maker</h4>
+                <p className="text-white text-sm mb-6">Stunning visual portfolios designed to convert.</p>
+                <div className="w-12 h-1 bg-[#F39221] rounded-full"></div>
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.02 }}>
+              <Link to="/influencer-form" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
+                <Users className="w-12 h-12 mb-6 text-blue-400" />
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Influencer Form</h4>
+                <p className="text-white text-sm mb-6">Connect with top creators for your brand growth.</p>
+                <div className="w-12 h-1 bg-blue-400 rounded-full"></div>
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.02 }}>
+              <Link to="/jobportal" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
+                <Briefcase className="w-12 h-12 mb-6 text-emerald-400" />
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Job Portal</h4>
+                <p className="text-white text-sm mb-6">Find the best talent or your next big opportunity.</p>
+                <div className="w-12 h-1 bg-emerald-400 rounded-full"></div>
+              </Link>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.02 }}>
+              <a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
+                <Globe className="w-12 h-12 mb-6 text-purple-400" />
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Buy Domain</h4>
+                <p className="text-white text-sm mb-6">Secure your unique digital address today.</p>
+                <div className="w-12 h-1 bg-purple-400 rounded-full"></div>
+              </a>
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.02 }}>
+              <Link to="/landingpage" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
+                <div className="text-5xl mb-6">🚀</div>
+                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Landing Page</h4>
+                <p className="text-white text-sm mb-6">Deploy conversion-ready storefronts.</p>
+                <div className="w-12 h-1 bg-slate-500 rounded-full"></div>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
 
       {/* ── CORE SERVICES ────────────────────────────────────────────────── */}
       <section className="py-24 px-6 relative">

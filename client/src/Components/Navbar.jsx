@@ -87,13 +87,7 @@ const style = `
       </div>
 
       <div className="navbar-center hidden lg:flex items-center gap-8">
-        <div className="flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="input input-bordered input-sm w-32 lg:w-48 focus:input-primary"
-          />
-        </div>
+        
 
         <ul className="menu menu-horizontal px-1 gap-2 font-medium">
           <li><Link to="/" className="hover:text-orange-600" onClick={handleLinkClick}>Home</Link></li>
