@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye, Rocket, CheckCircle2, Award, Users, BarChart3, ArrowRight,PhoneCall, MousePointer2 , MessageSquare  } from 'lucide-react';
 const AboutUs = () => {
-  const fadeIn = {
+  const fadeIn ={
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
