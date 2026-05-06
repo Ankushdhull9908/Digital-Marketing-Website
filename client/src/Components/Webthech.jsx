@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion'; // Step 1 Import motion
+import React, { useEffect, useEffectEvent } from 'react';
+import { motion, useAnimation } from 'framer-motion'; // Step 1 Import motion
 import { 
   CheckCircle2, TrendingUp, Users, Target, BarChart3, 
   ShieldCheck, ArrowRight, Lightbulb, Search, Rocket, 
@@ -10,6 +10,20 @@ import {
 const Webthech = () => {
   //Brand Colors: Teal: #3D7E8C | Orange: #F39221
 
+  const controls = useAnimation();
+  const logoIndices = Array.from({ length: 69 }, (_, i) => i + 1);
+
+  // Start the infinite animation on mount
+  useEffect(() => {
+    controls.start({
+      x: ["0%", "-50%"],
+      transition: {
+        duration: 120,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    });
+  }, [controls]);
   const highlights = [
     { text: "Experienced Digital Marketing Experts", icon: <Users size={20} /> },
     { text: "100% Result-Oriented Approach", icon: <Target size={20} /> },
@@ -48,6 +62,7 @@ const Webthech = () => {
       transition: { staggerChildren: 0.15 }
     }
   };
+  
 
   return (
     <div className="font-montserrat">
@@ -253,59 +268,67 @@ const Webthech = () => {
          
 {/* --- SECTION 5: CLIENT LOGOS --- */}
 <section className="pt-20 pb-4 bg-white">
-  {/* Header with increased bottom margin */}
-  <div className="max-w-7xl mx-auto px-6 mb-20 text-center"> 
-    <motion.h2 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-3xl md:text-5xl font-black mb-4 tracking-tight"
-    >
-      Our <span className="text-[#3D7E8C]">Clients</span>
-    </motion.h2>
-    <div className="w-24 h-1.5 bg-[#F39221] mx-auto rounded-full"></div>
-  </div>
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
+        <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+          Our <span className="text-[#3D7E8C]">Clients</span>
+        </h2>
+        <div className="w-24 h-1.5 bg-[#F39221] mx-auto rounded-full"></div>
+      </div>
 
-  <div className="relative overflow-hidden py-4">
-    {/* Enhanced Edge Overlays */}
-    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
-    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+      <div className="relative overflow-hidden py-4">
+        {/* Gradient Faders */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
 
-    <motion.div
-      className="flex whitespace-nowrap will-change-transform"
-      animate={{ x: ["0%", "-50%"] }} 
-      transition={{
-        repeat: Infinity,
-        ease: "linear",
-        duration: 120,
-      }}
-      style={{ width: "fit-content" }}
-    >
-      {[...Array(2)].map((_, groupIdx) => (
-        <div key={groupIdx} className="flex items-center">
-          {Array.from({ length: 69 }, (_, i) => i + 1).map((num) => (
-            <div 
-              key={`${groupIdx}-${num}`} 
-              className="px-10 md:px-14 flex-shrink-0"
-            >
-              <motion.img
-                src={`/logos/${num}.png`} 
-                alt={`Client Logo ${num}`}
-                whileHover={{ 
-                  y: -10, 
-                  scale: 1.1,
-                  filter: "drop-shadow(0px 15px 20px rgba(0,0,0,0.08))"
-                }}
-                className="h-16 md:h-24 w-auto max-w-[180px] md:max-w-[220px] object-contain cursor-pointer transition-all duration-300 ease-out"
-                onError={(e) => { e.target.parentElement.style.display = 'none'; }} 
-              />
+        <motion.div
+          className="flex whitespace-nowrap will-change-transform"
+          animate={controls}
+          style={{ width: "max-content" }}
+        >
+          {[0, 1].map((groupIdx) => (
+            <div key={groupIdx} className="flex items-center">
+              {logoIndices.map((num) => (
+                <div
+                  key={`${groupIdx}-${num}`}
+                  className="px-10 md:px-14 flex-shrink-0"
+                  /* 
+                    PAUSE LOGIC FIXED: 
+                    We stop it on enter, but on leave, we only tell it the 
+                    DESTINATION (-50%). Since we don't provide a starting 
+                    point, it won't "jump" back to 0%.
+                  */
+                  onMouseEnter={() => controls.stop()}
+                  onMouseLeave={() =>
+                    controls.start({
+                      x: "-50%", // Goal only, not a sequence
+                      transition: { 
+                        duration: 120, 
+                        ease: "linear", 
+                        repeat: Infinity,
+                        repeatType: "loop" // Ensures it wraps correctly
+                      },
+                    })
+                  }
+                >
+                  <motion.img
+                    src={`/logos/${num}.png`}
+                    alt="Client"
+                    whileHover={{ 
+                      y: -10, 
+                      scale: 1.1,
+                      filter: "drop-shadow(0px 10px 15px rgba(0,0,0,0.1))" 
+                    }}
+                    className="h-16 md:h-24 w-auto object-contain cursor-pointer transition-all duration-300"
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
+                </div>
+              ))}
             </div>
           ))}
-        </div>
-      ))}
-    </motion.div>
-  </div>
-</section>
+        </motion.div>
+      </div>
+    </section>
 </div>
       </section>
     </div>

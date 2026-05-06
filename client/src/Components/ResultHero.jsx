@@ -185,46 +185,7 @@ const ResultHero = () => {
         </div>
       </section>
 
-      {/* --- SECTION 3: CALL TO ACTION (CTA) --- */}
-      <section className="px-6 py-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto rounded-[3rem] bg-slate-800 p-10 md:p-20 text-center text-white relative overflow-hidden shadow-2xl"
-        >
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.3, 0.2] 
-            }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="absolute top-0 right-0 w-64 h-64 bg-[#3D7E8C] blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2"
-          ></motion.div>
-          
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Ready to Grow Your <br/>Business Online?</h2>
-            <p className="text-teal-50 max-w-2xl mx-auto mb-10 text-lg font-medium">Partner with Webtech Services – your trusted digital marketing agency in Delhi. Let’s turn your vision into revenue.</p>
-            
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-[#F39221] hover:bg-orange-500 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3"
-              >
-                <PhoneCall size={20} /> Contact Us Today
-              </motion.button>
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-white text-[#3D7E8C] hover:bg-slate-50 rounded-2xl font-black flex items-center justify-center gap-3"
-              >
-                <MessageSquare size={20} /> Get Free Consultation
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+     
 
       {/* --- SECTION 4: FAQ SECTION --- */}
       <section className="py-24 px-6 bg-white">
