@@ -1,6 +1,6 @@
 import React, { useEffect, useEffectEvent } from 'react';
 import { motion, useAnimation } from 'framer-motion'; // Step 1 Import motion
-import { 
+import{ 
   CheckCircle2, TrendingUp, Users, Target, BarChart3, 
   ShieldCheck, ArrowRight, Lightbulb, Search, Rocket, 
   Settings2, LineChart, GraduationCap, Utensils, 
