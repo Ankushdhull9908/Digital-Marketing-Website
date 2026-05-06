@@ -53,7 +53,7 @@ useEffect(() => {
 
   const services = [
     { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#3D7E8C]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
-    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10" ,link:"/OurServices#special-section"},  
+    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10" ,link:"/OurServices#special-section" },  
     { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       ,link:"/WhySEO" },
     { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     ,link:"/WhySEO" },
     { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-red-500",     bg: "bg-red-50"        ,link:"/WhySEO" },
