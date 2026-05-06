@@ -5,7 +5,7 @@ import {
   MessageSquare, Globe, CheckCircle, AlertCircle ,Target, Users, Award, Eye, Rocket
 } from 'lucide-react';
 
-const Contact = () => {
+const Contact= () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
