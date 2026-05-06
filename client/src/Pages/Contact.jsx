@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Phone, Mail, MapPin, Clock, Send, 
-  MessageSquare, Globe, CheckCircle, AlertCircle
+  MessageSquare, Globe, CheckCircle, AlertCircle ,Target, Users, Award, Eye, Rocket
 } from 'lucide-react';
 
 const Contact = () => {
@@ -60,7 +60,40 @@ const Contact = () => {
 
   return (
     <div className="font-montserrat text-slate-800 bg-white overflow-hidden">
-      
+     {/* -- CONTACT US HERO SECTION --- */}
+      <section className="relative pt-24 pb-32 px-6 bg-[#0f172a] overflow-hidden text-center">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&q=80" 
+            alt="Contact background" 
+            className="w-full h-full object-cover opacity-25"
+          />
+          {/* Gradient overlay to transition smoothly to the next section */}
+          <div className="absolute inset-0 " />
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 max-w-4xl mx-auto"
+        >
+          <span className="text-[#F39221] font-black uppercase text-xs tracking-[0.3em] mb-4 block">
+            Get In Touch
+          </span>
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+            Contact <span className="text-[#3D7E8C]">Us</span>
+          </h1>
+          {/* Theme Underline */}
+          <div className="w-24 h-2 bg-[#F39221] mx-auto rounded-full mb-8"></div>
+          
+          <p className="text-slate-300 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            Have a project in mind or just want to say hello? Our team is ready 
+            to help you architect your next big digital move.
+          </p>
+        </motion.div>
+      </section>
       {/* --- HERO HEADER --- */}
       <section className="pt-20 pb-12 px-6 bg-slate-50">
         <div className="max-w-6xl mx-auto text-center">
@@ -124,17 +157,7 @@ const Contact = () => {
                   </div>
                 </div>
 
-                {/* Working Hours */}
-                <div className="flex items-start gap-5 p-6 rounded-3xl bg-slate-800 text-white shadow-xl">
-                  <div className="bg-white/10 p-3 rounded-2xl text-[#F39221]">
-                    <Clock size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-lg text-white">Working Hours</h3>
-                    <p className="text-slate-300 text-sm">Mon – Sat: 10:00 AM – 7:00 PM</p>
-                    <p className="text-[#F39221] text-sm font-bold">Sunday: Closed</p>
-                  </div>
-                </div>
+               
               </div>
 
               {/* Tagline Box */}
@@ -265,6 +288,79 @@ const Contact = () => {
                   Secure & Confidential Communication
                 </p>
               </form>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+     {/* --- MAP & ADDRESS SECTION --- */}
+      <section className="py-24 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Left Side: Map Container */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="w-full h-[500px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-slate-50 relative group"
+            >
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923154!2d77.0688975472!3d28.5272803061!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b3476ff35%3A0x60ed276859ed706e!2sDelhi%2C%20India!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
+              />
+              {/* Floating Badge */}
+              <div className="absolute top-6 right-6 bg-slate-900 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-xl z-10">
+                HQ: Delhi, India
+              </div>
+            </motion.div>
+
+            {/* Right Side: Contact Details */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-10"
+            >
+              <div>
+                <span className="text-[#3D7E8C] font-black uppercase text-[11px] tracking-widest mb-4 block">Visit Our Studio</span>
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-6">
+                  Come Say <span className="text-[#F39221]">Namaste.</span>
+                </h2>
+                <p className="text-slate-500 font-medium text-lg leading-relaxed">
+                  Located in the heart of India's capital, our studio is where 
+                  data meets design to create digital excellence.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex gap-6 items-start">
+                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-[#3D7E8C] flex-shrink-0">
+                    <Target size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-black text-xl text-slate-900 mb-1">Corporate Office</h4>
+                    <p className="text-slate-500 font-medium">Connaught Place, New Delhi, <br />Delhi 110001, India</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6 items-start">
+                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-[#F39221] flex-shrink-0">
+                    <Users size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-black text-xl text-slate-900 mb-1">General Inquiries</h4>
+                    <p className="text-slate-500 font-medium">hello@youragency.com</p>
+                    <p className="text-slate-500 font-medium">+91 (011) 4567-8910</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
           </div>
