@@ -78,7 +78,7 @@ const Webthech = () => {
     className="flex flex-col md:flex-row items-center gap-4 mb-12"
   >
     <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
-       Why Choose Webtech?
+       Why Choose <span className="text-[#F39221]">Web</span><span   className="text-[#3D7E8C]"  >tech</span>  ?
     </h2>
     <div className="hidden md:block h-px flex-1 bg-slate-100"></div>
   </motion.div>

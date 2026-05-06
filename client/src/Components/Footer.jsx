@@ -63,7 +63,7 @@ const Footer = () => {
                 </span>
               </div>
               <span className="text-2xl font-bold text-gray-900 tracking-tight">
-                WEB<span className="text-blue-600">Techie</span>
+                WEB<span className="text-blue-600">Tech</span>
               </span>
             </Link>
             <p className="text-gray-500 leading-relaxed max-w-xs">
