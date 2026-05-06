@@ -4,7 +4,7 @@ import { useAuth } from "../context/Context";
 
 import { LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
 
-const Navbar = () => {
+const Navbar= () => {
   
   const nav = useNavigate();
   const { user, logout } = useAuth();
