@@ -5,7 +5,6 @@ import {
   Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight 
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
-
 const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
   <motion.div 
     whileHover={{ y: -10 }}
