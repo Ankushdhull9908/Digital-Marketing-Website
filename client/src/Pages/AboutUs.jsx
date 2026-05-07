@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye, Rocket, CheckCircle2, Award, Users, BarChart3, ArrowRight,PhoneCall, MousePointer2 , MessageSquare  } from 'lucide-react';
+import { Link } from 'react-router-dom';
 const AboutUs = () => {
   const fadeIn ={
     initial: { opacity: 0, y: 30 },
@@ -374,20 +375,27 @@ const AboutUs = () => {
             <p className="text-teal-50 max-w-2xl mx-auto mb-10 text-lg font-medium">Partner with Webtech Services – your trusted digital marketing agency in Delhi. Let’s turn your vision into revenue.</p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <motion.button 
+              <Link to="/contact">
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                to="/contact"
                 className="px-10 py-5 bg-[#F39221] hover:bg-orange-500 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3"
               >
-                <PhoneCall size={20} /> Contact Us Today
+                <PhoneCall size={20} />
+                Contact Us Today
               </motion.button>
+              </Link>
+               <Link to="/contact">
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-10 py-5 bg-white text-[#3D7E8C] hover:bg-slate-50 rounded-2xl font-black flex items-center justify-center gap-3"
               >
-                <MessageSquare size={20} /> Get Free Consultation
+                <MessageSquare size={20} />
+               Get Free Consultation
               </motion.button>
+              </Link>
             </div>
           </div>
         </motion.div>

@@ -4,7 +4,7 @@ import {
   Search, Megaphone, Target, PenTool, MessageSquare, 
   Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight 
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
   <motion.div 
     whileHover={{ y: -10 }}
@@ -162,9 +162,9 @@ const OurServices = () => {
                We help your business grow, scale, and succeed online. Everything you need under one roof.
               </p>
             </div>
-            <button className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-[#3D7E8C] transition-all duration-300 flex items-center gap-3 group">
+            <Link to="/contact"  className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-[#3D7E8C] transition-all duration-300 flex items-center gap-3 group">
               Start a Project <ArrowRight className="group-hover:translate-x-2 transition-transform" />
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -218,9 +218,9 @@ const OurServices = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#F39221] rounded-full blur-[120px] opacity-20 -mr-20 -mt-20" />
           <h2 className="text-4xl font-black mb-6">Ready to start your project?</h2>
           <p className="text-white/60 mb-10 max-w-lg mx-auto">Contact us today for a free consultation and let's take your business to the next level.</p>
-          <button className="btn btn-wide bg-white text-slate-900 border-none hover:bg-slate-200 rounded-xl font-black uppercase tracking-widest">
+          <Link to="/contact" className="btn btn-wide bg-white text-slate-900 border-none hover:bg-slate-200 rounded-xl font-black uppercase tracking-widest">
             Contact Us Now
-          </button>
+          </Link>
         </div>
       </section>
     </div>

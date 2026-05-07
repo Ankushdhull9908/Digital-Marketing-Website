@@ -12,6 +12,7 @@ import {
   Search,
   Globe
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const WhySEO = () => {
   const benefits = [
@@ -183,9 +184,9 @@ const WhySEO = () => {
                     Want to grow your business online and get more customers organically? Let’s take your website to the top of Google!
                 </p>
                 <div className="flex flex-col gap-4">
-                    <button className="btn btn-white bg-white text-slate-900 border-none rounded-xl font-black uppercase tracking-widest hover:bg-slate-200">
+                    <Link to="/contact" className="btn btn-white bg-white text-slate-900 border-none rounded-xl font-black uppercase tracking-widest hover:bg-slate-200">
                         Contact Us Now
-                    </button>
+                    </Link>
                     <p className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-500">No strings attached. Free consultation.</p>
                 </div>
             </div>
