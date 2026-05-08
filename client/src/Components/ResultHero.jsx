@@ -45,6 +45,45 @@ const ResultHero = () => {
     "Better Lead Generation", "Increased Sales", 
     "Strong Online Presence"
   ];
+  const [activeTab, setActiveTab] = useState('Monthly');
+
+  const durations = [
+    { id: 'Monthly', label: 'Monthly', sub: '(1 month)' },
+    { id: 'Quarterly', label: 'Quarterly', sub: '(3 months)' },
+    { id: 'HalfYearly', label: 'Half Yearly', sub: '(6 months)' },
+    { id: 'Yearly', label: 'Yearly', sub: '(12 months)' },
+  ];
+
+  const packageData = [
+    {
+      title: "Basic",
+      desc: "Perfect for personal branding.",
+      prices: { Monthly: "4,999", Quarterly: "13,499", HalfYearly: "24,999", Yearly: "45,999" },
+      features: ["5 Social Media Posts", "Basic SEO", "Email Support", "1 Revision"],
+      featured: false
+    },
+    {
+      title: "Standard",
+      desc: "Ideal for growing startups.",
+      prices: { Monthly: "9,999", Quarterly: "26,999", HalfYearly: "49,999", Yearly: "89,999" },
+      features: ["15 Social Media Posts", "Advanced SEO", "WhatsApp Support", "3 Revisions"],
+      featured: true // Orange highlight
+    },
+    {
+      title: "Premium",
+      desc: "Full digital transformation.",
+      prices: { Monthly: "19,999", Quarterly: "53,999", HalfYearly: "99,999", Yearly: "1,79,999" },
+      features: ["30 Social Media Posts", "Technical SEO", "Priority Support", "Unlimited Revisions"],
+      featured: false
+    },
+    {
+      title: "Enterprise",
+      desc: "Tailored for large corporations.",
+      prices: { Monthly: "39,999", Quarterly: "1,07,999", HalfYearly: "1,99,999", Yearly: "3,59,999" },
+      features: ["Custom Strategy", "Ad Campaign Mgmt", "Dedicated Manager", "Full Tech Support"],
+      featured: false
+    }
+  ];
 
   return (
     <div className="font-montserrat text-slate-800 overflow-hidden">
@@ -133,40 +172,88 @@ const ResultHero = () => {
         </div>
       </section>
 
-      {/* --- SECTION: OUR PACKAGES --- */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-              Our <span className="text-[#F39221]">Packages</span>
-            </h2>
-            <div className="w-24 h-2 bg-[#3D7E8C] mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg, i) => (
-              <div key={i} className={`p-8 rounded-[2rem] border-2 flex flex-col ${pkg.featured ? 'border-[#F39221] shadow-xl' : 'border-slate-100'}`}>
-                <h3 className="text-2xl font-black mb-2">{pkg.title}</h3>
-                <p className="text-slate-500 text-sm mb-6">{pkg.desc}</p>
-                <div className="mb-8">
-                  <span className="text-4xl font-black">₹{pkg.price}</span>
-                  <span className="text-slate-400 font-bold ml-1">/-</span>
-                </div>
-                <div className="space-y-3 flex-grow mb-8">
-                  {pkg.features.map((f, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm font-bold text-slate-600">
-                      <CheckCircle size={16} className="text-[#3D7E8C]" /> {f}
-                    </div>
-                  ))}
-                </div>
-                <button className={`btn rounded-xl border-none text-white font-black ${pkg.featured ? 'bg-[#F39221]' : 'bg-[#3D7E8C]'}`}>
-                  Choose Plan
-                </button>
-              </div>
-            ))}
-          </div>
+    <section className="py-24 px-6 bg-white font-montserrat">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+            Our <span className="text-[#F39221]">Packages</span>
+          </h2>
+          <div className="w-24 h-2 bg-[#3D7E8C] mx-auto rounded-full"></div>
         </div>
-      </section>
+
+        {/* 4-Duration Toggle Bar */}
+{/* --- WIDER BOLD DURATION TOGGLE --- */}
+<div className="flex justify-center mb-20 px-6">
+  <div className="flex flex-wrap md:flex-nowrap justify-center gap-4 w-full max-w-7xl">
+    {durations.map((d) => (
+      <button
+        key={d.id}
+        onClick={() => setActiveTab(d.id)}
+        className={`flex flex-col items-center justify-center flex-1 min-w-[200px] py-8 rounded-[2.5rem] transition-all duration-300 border-2 ${
+          activeTab === d.id 
+          ? 'bg-slate-900 border-slate-900 text-white shadow-2xl scale-105 z-10' 
+          : 'bg-white border-slate-100 text-slate-400 hover:border-[#3D7E8C]/50 hover:bg-slate-50'
+        }`}
+      >
+        <span className="text-lg font-black uppercase tracking-[0.2em]">
+          {d.label}
+        </span>
+        <span className={`text-xs font-bold mt-1 uppercase tracking-widest ${
+          activeTab === d.id ? 'text-[#F39221]' : 'text-slate-400'
+        }`}>
+          {d.sub}
+        </span>
+
+        {/* The little teal indicator bar from your header style */}
+        {activeTab === d.id && (
+          <motion.div 
+            layoutId="activeUnderline"
+            className="w-12 h-1.5 bg-[#3D7E8C] mt-4 rounded-full"
+          />
+        )}
+      </button>
+    ))}
+  </div>
+</div>
+        {/* 4 Pricing Boxes Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
+          {packageData.map((pkg, i) => (
+            <div 
+              key={i} 
+              className={`p-8 rounded-[2.5rem] border-2 flex flex-col transition-all duration-500 hover:shadow-2xl bg-[#3D7E8C] ${
+                pkg.featured ? 'border-[#F39221] shadow-xl scale-105 z-10' : 'border-slate-100'
+              }`}
+            >
+              <h3 className="text-2xl font-black mb-2 text-white">{pkg.title}</h3>
+              <p className="text-slate-500 text-xs font-medium mb-6 leading-relaxed">{pkg.desc}</p>
+              
+              <div className="mb-8">
+                <span className="text-4xl font-black text-[#F39221]">₹{pkg.prices[activeTab]}</span>
+                <span className="text-slate-200 font-bold ml-1">/-</span>
+                <p className="text-[10px] text-slate-200 font-bold uppercase mt-1 tracking-widest">
+                  Total for {activeTab.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                </p>
+              </div>
+
+              <div className="space-y-4 flex-grow mb-8">
+                {pkg.features.map((f, idx) => (
+                  <div key={idx} className="flex items-center gap-3 text-xs font-bold text-white">
+                    <CheckCircle size={16} className="text-[#3D7E8C] shrink-0" /> 
+                    {f}
+                  </div>
+                ))}
+              </div>
+
+              <button className={`w-full py-4 rounded-xl border-none text-white font-black uppercase tracking-widest transition-transform active:scale-95 bg-[#F39221] 
+              `}>
+                Choose Plan
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
 
       {/* --- SECTION: FAQ --- */}
       <section className="py-24 px-6 bg-slate-50">
