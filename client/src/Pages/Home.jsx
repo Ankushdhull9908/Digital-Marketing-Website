@@ -17,7 +17,7 @@ const Home = () => {
   console.log('FAQS')
 const carouselImages = [
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1504868584819-f8e905263543?q=80&w=2076&auto=format&fit=crop",
+   "https://i.pinimg.com/736x/fd/51/50/fd515007f2f92de868516ea503897c91.jpg",
     "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
   ];
 const [currentIndex, setCurrentIndex] = useState(0);
