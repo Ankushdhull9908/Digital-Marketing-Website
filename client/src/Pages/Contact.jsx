@@ -293,79 +293,65 @@ const Contact= () => {
           </div>
         </div>
       </section>
-     {/* --- MAP & ADDRESS SECTION --- */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Left Side: Map Container */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="w-full h-[500px] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-slate-50 relative group"
-            >
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923154!2d77.0688975472!3d28.5272803061!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b3476ff35%3A0x60ed276859ed706e!2sDelhi%2C%20India!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen="" 
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
-              />
-              {/* Floating Badge */}
-              <div className="absolute top-6 right-6 bg-slate-900 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-xl z-10">
-                HQ: Delhi, India
-              </div>
-            </motion.div>
+    {/* --- MAP & ADDRESS SECTION --- */}
+<section className="py-24 px-6 bg-slate-50/50 relative overflow-hidden">
+  {/* Decorative Background Blob for the Map section */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3D7E8C]/5 rounded-full blur-[120px] pointer-events-none" />
 
-            {/* Right Side: Contact Details */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-10"
-            >
-              <div>
-                <span className="text-[#3D7E8C] font-black uppercase text-[11px] tracking-widest mb-4 block">Visit Our Studio</span>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-6">
-                  Come Say <span className="text-[#F39221]">Namaste.</span>
-                </h2>
-                <p className="text-slate-500 font-medium text-lg leading-relaxed">
-                  Located in the heart of India's capital, our studio is where 
-                  data meets design to create digital excellence.
-                </p>
-              </div>
+  <div className="max-w-5xl mx-auto relative z-10">
+    <div className="text-center mb-12">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-3xl md:text-4xl font-black mb-4">Visit Our <span className="text-[#3D7E8C]">Office</span></h2>
+        <p className="text-slate-500 font-medium italic">"Where creativity meets technology."</p>
+      </motion.div>
+    </div>
 
-              <div className="space-y-6">
-                <div className="flex gap-6 items-start">
-                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-[#3D7E8C] flex-shrink-0">
-                    <Target size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-xl text-slate-900 mb-1">Corporate Office</h4>
-                    <p className="text-slate-500 font-medium">Connaught Place, New Delhi, <br />Delhi 110001, India</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6 items-start">
-                  <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-[#F39221] flex-shrink-0">
-                    <Users size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-xl text-slate-900 mb-1">General Inquiries</h4>
-                    <p className="text-slate-500 font-medium">hello@youragency.com</p>
-                    <p className="text-slate-500 font-medium">+91 (011) 4567-8910</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
+    {/* Centered Styled Map Container */}
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="relative mx-auto w-full max-w-4xl group"
+    >
+      {/* Decorative Border/Glow Effect */}
+      <div className="absolute -inset-4 bg-gradient-to-r from-[#3D7E8C]/20 to-[#F39221]/20 rounded-[4rem] blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+      
+      {/* Main Map Frame */}
+      <div className="relative h-[450px] md:h-[550px] rounded-[3.5rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[6px] border-white">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.8392319277!2d77.0688975472!3d28.527280343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b34766357%3A0xd8341144df389270!2sDelhi!5e0!3m2!1sen!2sin!4v1715000000000!5m2!1sen!2sin" 
+          width="100%" 
+          height="100%" 
+          style={{ border: 0 }} 
+          allowFullScreen="" 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade"
+          className="grayscale contrast-125 brightness-105 group-hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
+        />
+        
+        {/* Floating Glassmorphic Badge */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md border border-white/20 px-8 py-4 rounded-2xl shadow-2xl z-10 flex items-center gap-4 min-w-[280px]">
+          <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white shrink-0 shadow-lg">
+            <MapPin size={18} />
+          </div>
+          <div className="text-left">
+            <p className="text-[10px] font-black text-[#3D7E8C] uppercase tracking-[0.2em]">Our Headquarters</p>
+            <p className="text-sm font-bold text-slate-900">New Delhi, India</p>
           </div>
         </div>
-      </section>
+      </div>
+    </motion.div>
+    
+    <div className="mt-12 text-center">
+       <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.4em]">Global Operations • Local Expertise</p>
+    </div>
+  </div>
+</section>
     </div>
   );
 };
