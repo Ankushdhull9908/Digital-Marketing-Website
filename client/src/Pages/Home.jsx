@@ -151,7 +151,6 @@ useEffect(() => {
         </motion.div>
       </section>
 
-     {/* ── MODERN FEATURED BUILD TOOLS (CENTERED & REDUCED WIDTH) ─────────────────────────────────────────── */}
 {/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
 <motion.section 
   initial={{ opacity: 0 }}
@@ -170,10 +169,10 @@ useEffect(() => {
         Elite Creator Suite
       </motion.div>
       <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.9]">
-       Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#F39221]">Build Tools.</span>
+        Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#F39221]">Build Tools.</span>
       </h2>
       <p className="text-slate-500 font-bold text-xl max-w-3xl mx-auto leading-relaxed">
-      Free resources to kickstart your professional journey.
+        Free resources to kickstart your professional journey.
       </p>
     </div>
 
@@ -189,7 +188,7 @@ useEffect(() => {
           color: "#3D7E8C" 
         },
         { 
-          to: "/PortfolioMaker", 
+          to: "/portfolio-maker/:templateId", 
           icon: <Palette size={36} />, 
           title: "Portfolio Maker", 
           desc: "A visual-first builder designed to showcase your best work to high-ticket clients.",
@@ -206,7 +205,7 @@ useEffect(() => {
           color: "#60A5FA" 
         },
         { 
-          to: "/job-portal", 
+          to: "/jobportal", 
           icon: <Briefcase size={36} />, 
           title: "Job Portal", 
           desc: "Curated opportunities from startups to Fortune 500 companies worldwide.",
@@ -214,7 +213,7 @@ useEffect(() => {
           color: "#34D399" 
         },
         { 
-          to: "/buy-domain", 
+          to: "https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" , 
           icon: <Globe size={36} />, 
           title: "Domain Engine", 
           desc: "Secure your digital identity with a unique address and professional email.",
@@ -226,75 +225,112 @@ useEffect(() => {
           icon: <Rocket size={36} />, 
           title: "Launchpad", 
           desc: "High-conversion storefronts optimized for speed and mobile engagement.",
-           benefit: "Turn cold traffic into loyal customers with high-speed, conversion-optimized architecture.",
-         color: "#F43F5E" 
+          benefit: "Turn cold traffic into loyal customers with high-speed, conversion-optimized architecture.",
+          color: "#F43F5E" 
         },
-      ].map((tool, idx) => (
-        <motion.div
-          key={idx}
-          whileHover={{ y: -15 }}
-          transition={{ type: "spring", stiffness: 200, damping: 25 }}
-          className="h-full"
-        >
-          <Link 
-            to={tool.to} 
-            className="group relative flex flex-col h-full min-h-[520px] bg-slate-950 p-12 rounded-[3.5rem] overflow-hidden shadow-2xl border-4 transition-all duration-700 hover:shadow-[#00000040] hover:border-[#F39221]"
+      ].map((tool, idx) => {
+        const isExternal = tool.to.startsWith('http');
+        
+        // Define the common classes for the card style
+        const cardClasses = "group relative flex flex-col h-full min-h-[620px] bg-slate-950 p-12 rounded-[3.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[#00000040]";
+
+        return (
+          <motion.div
+            key={idx}
+            whileHover={{ y: -15 }}
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            className="h-full"
           >
-            {/* Visual Depth - Top Gradient */}
-            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
+            {isExternal ? (
+              <a href={tool.to} target="_blank" rel="noopener noreferrer" className={cardClasses}>
+                {/* Visual Depth - Top Gradient */}
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
 
-            {/* Corner Accent Glow */}
-            <div 
-              className="absolute -top-24 -right-24 w-64 h-64 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
-              style={{ backgroundColor: tool.color }} 
-            />
+                {/* Corner Accent Glow */}
+                <div 
+                  className="absolute -top-24 -right-24 w-64 h-50 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
+                  style={{ backgroundColor: tool.color }} 
+                />
 
-            {tool.hot && (
-              <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
-                ELITE TOOL
-              </div>
+                {tool.hot && (
+                  <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
+                    ELITE TOOL
+                  </div>
+                )}
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="mb-12 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
+                    <div style={{ color: tool.color }} className="group-hover:scale-110 transition-transform duration-500">
+                      {tool.icon}
+                    </div>
+                  </div>
+
+                  <h4 className="text-3xl font-black text-white mb-6 tracking-tight">{tool.title}</h4>
+                  <p className="text-slate-400 text-base leading-relaxed mb-6 font-medium">{tool.desc}</p>
+
+                  <div className="p-5 rounded-2xl bg-white/[0.03] border-l-4 " style={{ borderColor: tool.color }}>
+                    <p className="text-xs font-bold text-slate-300 italic">"{tool.benefit}"</p>
+                  </div>
+
+                  <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-white/20 tracking-widest uppercase">Status</span>
+                      <span className="text-xs font-bold text-[#34D399] flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" /> Live Now
+                      </span>
+                    </div>
+                    <div className="h-14 w-14 rounded-2xl bg-white/[0.05] flex items-center justify-center group-hover:bg-[#F39221] transition-all duration-500">
+                       <ArrowRight size={24} className="text-white group-hover:text-black transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ) : (
+              <Link to={tool.to} className={cardClasses}>
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
+
+                <div 
+                  className="absolute -top-24 -right-24 w-64 h-50 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
+                  style={{ backgroundColor: tool.color }} 
+                />
+
+                {tool.hot && (
+                  <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
+                    ELITE TOOL
+                  </div>
+                )}
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="mb-12 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
+                    <div style={{ color: tool.color }} className="group-hover:scale-110 transition-transform duration-500">
+                      {tool.icon}
+                    </div>
+                  </div>
+
+                  <h4 className="text-3xl font-black text-white mb-6 tracking-tight">{tool.title}</h4>
+                  <p className="text-slate-400 text-base leading-relaxed mb-6 font-medium">{tool.desc}</p>
+
+                  <div className="p-5 rounded-2xl bg-white/[0.03] border-l-4 " style={{ borderColor: tool.color }}>
+                    <p className="text-xs font-bold text-slate-300 italic">"{tool.benefit}"</p>
+                  </div>
+
+                  <div className="mt-6  border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-white/20 tracking-widest uppercase">Status</span>
+                      <span className="text-xs font-bold text-[#34D399] flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" /> Live Now
+                      </span>
+                    </div>
+                    <div className="h-14 w-14 rounded-2xl bg-white/[0.05] flex items-center justify-center group-hover:bg-[#F39221] transition-all duration-500">
+                       <ArrowRight size={24} className="text-white group-hover:text-black transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
             )}
-
-            <div className="relative z-10 flex flex-col h-full">
-              {/* Icon Housing */}
-              <div className="mb-12 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
-                <div style={{ color: tool.color }} className="group-hover:scale-110 transition-transform duration-500">
-                  {tool.icon}
-                </div>
-              </div>
-
-              {/* Title & Long Description */}
-              <h4 className="text-3xl font-black text-white mb-6 tracking-tight">
-                {tool.title}
-              </h4>
-              
-              <p className="text-slate-400 text-base leading-relaxed mb-6 font-medium">
-                {tool.desc}
-              </p>
-
-              {/* Benefit Highlight */}
-              <div className="p-5 rounded-2xl bg-white/[0.03] border-l-4 " style={{ borderColor: tool.color }}>
-                <p className="text-xs font-bold text-slate-300 italic">
-                  "{tool.benefit}"
-                </p>
-              </div>
-
-              {/* Enhanced Action Footer */}
-              <div className="mt-4 pt-2 border-t border-white/5 flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-black text-white/20 tracking-widest uppercase">Status</span>
-                  <span className="text-xs font-bold text-[#34D399] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" /> Live Now
-                  </span>
-                </div>
-                <div className="h-14 w-14 rounded-2xl bg-white/[0.05] flex items-center justify-center group-hover:bg-[#F39221] transition-all duration-500">
-                   <ArrowRight size={24} className="text-white group-hover:text-black transition-colors" />
-                </div>
-              </div>
-            </div>
-          </Link>
-        </motion.div>
-      ))}
+          </motion.div>
+        );
+      })}
     </div>
   </div>
 </motion.section>
