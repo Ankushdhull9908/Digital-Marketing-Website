@@ -9,7 +9,7 @@ import { useAuth } from "../context/Context";
 
 const ResultHero = () => {
   const { faqs, packages } = useAuth();
-  
+
   //Expanded list to demonstrate scrolling
   const allClients = [
     { id: 1, name: "John Doe", role: "CEO, TechFlow", text: "Incredible growth in 3 months!", video: "https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-his-laptop-34448-large.mp4" },
