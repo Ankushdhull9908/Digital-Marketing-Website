@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, Share2, Layout, MapPin, ArrowRight, Zap, Target,
-  BarChart, Users, Briefcase, Globe, ChevronDown, Check,
+  BarChart, Users, Briefcase, Globe, ChevronDown, Check,PenTool , Palette ,Rocket
 } from "lucide-react";
 import Webthech from "../Components/Webthech";
 import ResultHero from "../Components/ResultHero";
@@ -53,56 +53,70 @@ useEffect(() => {
   const services = [
     { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#3D7E8C]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
     { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10" ,link:"/OurServices#special-section" },  
-    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       ,link:"/WhySEO" },
-    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     ,link:"/WhySEO" },
+    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       ,link:"/OurServices#special-section" },
+    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     ,link:"/OurServices#special-section" },
     { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-red-500",     bg: "bg-red-50"        ,link:"/WhySEO" },
-    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-emerald-500", bg: "bg-emerald-50"    ,link:"/WhySEO" },
+    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-emerald-500", bg: "bg-emerald-50"    ,link:"/OurServices#special-section" },
   ];
 
   return (
     <div className="bg-[#F8FAFB] text-slate-800 min-h-screen font-montserrat overflow-x-hidden selection:bg-[#F39221]/30 no-scrollbar">
  {/* ── TOP CAROUSEL & BANNERS ────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 pt-6 flex flex-col gap-6">
-        
-        {/* Simple Framer Motion Carousel */}
-        <div className="w-full h-[300px] md:h-[350px] rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-white relative bg-slate-200">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={currentIndex}
-              src={carouselImages[currentIndex]}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </AnimatePresence>
-          
-          {/* Overlay Text */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12">
-            <motion.h2 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-white text-3xl md:text-5xl font-black italic tracking-tighter"
-            >
-              EMPOWERING <span className="text-[#F39221]">DIGITAL</span> BRANDS.
-            </motion.h2>
-          </div>
+   <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] pt-6 flex flex-col gap-6 overflow-hidden">
+  
+  {/* Full Width Framer Motion Carousel */}
+  <div className="w-full h-[200px] md:h-[300px] lg:h-[400px] rounded-none md:rounded-[3rem] overflow-hidden shadow-2xl border-y-2 md:border-2 border-white relative bg-slate-200 md:mx-auto md:w-[95%]">
+    <AnimatePresence mode="wait">
+      <motion.img
+        key={currentIndex}
+        src={carouselImages[currentIndex]}
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+    </AnimatePresence>
+    
+    {/* Stylish Overlay Content */}
+    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/20 to-transparent flex flex-col justify-center p-8 md:p-24">
+      <div className="max-w-[1600px] mx-auto w-full">
+        <motion.span 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-[#3D7E8C] font-black tracking-[0.3em] text-xs md:text-sm uppercase mb-4 block"
+        >
+          Premium Agency Experience
+        </motion.span>
+        <motion.h2 
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-white text-4xl md:text-7xl lg:text-8xl font-black italic tracking-tighter leading-[0.9]"
+        >
+          EMPOWERING <br />
+          <span className="text-[#F39221] not-italic">DIGITAL</span> BRANDS.
+        </motion.h2>
+      </div>
+    </div>
 
-          {/* Indicators */}
-          <div className="absolute bottom-6 right-8 flex gap-2">
-            {carouselImages.map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "w-8 bg-[#F39221]" : "w-2 bg-white/50"}`}
-              />
-            ))}
-          </div>
-        </div>
+    {/* Stylish Modern Indicators */}
+    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:left-auto md:right-12 md:translate-x-0 flex items-center gap-3 bg-black/20 backdrop-blur-md px-6 py-3 rounded-full">
+      {carouselImages.map((_, i) => (
+        <button 
+          key={i} 
+          onClick={() => setCurrentIndex(i)}
+          className={`h-1.5 rounded-full transition-all duration-500 ${
+            i === currentIndex ? "w-12 bg-[#F39221]" : "w-3 bg-white/30 hover:bg-white/60"
+          }`}
+        />
+      ))}
+    </div>
+  </div>
+</div>
 
        
-      </div>
+    
       {/* ── HERO SECTION ─────────────────────────────────────────────────── */}
       <section className="relative pt-24 pb-16 px-6 overflow-hidden">
         <motion.div
@@ -137,76 +151,153 @@ useEffect(() => {
         </motion.div>
       </section>
 
-      {/* ── FEATURED BUILD TOOLS ─────────────────────────────────────────── */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="py-24 px-6  rounded-[3rem] mx-4 my-10 text-white relative overflow-hidden"
+     {/* ── MODERN FEATURED BUILD TOOLS (CENTERED & REDUCED WIDTH) ─────────────────────────────────────────── */}
+{/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
+<motion.section 
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  viewport={{ once: true }}
+  className="py-32 px-6 relative bg-white overflow-hidden"
+>
+  <div className="max-w-7xl mx-auto">
+    
+    <div className="text-center mb-24">
+      <motion.div 
+        initial={{ scale: 0.9, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        className="inline-block px-6 py-2 rounded-full bg-slate-100 text-[#3D7E8C] text-[11px] font-black uppercase tracking-[0.4em] mb-6"
       >
-        <div className="max-w-6xl mx-auto relative z-10 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-black tracking-tight mb-4">Professional Build <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#3D7E8C]/70">Tools</span></h2>
-          <p className=" text-black font-medium mb-16">Free resources to kickstart your professional journey.</p>
+        Elite Creator Suite
+      </motion.div>
+      <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.9]">
+       Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#F39221]">Build Tools.</span>
+      </h2>
+      <p className="text-slate-500 font-bold text-xl max-w-3xl mx-auto leading-relaxed">
+      Free resources to kickstart your professional journey.
+      </p>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left " >
-            <motion.div whileHover={{ scale: 1.02 }} >
-              <Link to="/resume-builder" className="block h-full  bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
-                <div className="text-5xl mb-6">📝</div>
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Resume Builder</h4>
-                <p className="text-white text-sm mb-6">Create high-performance, ATS-friendly resumes.</p>
-                <div className="w-12 h-1 bg-[#F39221] rounded-full"></div>
-              </Link>
-            </motion.div>
+    {/* Grid with Ultra-Height Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {[
+        { 
+          to: "/resume-builder", 
+          icon: <PenTool size={36} />, 
+          title: "Resume Builder", 
+          desc: "Engineered for the modern job market to beat automated screening systems.",
+          benefit: "Designed to help you bypass HR filters and secure interviews at top-tier tech firms.",
+          color: "#3D7E8C" 
+        },
+        { 
+          to: "/PortfolioMaker", 
+          icon: <Palette size={36} />, 
+          title: "Portfolio Maker", 
+          desc: "A visual-first builder designed to showcase your best work to high-ticket clients.",
+          benefit: "Build a high-end visual presence that justifies premium rates and attracts high-ticket clients.",
+          color: "#F39221", 
+          hot: true 
+        },
+        { 
+          to: "/influencer-form", 
+          icon: <Users size={36} />, 
+          title: "Influencer Hub", 
+          desc: "Bridging the gap between creative talent and premium brand partnerships.",
+          benefit: "Streamline your collaboration process and professionalize your creator-to-brand pitch.",
+          color: "#60A5FA" 
+        },
+        { 
+          to: "/job-portal", 
+          icon: <Briefcase size={36} />, 
+          title: "Job Portal", 
+          desc: "Curated opportunities from startups to Fortune 500 companies worldwide.",
+          benefit: "Access a private ecosystem of high-growth roles that aren't advertised on mainstream sites.",
+          color: "#34D399" 
+        },
+        { 
+          to: "/buy-domain", 
+          icon: <Globe size={36} />, 
+          title: "Domain Engine", 
+          desc: "Secure your digital identity with a unique address and professional email.",
+          benefit: "Protect your intellectual property and establish instant credibility with a custom URL.",
+          color: "#A78BFA" 
+        },
+        { 
+          to: "/landingpage", 
+          icon: <Rocket size={36} />, 
+          title: "Launchpad", 
+          desc: "High-conversion storefronts optimized for speed and mobile engagement.",
+           benefit: "Turn cold traffic into loyal customers with high-speed, conversion-optimized architecture.",
+         color: "#F43F5E" 
+        },
+      ].map((tool, idx) => (
+        <motion.div
+          key={idx}
+          whileHover={{ y: -15 }}
+          transition={{ type: "spring", stiffness: 200, damping: 25 }}
+          className="h-full"
+        >
+          <Link 
+            to={tool.to} 
+            className="group relative flex flex-col h-full min-h-[520px] bg-slate-950 p-12 rounded-[3.5rem] overflow-hidden shadow-2xl border-4 transition-all duration-700 hover:shadow-[#00000040] hover:border-[#F39221]"
+          >
+            {/* Visual Depth - Top Gradient */}
+            <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
 
-            <motion.div whileHover={{ scale: 1.05 }} className="relative">
-              <Link to="/PortfolioTemplates" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-orange-500/50 p-10 rounded-[2rem] ">
-                <div className="absolute top-4 right-6 bg-[#F39221] text-xs font-black px-3 py-1 rounded-full text-black">HOT</div>
-                <div className="text-5xl mb-6">💼</div>
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Portfolio Maker</h4>
-                <p className="text-white text-sm mb-6">Stunning visual portfolios designed to convert.</p>
-                <div className="w-12 h-1 bg-[#F39221] rounded-full"></div>
-              </Link>
-            </motion.div>
+            {/* Corner Accent Glow */}
+            <div 
+              className="absolute -top-24 -right-24 w-64 h-64 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
+              style={{ backgroundColor: tool.color }} 
+            />
 
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/influencer-form" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
-                <Users className="w-12 h-12 mb-6 text-blue-400" />
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Influencer Form</h4>
-                <p className="text-white text-sm mb-6">Connect with top creators for your brand growth.</p>
-                <div className="w-12 h-1 bg-blue-400 rounded-full"></div>
-              </Link>
-            </motion.div>
+            {tool.hot && (
+              <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
+                ELITE TOOL
+              </div>
+            )}
 
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/jobportal" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
-                <Briefcase className="w-12 h-12 mb-6 text-emerald-400" />
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Job Portal</h4>
-                <p className="text-white text-sm mb-6">Find the best talent or your next big opportunity.</p>
-                <div className="w-12 h-1 bg-emerald-400 rounded-full"></div>
-              </Link>
-            </motion.div>
+            <div className="relative z-10 flex flex-col h-full">
+              {/* Icon Housing */}
+              <div className="mb-12 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
+                <div style={{ color: tool.color }} className="group-hover:scale-110 transition-transform duration-500">
+                  {tool.icon}
+                </div>
+              </div>
 
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
-                <Globe className="w-12 h-12 mb-6 text-purple-400" />
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Buy Domain</h4>
-                <p className="text-white text-sm mb-6">Secure your unique digital address today.</p>
-                <div className="w-12 h-1 bg-purple-400 rounded-full"></div>
-              </a>
-            </motion.div>
+              {/* Title & Long Description */}
+              <h4 className="text-3xl font-black text-white mb-6 tracking-tight">
+                {tool.title}
+              </h4>
+              
+              <p className="text-slate-400 text-base leading-relaxed mb-6 font-medium">
+                {tool.desc}
+              </p>
 
-            <motion.div whileHover={{ scale: 1.02 }}>
-              <Link to="/landingpage" className="block h-full bg-[#3D7E8C] backdrop-blur-lg border border-white/10 p-10 rounded-[2rem] ">
-                <div className="text-5xl mb-6">🚀</div>
-                <h4 className="text-2xl font-bold mb-2 text-[#F39221]">Landing Page</h4>
-                <p className="text-white text-sm mb-6">Deploy conversion-ready storefronts.</p>
-                <div className="w-12 h-1 bg-slate-500 rounded-full"></div>
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
+              {/* Benefit Highlight */}
+              <div className="p-5 rounded-2xl bg-white/[0.03] border-l-4 " style={{ borderColor: tool.color }}>
+                <p className="text-xs font-bold text-slate-300 italic">
+                  "{tool.benefit}"
+                </p>
+              </div>
+
+              {/* Enhanced Action Footer */}
+              <div className="mt-4 pt-2 border-t border-white/5 flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black text-white/20 tracking-widest uppercase">Status</span>
+                  <span className="text-xs font-bold text-[#34D399] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" /> Live Now
+                  </span>
+                </div>
+                <div className="h-14 w-14 rounded-2xl bg-white/[0.05] flex items-center justify-center group-hover:bg-[#F39221] transition-all duration-500">
+                   <ArrowRight size={24} className="text-white group-hover:text-black transition-colors" />
+                </div>
+              </div>
+            </div>
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</motion.section>
 
       {/* ── CORE SERVICES ────────────────────────────────────────────────── */}
       <section className="py-24 px-6 relative">

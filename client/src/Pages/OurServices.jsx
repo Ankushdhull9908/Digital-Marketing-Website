@@ -66,13 +66,6 @@ const OurServices = () => {
   }, [hash]);
   const marketingServices = [
     {
-      icon: Search,
-      title: "SEO Optimization",
-      description: "Improve your website ranking on Google and get organic traffic with our advanced strategies.",
-      features: ["Keyword Research", "On-Page", "Technical SEO", "Local SEO"],
-      color: "bg-blue-50 text-blue-600"
-    },
-    {
       icon: Megaphone,
       title: "Social Media",
       description: "Build your brand presence on Instagram, Facebook, and LinkedIn with active engagement.",
@@ -99,9 +92,16 @@ const OurServices = () => {
       description: "Stay connected with your customers via bulk Email and WhatsApp API automation.",
       features: ["WhatsApp API", "Bulk Email", "Lead Nurturing"],
       color: "bg-green-50 text-green-600"
-    }
+    },
+    {
+      icon: Search,
+      title: "SEO Optimization",
+      description: "Improve your website ranking on Google and get organic traffic with our advanced strategies.",
+      features: ["Keyword Research", "On-Page", "Technical SEO", "Local SEO"],
+      color: "bg-blue-50 text-blue-600"
+    },
   ];
-
+  
   const techServices = [
     {
       icon: Globe,
