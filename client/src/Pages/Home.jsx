@@ -9,7 +9,6 @@ import Webthech from "../Components/Webthech";
 import ResultHero from "../Components/ResultHero";
 // ← pulls faqs, packages, clients
 import { useAuth } from "../context/Context";
-
 const Home = () => {
   const { faqs, packages, clients, loading } = useAuth();
   const { hash } = useLocation();
