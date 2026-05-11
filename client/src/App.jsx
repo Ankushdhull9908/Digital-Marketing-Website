@@ -18,6 +18,7 @@ import OurServices from './Pages/OurServices'
 import WhySEO from './Pages/WhySEO'
 import ScrollToTop from './Components/ScrollToTop'
 import Contact from './Pages/Contact'
+import IndustriesWeWorkWith from './Pages/IndustriesWeWorkWith'
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path='/landingpage' element={<LandingPage/>}/>
         <Route path='/SIPCalculator' element={<SipCalculator/>}/>
         <Route path='/WhySEO' element={<WhySEO/>}/>
+        <Route path='/industries' element={<IndustriesWeWorkWith/>}/>
       </Routes>
       <Footer/>
     </>

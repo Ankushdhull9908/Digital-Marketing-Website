@@ -6,9 +6,28 @@ import{
   Settings2, LineChart, GraduationCap, Utensils, 
   ShoppingCart, Building2, Briefcase 
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const fadeInUp = {
+  hidden:  { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+ 
+const staggerContainer = {
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+
+ 
 
 const Webthech = () => {
+  const navigate = useNavigate()
   //Brand Colors: Teal: #3D7E8C | Orange: #F39221
+  const handleClick = (id) => {
+    // Navigate to the page and scroll to the specific section via hash
+    navigate(`/industries#${id}`);
+  };
 
   const controls = useAnimation();
   const logoIndices = Array.from({ length: 69 }, (_, i) => i + 1);
@@ -41,13 +60,13 @@ const Webthech = () => {
     { num: "05", title: "Growth", desc: "Scaling what works to maximize your total ROI.", icon: <LineChart size={24} /> },
   ];
 
-  const industries = [
-    { name: "Schools & Education", icon: <GraduationCap size={20} /> },
-    { name: "Restaurants & Cafes", icon: <Utensils size={20} /> },
-    { name: "E-commerce", icon: <ShoppingCart size={20} /> },
-    { name: "Real Estate", icon: <Building2 size={20} /> },
-    { name: "Service Businesses", icon: <Briefcase size={20} /> },
-  ];
+ const industries = [
+  { name: "Schools & Education", icon: <GraduationCap size={20} />, id: "education"  },
+  { name: "Restaurants & Cafes", icon: <Utensils    size={20} />, id: "restaurants" },
+  { name: "E-commerce",          icon: <ShoppingCart size={20} />, id: "ecommerce"   },
+  { name: "Real Estate",         icon: <Building2    size={20} />, id: "realestate"  },
+  { name: "Service Businesses",  icon: <Briefcase    size={20} />, id: "services"    },
+];
 
   // Animation Variant
   const fadeInUp = {
@@ -225,46 +244,65 @@ const Webthech = () => {
           </div>
 
           {/* --- SECTION 4: INDUSTRIES --- */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden"
+          <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden"
+    >
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3D7E8C]/20 to-transparent" />
+ 
+      <div className="relative z-10">
+        <motion.h2
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-3xl md:text-5xl font-black mb-8"
+        >
+          Industries We Work With
+        </motion.h2>
+ 
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center gap-4"
+        >
+          {industries.map((ind, i) => (
+            <motion.div
+              key={i}
+              variants={fadeInUp}
+              whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
+              onClick={() => handleClick(ind.id)}
+              className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10
+                         hover:border-[#F39221]/50 transition-all group cursor-pointer select-none"
+            >
+              <span className="text-[#F39221] group-hover:rotate-12 transition-transform">
+                {ind.icon}
+              </span>
+              <span className="font-bold text-sm tracking-wide">{ind.name}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+ 
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-12 text-slate-400 text-sm font-medium"
+        >
+          Ready to dominate your industry?{" "}
+          <span
+            className="text-[#F39221] underline underline-offset-2 cursor-pointer hover:text-[#E85D3A] transition-colors"
+            onClick={() => navigate("/industries")}
           >
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3D7E8C]/20 to-transparent"></div>
-            <div className="relative z-10">
-              <motion.h2 variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl md:text-5xl font-black mb-8">
-                Industries We Work With
-              </motion.h2>
-              <motion.div 
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="flex flex-wrap justify-center gap-4"
-              >
-                {industries.map((ind, i) => (
-                  <motion.div 
-                    key={i} 
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-                    className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#F39221]/50 transition-all group cursor-default"
-                  >
-                    <span className="text-[#F39221] group-hover:rotate-12 transition-transform">{ind.icon}</span>
-                    <span className="font-bold text-sm tracking-wide">{ind.name}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-              <motion.p 
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="mt-12 text-slate-400 text-sm font-medium"
-              >
-                Ready to dominate your industry? Let’s talk.
-              </motion.p>
-            </div>
-          </motion.div>
+            Let's talk.
+          </span>
+        </motion.p>
+      </div>
+    </motion.div>
          
 {/* --- SECTION 5: CLIENT LOGOS --- */}
 <section className="pt-20 pb-4 bg-white">
