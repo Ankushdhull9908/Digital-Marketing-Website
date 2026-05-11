@@ -8,8 +8,7 @@ import { Link, useLocation } from "react-router-dom";
 const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
   <motion.div 
     whileHover={{ y: -10 }}
-    className="card bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group h-full"
-  >
+    className="card bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group h-full">
     <div className="card-body p-8">
       {/* Icon Container */}
       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-6 ${color}`}>
