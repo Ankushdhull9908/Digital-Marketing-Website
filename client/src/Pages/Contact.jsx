@@ -294,11 +294,11 @@ const Contact= () => {
         </div>
       </section>
     {/* --- MAP & ADDRESS SECTION --- */}
-<section className="py-24 px-6 bg-slate-50/50 relative overflow-hidden">
+<section className="py-24  bg-slate-50/50 relative overflow-hidden">
   {/* Decorative Background Blob for the Map section */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#3D7E8C]/5 rounded-full blur-[120px] pointer-events-none" />
+  <div className="absolute top-1/2  -translate-x-1/2 -translate-y-1/2 w-[100%] h-[600px] bg-[#3D7E8C]/5  blur-[120px] pointer-events-none" />
 
-  <div className="max-w-5xl mx-auto relative z-10">
+  <div className="max-w-screen mx-auto relative z-10">
     <div className="text-center mb-12">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -316,13 +316,13 @@ const Contact= () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="relative mx-auto w-full max-w-4xl group"
+      className="relative  w-full  group"
     >
       {/* Decorative Border/Glow Effect */}
-      <div className="absolute -inset-4 bg-gradient-to-r from-[#3D7E8C]/20 to-[#F39221]/20 rounded-[4rem] blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+      <div className=" w-full border-2 border-[#3D7E8C]/50   blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
       
       {/* Main Map Frame */}
-      <div className="relative h-[450px] md:h-[550px] rounded-[3.5rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[6px] border-white">
+      <div className="relative h-[250px] md:h-[350px] w-screen  md:w-[100%] overflow-hidden ">
         <iframe 
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.8392319277!2d77.0688975472!3d28.527280343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b34766357%3A0xd8341144df389270!2sDelhi!5e0!3m2!1sen!2sin!4v1715000000000!5m2!1sen!2sin" 
           width="100%" 
@@ -331,7 +331,7 @@ const Contact= () => {
           allowFullScreen="" 
           loading="lazy" 
           referrerPolicy="no-referrer-when-downgrade"
-          className="grayscale contrast-125 brightness-105 group-hover:grayscale-0 transition-all duration-1000 ease-in-out scale-105 group-hover:scale-100"
+          className="grayscale contrast-125 brightness-105 group-hover:grayscale-0 transition-all duration-1000 ease-in-out  group-hover:scale-100"
         />
         
         {/* Floating Glassmorphic Badge */}

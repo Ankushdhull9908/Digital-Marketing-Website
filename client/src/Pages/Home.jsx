@@ -61,14 +61,8 @@ useEffect(() => {
   return (
     <div className="bg-[#F8FAFB] text-slate-800 min-h-screen font-montserrat overflow-x-hidden selection:bg-[#F39221]/30 no-scrollbar">
  {/* ── TOP CAROUSEL & BANNERS ────────────────────────────────────────── */}
-   <div className="w-full relative overflow-hidden pt-0 md:pt-6">
-  
-  {/* 
-      Removed the -ml/mr hacks. 
-      Mobile: w-full, rounded-none 
-      Desktop: w-[95%] mx-auto, rounded-3xl
-  */}
-  <div className="relative w-full md:w-[95%] mx-auto h-[300px] md:h-[450px] lg:h-[600px] rounded-none md:rounded-[3rem] overflow-hidden shadow-2xl border-b md:border-2 border-white bg-slate-200">
+   <div className="w-full relative overflow-hidden ">
+  <div className="relative w-full md:w-[100%]  h-[300px] md:h-[450px] lg:h-[600px] overflow-hidden shadow-2xl  bg-slate-200">
     
     <AnimatePresence mode="wait">
       <motion.img
