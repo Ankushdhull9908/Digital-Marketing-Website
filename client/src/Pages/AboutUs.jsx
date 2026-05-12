@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Eye, Rocket, CheckCircle2, Award, Users, BarChart3, ArrowRight,PhoneCall, MousePointer2 , MessageSquare  } from 'lucide-react';
+import { Target, Eye,  CheckCircle2, Award, Users, BarChart3, ArrowRight,PhoneCall, MousePointer2 , MessageSquare ,Brain, Code, Rocket, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const AboutUs = () => {
   const fadeIn ={
@@ -129,72 +129,97 @@ const AboutUs = () => {
       </section>
 
     {/* --- BENTO-STYLE STORY SECTION --- */}
-      <section className="py-24 max-w-7xl mx-auto px-6">
+     <section className="py-24 max-w-7xl mx-auto px-6 relative overflow-hidden">
+      {/* ── BACKGROUND ACCENTS ── */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#3D7E8C]/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#F39221]/5 rounded-full blur-[120px] -z-10" />
+
+      {/* ── 1. HEADER: TITANIC TYPOGRAPHY ── */}
+      <motion.div 
+        className="text-center mb-20 space-y-4"
+        {...fadeIn}
+      >
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <div className="h-[1px] w-8 bg-[#F39221]" />
+          <span className="text-[#F39221] font-bold uppercase text-[10px] tracking-[0.3em]">Our Philosophy</span>
+          <div className="h-[1px] w-8 bg-[#F39221]" />
+        </div>
         
-        {/* 1. Centered Heading at Top */}
+        <h2 className="text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter">
+          Surgical Strategy. <br /> 
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-slate-700">
+            Infinite Impact.
+          </span>
+        </h2>
+        
+        <p className="max-w-xl mx-auto text-slate-500 font-medium text-lg pt-4">
+          We don't just "post" content. We engineer digital ecosystems that convert curiosity into capital.
+        </p>
+      </motion.div>
+
+      {/* ── 2. BENTO GRID ── */}
+      <div className="grid lg:grid-cols-12 gap-6 auto-rows-[300px]">
+        
+        {/* LARGE FEATURE: IMAGE (6 Cols, 2 Rows) */}
         <motion.div 
-          className="text-center mb-16"
+          className="lg:col-span-7 row-span-2 rounded-[2.5rem] overflow-hidden shadow-2xl relative group border border-slate-200"
           {...fadeIn}
         >
-          <span className="text-[#F39221] font-black uppercase text-xs tracking-widest mb-4 block">Our Philosophy</span>
-          <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-tight tracking-tighter">
-            Helping Businesses Succeed <br /> In A <span className="text-[#3D7E8C]">Noisy World.</span>
-          </h2>
-          <div className="w-24 h-2 bg-[#F39221] mx-auto rounded-full mt-6"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity" />
+          <img 
+            src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200" 
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[2s]" 
+            alt="Digital Strategy" 
+          />
+          <div className="absolute bottom-10 left-10 z-20 space-y-2">
+            <span className="bg-[#F39221] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">
+              Digital Architecture
+            </span>
+            <h3 className="text-white text-3xl font-black tracking-tight">The Blueprint for Growth</h3>
+          </div>
         </motion.div>
 
-        {/* 2. Content Grid: Image Left, Bento Cards Right */}
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+        {/* ROI CARD: TEAL (5 Cols, 1 Row) */}
+        <motion.div 
+          className="lg:col-span-5 row-span-1 p-8 md:p-12 rounded-[2.5rem] bg-[#3D7E8C] text-white shadow-xl relative overflow-hidden group border border-white/10"
+          whileHover={{ y: -5 }}
+          {...fadeIn}
+        >
+          {/* Decorative SVG Pattern */}
+          <svg className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform" width="200" height="200" viewBox="0 0 100 100">
+            <circle cx="100" cy="0" r="80" fill="white" />
+          </svg>
           
-          {/* Left Side: Large Feature Image */}
-          <motion.div 
-            className="lg:col-span-6 rounded-[3rem] overflow-hidden shadow-2xl relative group min-h-[400px]"
-            {...fadeIn}
-          >
-            <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-            <img 
-              src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=800" 
-              className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
-              alt="Digital Strategy" 
-            />
-            {/* Decorative Label on Image */}
-            <div className="absolute bottom-8 left-8 z-20">
-              <div className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-xl">
-                <p className="text-slate-900 font-black text-sm uppercase tracking-tighter">Surgical Precision</p>
-              </div>
+          <div className="relative z-10 h-full flex flex-col justify-between">
+            <div className="bg-white/20 w-12 h-12 rounded-2xl flex items-center justify-center backdrop-blur-md">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
             </div>
-          </motion.div>
-
-          {/* Right Side: Bento Cards */}
-          <div className="lg:col-span-6 flex flex-col gap-6">
-            
-            {/* Top Right: ROI Focus Card */}
-            <motion.div 
-              className="p-10 md:p-12 rounded-[3rem] bg-[#3D7E8C] text-white flex-1 flex flex-col justify-center shadow-xl relative overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-            >
-               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16" />
-              <p className="text-xl md:text-2xl font-bold leading-relaxed relative z-10">
-                Founded on the principle of surgical digital marketing, we cut through the noise by prioritizing <span className="text-slate-900 font-black underline decoration-[#F39221] underline-offset-4">ROI over vanity metrics.</span>
-              </p>
-            </motion.div>
-
-            {/* Bottom Right: Team/Obsession Card */}
-            <motion.div 
-              className="p-10 md:p-12 rounded-[3rem] bg-slate-900 text-white flex-1 flex flex-col justify-center shadow-lg relative overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-            >
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#F39221]/10 rounded-full blur-3xl -ml-16 -mb-16" />
-              <p className="text-slate-100/80 text-lg md:text-xl font-medium leading-relaxed relative z-10">
-                Our team is composed of <span className="text-white font-bold">developers, data scientists,</span> and creative strategists who share one obsession: <span className="text-[#F39221] font-black">measurable business growth.</span>
-              </p>
-            </motion.div>
-
+            <p className="text-xl font-bold leading-snug">
+             Founded on the principle of surgical digital marketing, we cut through the noise by prioritizing  <span className="text-slate-900 underline decoration-[#F39221] decoration-4 underline-offset-4">ROI over vanity metrics.
+              </span> 
+            </p>
           </div>
-          
-        </div>
-      </section>
+        </motion.div>
 
+        {/* TEAM CARD: SLATE (5 Cols, 1 Row) */}
+        <motion.div 
+          className="lg:col-span-5 h-auto row-span-1  md:p-12 rounded-[2.5rem] bg-slate-900 text-white shadow-2xl relative overflow-hidden group border border-slate-800"
+          whileHover={{ y: -5 }}
+          {...fadeIn}
+        >
+           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#F39221]/20 rounded-full blur-3xl group-hover:bg-[#F39221]/30 transition-colors" />
+           
+           <div className="relative z-10 h-full flex flex-col justify-between">
+            <p className="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em]">The Brain Trust</p>
+            <p className="text-lg md:text-xl font-medium leading-relaxed">
+             Our team is composed of   <span className="text-white font-black">developers, data scientists,</span> and creative strategists who share one obsession:<span className="text-[#F39221] font-black"> measurable business growth.</span>
+            </p>
+           
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
      {/* --- WHY US SECTION --- */}
       {/* --- WHY US SECTION --- */}
       <section className="py-24 px-6 bg-white overflow-hidden">
