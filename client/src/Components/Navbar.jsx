@@ -87,36 +87,80 @@ const style = `
           />
         </Link>
       </div>
+{/* --- UPDATED NAVBAR CENTER --- */}
+<div className="navbar-center hidden lg:flex items-center">
+  <ul className="menu menu-horizontal px-1 font-medium flex items-center">
+    {/* Using flex and gap-4 for perfectly even spacing between items */}
+    <div className="flex items-center gap-6"> 
+      <li><Link to="/" className="hover:text-orange-600 px-3 " onClick={handleLinkClick}>Home</Link></li>
+      <li><Link to="/OurServices" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Our Services</Link></li>
 
-      <div className="navbar-center hidden lg:flex items-center gap-8">
-        
+      <li className="dropdown dropdown-hover">
+        <div tabIndex={0} role="button" className="flex items-center gap-1 px-3 hover:text-orange-600 transition-colors">
+          <h1>Advance Features</h1>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+       {/* --- UPDATED DROPDOWN LIST --- */}
+<ul 
+  tabIndex={0} 
+  className="dropdown-content z-[50] menu p-2 shadow-xl bg-base-100 rounded-box w-52 top-full border border-base-200 flex flex-col gap-1"
+>
+  <li>
+    <Link to="/resume-builder" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Resume Builder
+    </Link>
+  </li>
+  <li>
+    <Link to="/PortfolioTemplates" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Portfolio Maker
+    </Link>
+  </li>
+  <li>
+    <Link to="/influencer-form" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Influencer Form
+    </Link>
+  </li>
+  <li>
+    <Link to="/jobportal" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Job Portal
+    </Link>
+  </li>
+  <li>
+    <a 
+      href="https://www.hostinger.com/..." 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" 
+      onClick={handleLinkClick}
+    >
+      Buy Domain
+    </a>
+  </li>
+  <li>
+    <Link to="/landingpage" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Landing Page
+    </Link>
+  </li>
+  <li>
+    <Link to="/SIPCalculator" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      SIP Calculator
+    </Link>
+  </li>
+  <li>
+    <Link to="/WhySEO" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
+      Why SEO Important?
+    </Link>
+  </li>
+</ul>
+      </li>
 
-        <ul className="menu menu-horizontal px-1 gap-2 font-medium">
-          <li><Link to="/" className="hover:text-orange-600" onClick={handleLinkClick}>Home</Link></li>
-          <li><Link to="/OurServices" className="hover:text-orange-600" onClick={handleLinkClick}>Our Services</Link></li>
-
-          <li className="dropdown dropdown-hover">
-            <div tabIndex={0} role="button" className="flex items-center gap-1">
-              <h1 className="hover:text-orange-600">Advance Features</h1>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </div>
-            <ul tabIndex={0} className="dropdown-content z-[50] menu p-2 shadow-xl bg-base-100 rounded-box w-52 top-full border border-base-200">
-              <li><Link to="/resume-builder" className="hover:text-orange-600" onClick={handleLinkClick}>Resume Builder</Link></li>
-              <li><Link to="/PortfolioTemplates" className="hover:text-orange-600" onClick={handleLinkClick}>Portfolio Maker</Link></li>
-              <li><Link to="/influencer-form" className="hover:text-orange-600" onClick={handleLinkClick}>Influencer Form</Link></li>
-              <li><Link to="/jobportal" className="hover:text-orange-600" onClick={handleLinkClick}>Job Portal</Link></li>
-              <li><a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600" onClick={handleLinkClick}>Buy Domain</a></li>
-              <li><Link to="/landingpage" className="hover:text-orange-600" onClick={handleLinkClick}>Landing Page</Link></li>
-              <li><Link to="/SIPCalculator" className="hover:text-orange-600" onClick={handleLinkClick}>SIP Calculator</Link></li>
-              <li><Link to="/WhySEO" className="hover:text-orange-600" onClick={handleLinkClick}>Why SEO Important?</Link></li>
-            </ul>
-          </li>
-           <li><Link to="/about" className="hover:text-orange-600" onClick={handleLinkClick}>About</Link></li>
-          <li><Link to="/contact" className="hover:text-orange-600" onClick={handleLinkClick}>Contact</Link></li>
-        </ul>
-      </div>
+      <li><Link to="/about" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>About</Link></li>
+      <li><Link to="/contact" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Contact</Link></li>
+    </div>
+  </ul>
+</div>
 
       <div className="navbar-end gap-2">
         {!user ? (
