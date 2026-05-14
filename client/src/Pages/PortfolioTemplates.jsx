@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Eye, ArrowRight, Sparkles, Layers, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 const PortfolioTemplates = () => {
   const templates = [
     { 
