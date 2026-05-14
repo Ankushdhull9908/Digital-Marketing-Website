@@ -10,7 +10,6 @@ import {
   Target,
   Sparkles
 } from 'lucide-react';
-
 const SipCalculator = () => {
   const [monthlyInvestment, setMonthlyInvestment] = useState(10000);
   const [investmentPeriod, setInvestmentPeriod] = useState(15);
