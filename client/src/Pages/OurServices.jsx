@@ -14,7 +14,6 @@ const ServiceCard = ({ icon: Icon, title, description, features }) => (
       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-6 ${features.includes("SEO") ? "bg-blue-50 text-blue-600" : "bg-base-100 text-base-content"}`}>
         <Icon size={28} />
       </div>
-
       {/* Title & Description*/}
       <h3 className="text-2xl font-black mb-3 group-hover:text-[#F39221] transition-colors tracking-tight text-base-content">
         {title}
