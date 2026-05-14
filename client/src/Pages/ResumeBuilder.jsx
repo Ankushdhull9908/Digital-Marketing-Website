@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print"; 
 import { ChevronLeft, Download, CheckCircle, Briefcase, GraduationCap, User, FileText, Zap, Eye, Plus, Trash2 } from "lucide-react";
-
 const ResumeBuilder = () => {
   const { templateId } = useParams();
   const [currentStep, setCurrentStep] = useState(1);
