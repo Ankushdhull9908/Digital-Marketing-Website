@@ -17,7 +17,6 @@ const AboutUs = () => {
     { name: "Content Marketing", icon: <Award size={24} /> },
     { name: "Lead Generation", icon: <CheckCircle2 size={24} /> }
   ];
-
   return (
     <div className="bg-base-100 font-sans text-base-content selection:bg-[#3D7E8C]/20 overflow-x-hidden">
       
