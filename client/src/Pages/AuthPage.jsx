@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
-
 function AuthPage() {
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
