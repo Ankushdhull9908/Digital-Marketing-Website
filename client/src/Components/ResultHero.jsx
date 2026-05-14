@@ -5,7 +5,6 @@ import {
   ChevronDown, Play
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
-
 const ResultHero = () => {
   const { faqs } = useAuth(); 
   const [activeTab, setActiveTab] = useState('Monthly');
