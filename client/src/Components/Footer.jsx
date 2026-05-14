@@ -11,7 +11,6 @@ import {
   FaEnvelope,
   FaMapMarkerAlt
 } from 'react-icons/fa';
-
 const Footer = () => {
   const currentYear= new Date().getFullYear();
 
