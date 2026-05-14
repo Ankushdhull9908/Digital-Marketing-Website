@@ -71,13 +71,13 @@ const ResumeBuilder = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
-      <header className="border-b border-slate-200 px-6 py-4 flex justify-between items-center bg-white sticky top-0 z-[50] shadow-sm">
+    <div className="min-h-screen bg-base-100 font-sans text-slate-900">
+      <header className="border-b border-base-200 px-6 py-4 flex justify-between items-center bg-base-100 sticky top-0 z-[50] shadow-sm">
         <div className="flex items-center gap-4">
           <Link to="/" className="flex items-center gap-2 text-slate-500 hover:text-[#3D7E8C] font-bold text-sm transition-colors">
             <ChevronLeft size={18} /> Back
           </Link>
-          <div className="h-6 w-px bg-slate-200"></div>
+          <div className="h-6 w-px bg-base-200"></div>
           <h1 className="font-black text-lg tracking-tight text-slate-800 uppercase">
            Resume Builder / <span className="text-[#3D7E8C]">{templateId?.replace("-", " ")}</span>
           </h1>
@@ -88,28 +88,28 @@ const ResumeBuilder = () => {
       </header>
 
       <div className="flex flex-col lg:flex-row h-[calc(100vh-73px)]">
-        <aside className="w-full lg:w-24 border-r border-slate-200 bg-white flex lg:flex-col items-center py-8 gap-6 overflow-x-auto">
+        <aside className="w-full lg:w-24 border-r border-base-200 bg-base-100 flex lg:flex-col items-center py-8 gap-6 overflow-x-auto">
           {steps.map((s) => (
-            <button key={s.id} onClick={() => setCurrentStep(s.id)} className={`relative flex flex-col items-center justify-center transition-all min-w-[80px] p-2 rounded-2xl ${currentStep === s.id ? "text-[#3D7E8C] bg-[#3D7E8C]/5" : "text-slate-400 hover:text-slate-600"}`}>
+            <button key={s.id} onClick={() => setCurrentStep(s.id)} className={`relative flex flex-col items-center justify-center transition-all min-w-[80px] p-2 rounded-2xl ${currentStep === s.id ? "text-[#3D7E8C] bg-base-200" : "text-base-400 hover:text-slate-600"}`}>
               <div className={`p-3 rounded-xl mb-1 transition-all ${currentStep === s.id ? "bg-[#3D7E8C] text-white shadow-lg shadow-[#3D7E8C]/30" : "bg-slate-100"}`}>{s.icon}</div>
               <span className="text-[10px] font-black uppercase tracking-wider">{s.name}</span>
             </button>
           ))}
         </aside>
 
-        <main className="flex-1 p-6 md:p-12 overflow-y-auto bg-white">
+        <main className="flex-1 p-6 md:p-12 overflow-y-auto bg-base-100">
           <div className="max-w-2xl mx-auto">
             <div className="mb-10">
               <span className="text-[#F39221] font-black text-[10px] tracking-[0.3em] uppercase">Step {currentStep} of 5</span>
-              <h2 className="text-4xl font-black text-slate-900 tracking-tight mt-1">{steps.find((s) => s.id === currentStep).name} <span className="text-[#3D7E8C]">Details</span></h2>
+              <h2 className="text-4xl font-black text-base-content tracking-tight mt-1">{steps.find((s) => s.id === currentStep).name} <span className="text-[#3D7E8C]">Details</span></h2>
             </div>
 
             {currentStep === 1 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2">
                 {['fname', 'lname', 'profession', 'email', 'phone'].map((field) => (
                   <div key={field} className="flex flex-col gap-2">
-                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{field.replace('fname', 'First Name').replace('lname', 'Last Name')}</label>
-                    <input type="text" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none font-medium focus:border-[#3D7E8C] transition-colors" value={formData.personal[field]} onChange={(e) => handleChange("personal", field, e.target.value)} />
+                    <label className="text-[11px] font-black text-base-content uppercase tracking-widest">{field.replace('fname', 'First Name').replace('lname', 'Last Name')}</label>
+                    <input type="text" className="w-full p-4 bg-base-50 border border-base-200 rounded-2xl outline-none font-medium focus:border-[#3D7E8C] transition-colors" value={formData.personal[field]} onChange={(e) => handleChange("personal", field, e.target.value)} />
                   </div>
                 ))}
               </div>
@@ -117,8 +117,8 @@ const ResumeBuilder = () => {
 
             {currentStep === 2 && (
               <div className="animate-in fade-in slide-in-from-bottom-2">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Professional Summary</label>
-                <textarea rows="6" className="w-full p-4 mt-2 bg-slate-50 border border-slate-200 rounded-2xl outline-none font-medium focus:border-[#3D7E8C] transition-colors" placeholder="Describe your career goals and achievements..." value={formData.summary} onChange={(e) => handleChange("summary", null, e.target.value)} />
+                <label className="text-[11px] font-black text-base-content uppercase tracking-widest">Professional Summary</label>
+                <textarea rows="6" className="w-full p-4 mt-2 bg-base-50  border border-base-200 rounded-2xl outline-none font-medium focus:border-[#3D7E8C] transition-colors" placeholder="Describe your career goals and achievements..." value={formData.summary} onChange={(e) => handleChange("summary", null, e.target.value)} />
               </div>
             )}
 
@@ -128,9 +128,9 @@ const ResumeBuilder = () => {
                   <div key={index} className="p-6 border border-[#3D7E8C]/20 rounded-3xl bg-[#3D7E8C]/5 relative">
                     <button onClick={() => removeField("experience", index)} className="absolute top-4 right-4 text-red-400 hover:text-red-600"><Trash2 size={18}/></button>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input placeholder="Company" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white outline-none focus:border-[#3D7E8C]" value={exp.company} onChange={(e) => handleChange("experience", "company", e.target.value, index)} />
-                      <input placeholder="Role" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white outline-none focus:border-[#3D7E8C]" value={exp.role} onChange={(e) => handleChange("experience", "role", e.target.value, index)} />
-                      <input placeholder="Duration" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white col-span-2 outline-none focus:border-[#3D7E8C]" value={exp.duration} onChange={(e) => handleChange("experience", "duration", e.target.value, index)} />
+                      <input placeholder="Company" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 outline-none focus:border-[#3D7E8C]" value={exp.company} onChange={(e) => handleChange("experience", "company", e.target.value, index)} />
+                      <input placeholder="Role" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 outline-none focus:border-[#3D7E8C]" value={exp.role} onChange={(e) => handleChange("experience", "role", e.target.value, index)} />
+                      <input placeholder="Duration" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 col-span-2 outline-none focus:border-[#3D7E8C]" value={exp.duration} onChange={(e) => handleChange("experience", "duration", e.target.value, index)} />
                     </div>
                   </div>
                 ))}
@@ -144,9 +144,9 @@ const ResumeBuilder = () => {
                   <div key={index} className="p-6 border border-[#3D7E8C]/20 rounded-3xl bg-[#3D7E8C]/5 relative">
                     <button onClick={() => removeField("education", index)} className="absolute top-4 right-4 text-red-400 hover:text-red-600"><Trash2 size={18}/></button>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input placeholder="School" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white outline-none" value={edu.school} onChange={(e) => handleChange("education", "school", e.target.value, index)} />
-                      <input placeholder="Degree" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white outline-none" value={edu.degree} onChange={(e) => handleChange("education", "degree", e.target.value, index)} />
-                      <input placeholder="Year" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-white col-span-2 outline-none" value={edu.year} onChange={(e) => handleChange("education", "year", e.target.value, index)} />
+                      <input placeholder="School" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 outline-none" value={edu.school} onChange={(e) => handleChange("education", "school", e.target.value, index)} />
+                      <input placeholder="Degree" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 outline-none" value={edu.degree} onChange={(e) => handleChange("education", "degree", e.target.value, index)} />
+                      <input placeholder="Year" className="p-3 rounded-xl border border-[#3D7E8C]/20 bg-base-50 col-span-2 outline-none" value={edu.year} onChange={(e) => handleChange("education", "year", e.target.value, index)} />
                     </div>
                   </div>
                 ))}
@@ -156,8 +156,8 @@ const ResumeBuilder = () => {
 
             {currentStep === 5 && (
               <div className="animate-in fade-in slide-in-from-bottom-2">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Skills (Comma separated)</label>
-                <input type="text" className="w-full p-4 mt-2 bg-[#3D7E8C]/5 border border-[#3D7E8C]/20 rounded-2xl outline-none font-medium" value={formData.skills.join(", ")} onChange={(e) => handleChange("skills", null, e.target.value)} />
+                <label className="text-[11px] font-black text-base-100 uppercase tracking-widest">Skills (Comma separated)</label>
+                <input type="text" className="w-full p-4 mt-2 bg-base-50 border border-[#3D7E8C]/20 rounded-2xl outline-none font-medium" value={formData.skills.join(", ")} onChange={(e) => handleChange("skills", null, e.target.value)} />
               </div>
             )}
 
@@ -175,11 +175,11 @@ const ResumeBuilder = () => {
           </div>
         </main>
 
-        <aside className="hidden lg:flex flex-[1.2] bg-[#f1f5f9] p-10 items-start justify-center overflow-y-auto border-l border-slate-200">
+        <aside className="hidden lg:flex flex-[1.2] bg-base-100 p-10 items-start justify-center overflow-y-auto border-l border-base-200">
           <div className="sticky top-0 w-full max-w-[600px] print:m-0 print:shadow-none">
-            <div ref={resumeRef} className="bg-white shadow-2xl min-h-[842px] w-full p-0 overflow-hidden rounded-sm border border-slate-200">
+            <div ref={resumeRef} className="bg-base-50 shadow-2xl min-h-[842px] w-full p-0 overflow-hidden rounded-sm border border-base-200">
               <div className="flex h-full min-h-[842px]">
-                <div className="w-1/3 bg-[#3D7E8C] p-8 text-white">
+                <div className="w-1/3 bg-[#3D7E8C] p-8 text-white flex flex-col justify-between">
                   <div className="mb-10">
                     <div className="w-20 h-20 bg-white/10 rounded-3xl mb-6 border border-white/20 flex items-center justify-center text-3xl font-black uppercase">{formData.personal.fname?.[0] || "K"}</div>
                     <h2 className="text-xs font-black tracking-[0.2em] uppercase text-[#F39221] mb-2">Contact</h2>
@@ -201,7 +201,7 @@ const ResumeBuilder = () => {
 
                 <div className="flex-1 p-10">
                   <header className="mb-10">
-                    <h1 className="text-5xl font-black tracking-tighter text-slate-900 leading-none">{formData.personal.fname || "KESHAV"} <br/><span className="text-[#3D7E8C]">{formData.personal.lname || "GOEL"}</span></h1>
+                    <h1 className="text-5xl font-black tracking-tighter text-base-content leading-none">{formData.personal.fname || "KESHAV"} <br/><span className="text-[#3D7E8C]">{formData.personal.lname || "GOEL"}</span></h1>
                     <div className="h-1 w-12 bg-[#F39221] my-4"></div>
                     <p className="text-xs font-black uppercase tracking-[0.4em] text-slate-400">{formData.personal.profession}</p>
                   </header>

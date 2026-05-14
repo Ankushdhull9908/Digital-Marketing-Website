@@ -86,18 +86,23 @@ const ResultHero = () => {
   ];
 
   return (
-    <div className="font-montserrat text-slate-800 overflow-hidden w-full">
+    <div className="font-montserrat text-base-content overflow-hidden w-full">
       
       {/* --- SECTION 1: EXPECTED RESULTS --- */}
-      <section className="py-20 px-6 bg-slate-50">
+      {/* 1. Changed bg-slate-50 to bg-base-200 for a responsive sectional contrast */}
+      <section className="py-20 px-6 bg-base-200 transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-black mb-4">Results You Can Expect</h2>
-            <p className="text-slate-500 font-medium">Data-backed growth for your digital footprint.</p>
+            {/* 2. Added text-base-content to make sure the main header flips color */}
+            <h2 className="text-3xl md:text-5xl font-black mb-4 text-base-content">Results You Can Expect</h2>
+            {/* 3. Changed text-slate-500 to text-base-content/70 for adaptive subtext */}
+            <p className="text-base-content/70 font-medium">Data-backed growth for your digital footprint.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {results.map((res, i) => (
-              <div key={i} className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-sm border-b-4 border-[#3D7E8C]">
+              /* 4. Changed bg-white to bg-base-100 so the cards look crisp and clean in both modes.
+                    Added text-base-content here to guarantee readability of the {res} item string. */
+              <div key={i} className="flex items-center gap-4 p-6 bg-base-100 text-base-content rounded-2xl shadow-sm border-b-4 border-[#3D7E8C]">
                 <CheckCircle className="text-[#3D7E8C]" size={24} />
                 <span className="font-bold text-lg">{res}</span>
               </div>
@@ -122,10 +127,10 @@ const ResultHero = () => {
         }
       `}} />
       
-      <section className="py-24 bg-white overflow-hidden w-full px-0"> {/* px-0 is critical here */}
+      <section className="py-24 bg-base-100 overflow-hidden w-full px-0"> {/* px-0 is critical here */}
         <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
           <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-            What our <span className="text-[#F39221]">Clients</span> say <span className="text-[#3D7E8C]">About us</span>
+            What our <span className="text-[#F39221]">Clients</span> say <span className="text-base-content">About us</span>
           </h2>
           <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-xs">
             Success Stories in Motion
@@ -138,7 +143,7 @@ const ResultHero = () => {
             {[...allClients, ...allClients].map((client, index) => (
               <div
                 key={`${client.id}-${index}`}
-                className="w-[300px] md:w-[450px] bg-slate-950 border-r border-white/10 flex flex-col group transition-all duration-500 rounded-none"
+                className="w-[300px] md:w-[450px] bg-slate-950 border-r border-slate-600 flex flex-col group transition-all duration-500 rounded-none"
               >
                 {/* Video - No rounded corners */}
                 <div className="relative aspect-video bg-black overflow-hidden rounded-none">
@@ -152,7 +157,7 @@ const ResultHero = () => {
                   />
                   <div className="absolute top-4 right-4">
                     <div className="bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/20">
-                      <Play size={12} className="text-white fill-white" />
+                      <Play size={12} className="text-slate-300 fill-slate-300" />
                     </div>
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
@@ -185,7 +190,7 @@ const ResultHero = () => {
       </section>
 
       {/* --- SECTION 3: PRICING --- */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-base-200">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
@@ -244,7 +249,7 @@ const ResultHero = () => {
 
                 <div className="mb-10 relative z-10">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-black text-white">₹{pkg.prices[activeTab]}</span>
+                    <span className="text-4xl font-black text-slate-300 ">₹{pkg.prices[activeTab]}</span>
                     <span className="text-slate-500 text-lg font-bold">/-</span>
                   </div>
                 </div>
@@ -268,20 +273,20 @@ const ResultHero = () => {
       </section>
 
       {/* --- SECTION 4: FAQ --- */}
-      <section className="py-24 px-6 bg-slate-50">
+      <section className="py-24 px-6 bg-base-200">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-5xl font-black mb-12 text-center">FAQ Section</h2>
           <div className="space-y-4">
             {faqs && faqs.map((faq, i) => (
-              <details key={i} className="group p-6 rounded-2xl bg-white shadow-sm cursor-pointer">
-                <summary className="flex items-center justify-between font-black text-slate-800 list-none">
+              <details key={i} className="group p-6 rounded-2xl bg-base-100 shadow-sm cursor-pointer">
+                <summary className="flex items-center justify-between font-black text-base-content list-none">
                   <div className="flex items-center gap-3">
                     <HelpCircle className="text-[#3D7E8C]" size={20} />
                     {faq.question}
                   </div>
                   <ChevronDown className="group-open:rotate-180 transition-transform" size={20} />
                 </summary>
-                <p className="mt-4 text-slate-600 font-medium pl-8 border-l-2 border-[#3D7E8C]">{faq.answer}</p>
+                <p className="mt-4 text-base-content font-medium pl-8 border-l-2 border-[#3D7E8C]">{faq.answer}</p>
               </details>
             ))}
           </div>

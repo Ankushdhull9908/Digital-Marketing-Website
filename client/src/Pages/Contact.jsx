@@ -58,7 +58,7 @@ const Contact= () => {
   };
 
   return (
-    <div className="font-montserrat text-slate-800 bg-white overflow-hidden">
+    <div className="font-montserrat text-base-content bg-base-100 overflow-hidden">
      {/* -- CONTACT US HERO SECTION --- */}
       <section className="relative pt-24 pb-32 px-6 bg-[#0f172a] overflow-hidden text-center">
         {/* Background Image with Overlay */}
@@ -94,7 +94,7 @@ const Contact= () => {
         </motion.div>
       </section>
       {/* --- HERO HEADER --- */}
-      <section className="pt-20 pb-12 px-6 bg-slate-50">
+      <section className="pt-20 pb-12 px-6 bg-base-100 relative overflow-hidden">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h1 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -123,8 +123,8 @@ const Contact= () => {
             >
               <div className="space-y-6">
                 {/* Phone */}
-                <div className="flex items-start gap-5 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-[#3D7E8C]/30 transition-all">
-                  <div className="bg-[#3D7E8C] p-3 rounded-2xl text-white">
+                <div className="flex items-start gap-5 p-6 rounded-3xl bg-base-100 border border-base-200 hover:border-[#3D7E8C]/30 transition-all">
+                  <div className="bg-[#3D7E8C] p-3 rounded-2xl text-base-100">
                     <Phone size={24} />
                   </div>
                   <div>
@@ -134,8 +134,8 @@ const Contact= () => {
                 </div>
 
                 {/* Email */}
-                <div className="flex items-start gap-5 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-[#3D7E8C]/30 transition-all">
-                  <div className="bg-[#F39221] p-3 rounded-2xl text-white">
+                <div className="flex items-start gap-5 p-6 rounded-3xl bg-base-100 border border-base-200 hover:border-[#3D7E8C]/30 transition-all">
+                  <div className="bg-[#F39221] p-3 rounded-2xl text-base-100">
                     <Mail size={24} />
                   </div>
                   <div>
@@ -146,8 +146,8 @@ const Contact= () => {
                 </div>
 
                 {/* Address */}
-                <div className="flex items-start gap-5 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:border-[#3D7E8C]/30 transition-all">
-                  <div className="bg-[#3D7E8C] p-3 rounded-2xl text-white">
+                <div className="flex items-start gap-5 p-6 rounded-3xl bg-base-100 border border-base-200 hover:border-[#3D7E8C]/30 transition-all">
+                  <div className="bg-[#3D7E8C] p-3 rounded-2xl text-base-100">
                     <MapPin size={24} />
                   </div>
                   <div>
@@ -177,7 +177,7 @@ const Contact= () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeInUp}
-              className="lg:col-span-7 bg-white rounded-[3rem] shadow-2xl border border-slate-100 p-8 md:p-12"
+              className="lg:col-span-7 bg-base-100 rounded-[3rem] shadow-2xl border border-base-200 p-8 md:p-12"
             >
               <div className="mb-8">
                 <h2 className="text-2xl md:text-3xl font-black mb-2 flex items-center gap-3">
@@ -203,7 +203,7 @@ const Contact= () => {
               <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="form-control">
-                    <label className="label font-bold text-slate-700">Full Name</label>
+                    <label className="label font-bold text-base-900">Full Name</label>
                     <input
                       type="text"
                       name="fullName"
@@ -211,11 +211,11 @@ const Contact= () => {
                       onChange={handleChange}
                       placeholder="John Doe"
                       required
-                      className="input input-bordered rounded-2xl bg-slate-50 focus:border-[#3D7E8C]"
+                      className="input input-bordered rounded-2xl bg-base-100 focus:border-[#3D7E8C]"
                     />
                   </div>
                   <div className="form-control">
-                    <label className="label font-bold text-slate-700">Email Address</label>
+                    <label className="label font-bold text-base-900">Email Address</label>
                     <input
                       type="email"
                       name="email"
@@ -223,30 +223,30 @@ const Contact= () => {
                       onChange={handleChange}
                       placeholder="name@company.com"
                       required
-                      className="input input-bordered rounded-2xl bg-slate-50 focus:border-[#3D7E8C]"
+                      className="input input-bordered rounded-2xl bg-base-100 focus:border-[#3D7E8C]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="form-control">
-                    <label className="label font-bold text-slate-700">Phone Number</label>
+                    <label className="label font-bold text-base-900">Phone Number</label>
                     <input
                       type="text"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 00000 00000"
-                      className="input input-bordered rounded-2xl bg-slate-50 focus:border-[#3D7E8C]"
+                      className="input input-bordered rounded-2xl bg-base-100 focus:border-[#3D7E8C]"
                     />
                   </div>
                   <div className="form-control">
-                    <label className="label font-bold text-slate-700">Subject</label>
+                    <label className="label font-bold text-base-900">Subject</label>
                     <select
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      className="select select-bordered rounded-2xl bg-slate-50 focus:border-[#3D7E8C]"
+                      className="select select-bordered rounded-2xl bg-base-100 focus:border-[#3D7E8C]"
                     >
                       <option value="">Pick a service</option>
                       <option>Website Design</option>
@@ -258,13 +258,13 @@ const Contact= () => {
                 </div>
 
                 <div className="form-control">
-                  <label className="label font-bold text-slate-700 p-2">Your Message</label>
+                  <label className="label font-bold text-base-900 p-2">Your Message</label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    className="p-2 textarea textarea-bordered h-32 rounded-2xl bg-slate-50 focus:border-[#3D7E8C]"
+                    className="p-2 textarea textarea-bordered h-32 rounded-2xl bg-base-100 focus:border-[#3D7E8C]"
                     placeholder="Tell us about your project goals..."
                   ></textarea>
                 </div>
@@ -293,7 +293,7 @@ const Contact= () => {
         </div>
       </section>
     {/* --- MAP & ADDRESS SECTION --- */}
-<section className="py-24  bg-slate-50/50 relative overflow-hidden">
+<section className="py-24  bg-base-100 relative overflow-hidden">
   {/* Decorative Background Blob for the Map section */}
   <div className="absolute top-1/2  -translate-x-1/2 -translate-y-1/2 w-[100%] h-[600px] bg-[#3D7E8C]/5  blur-[120px] pointer-events-none" />
 
@@ -334,7 +334,7 @@ const Contact= () => {
         />
         
         {/* Floating Glassmorphic Badge */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/80 backdrop-blur-md border border-white/20 px-8 py-4 rounded-2xl shadow-2xl z-10 flex items-center gap-4 min-w-[280px]">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-base-100/80 backdrop-blur-md border border-white/20 px-8 py-4 rounded-2xl shadow-2xl z-10 flex items-center gap-4 min-w-[280px]">
           <div className="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-white shrink-0 shadow-lg">
             <MapPin size={18} />
           </div>

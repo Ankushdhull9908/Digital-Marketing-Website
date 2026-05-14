@@ -85,8 +85,8 @@ const Webthech = () => {
 
   return (
     <div className="font-montserrat">
-      <section className="py-24 px-6 bg-white overflow-hidden">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-24 px-6 bg-base-100 overflow-hidden">
+        <div className="max-w-6xl mx-auto ">
           
          {/* --- SECTION 1: WHY CHOOSE US --- */}
 <div className="mb-24">
@@ -94,12 +94,12 @@ const Webthech = () => {
     initial={{ opacity: 0, x: -30 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
-    className="flex flex-col md:flex-row items-center gap-4 mb-12"
+    className="flex flex-col md:flex-row items-center gap-4 mb-12 "
   >
-    <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">
+    <h2 className="text-3xl md:text-5xl font-black text-base-content tracking-tight">
        Why Choose <span className="text-[#F39221]">Web</span><span   className="text-[#3D7E8C]"  >tech</span>  ?
     </h2>
-    <div className="hidden md:block h-px flex-1 bg-slate-100"></div>
+    <div className="hidden md:block h-px flex-1 bg-base-300"></div>
   </motion.div>
 
   {/* Container for List (Left) and Image (Right) */}
@@ -118,12 +118,12 @@ const Webthech = () => {
           key={index} 
           variants={fadeInUp}
           whileHover={{ y: -5 }}
-          className="flex items-center gap-4 p-6 rounded-2xl bg-[#F8FAFB] border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
+          className="flex items-center gap-4 p-6 rounded-2xl bg-base-200 border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
         >
           <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
             {item.icon}
           </div>
-          <span className="font-bold text-slate-700 group-hover:text-slate-900 transition-colors">
+          <span className="font-bold text-base-content group-hover:text-slate-900 transition-colors">
             {item.text}
           </span>
         </motion.div>
@@ -155,7 +155,7 @@ const Webthech = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative rounded-[3rem] bg-slate-50 p-8 md:p-16 overflow-hidden mb-24"
+            className="relative rounded-[3rem] bg-base-200 p-8 md:p-16 overflow-hidden mb-24"
           >
             <motion.div 
               animate={{ 
@@ -169,8 +169,8 @@ const Webthech = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
               <motion.div variants={fadeInUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
                 <div className="inline-block px-4 py-1 rounded-full bg-[#F39221]/10 text-[#F39221] text-xs font-black uppercase tracking-widest mb-6">Our Mission</div>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">Grow Your Business <br /><span className="text-[#3D7E8C]">With Our Expertise.</span></h2>
-                <p className="text-lg text-slate-600 font-medium leading-relaxed mb-8">At Webtech Services, we create customized marketing strategies based on your business goals and competition.</p>
+                <h2 className="text-4xl md:text-5xl font-black text-base-content mb-6 leading-tight">Grow Your Business <br /><span className="text-[#3D7E8C]">With Our Expertise.</span></h2>
+                <p className="text-lg text-base-content font-medium leading-relaxed mb-8">At Webtech Services, we create customized marketing strategies based on your business goals and competition.</p>
                 <motion.button whileHover={{ x: 10 }} className="flex items-center gap-2 font-bold text-[#F39221] group">Get a Custom Strategy <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform"/></motion.button>
               </motion.div>
 
@@ -182,14 +182,14 @@ const Webthech = () => {
                 className="grid grid-cols-1 sm:grid-cols-2 gap-4"
               >
                 {["Increase Traffic", "Quality Leads", "Boost ROI", "Brand Authority"].map((title, idx) => (
-                  <motion.div key={idx} variants={fadeInUp} className="p-6 rounded-3xl bg-white shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                  <motion.div key={idx} variants={fadeInUp} className="p-6 rounded-3xl bg-base-200 shadow-sm border border-base-300 hover:shadow-md transition-shadow">
                     <motion.div 
                       initial={{ width: 0 }}
                       whileInView={{ width: "2rem" }}
                       transition={{ delay: 0.5 + (idx * 0.1), duration: 0.5 }}
                       className="h-2 bg-[#3D7E8C] rounded-full mb-4"
                     ></motion.div>
-                    <h4 className="font-black text-slate-800">{title}</h4>
+                    <h4 className="font-black text-base-content">{title}</h4>
                   </motion.div>
                 ))}
               </motion.div>
@@ -204,10 +204,10 @@ const Webthech = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-4">
+              <h2 className="text-3xl md:text-5xl font-black text-base-content mb-4">
                  Our Success Process
               </h2>
-              <p className="text-slate-500 font-medium">From blueprint to big-scale growth.</p>
+              <p className="text-base-content font-medium">From blueprint to big-scale growth.</p>
             </motion.div>
             
             <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
@@ -217,7 +217,7 @@ const Webthech = () => {
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1.5, ease: "easeInOut" }}
-                className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-slate-100 -z-10 origin-left"
+                className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-base-300 -z-10 origin-left"
               ></motion.div>
               
               {steps.map((step, index) => (
@@ -231,13 +231,13 @@ const Webthech = () => {
                 >
                   <motion.div 
                     whileHover={{ rotate: [0, -10, 10, 0] }}
-                    className="w-16 h-16 rounded-2xl bg-white border-2 border-slate-100 text-[#3D7E8C] flex items-center justify-center mb-6 group-hover:border-[#F39221] group-hover:text-[#F39221] transition-all shadow-sm"
+                    className="w-16 h-16 rounded-2xl bg-base-200 border-2 border-base-300 text-[#3D7E8C] flex items-center justify-center mb-6 group-hover:border-[#F39221] group-hover:text-[#F39221] transition-all shadow-sm"
                   >
                     {step.icon}
                   </motion.div>
                   <span className="text-[10px] font-black text-[#F39221] mb-2">{step.num}</span>
-                  <h4 className="font-extrabold text-slate-900 mb-2">{step.title}</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed px-2">{step.desc}</p>
+                  <h4 className="font-extrabold text-base-content mb-2">{step.title}</h4>
+                  <p className="text-xs text-base-content/70 leading-relaxed px-2">{step.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -305,7 +305,7 @@ const Webthech = () => {
     </motion.div>
          
 {/* --- SECTION 5: CLIENT LOGOS --- */}
-<section className="pt-20 pb-4 bg-white">
+<section className="pt-20 pb-4 bg-base-100 overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
         <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
@@ -316,8 +316,8 @@ const Webthech = () => {
 
       <div className="relative overflow-hidden py-4">
         {/* Gradient Faders */}
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-base-100 via-base-200 to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-base-100 via-base-200 to-transparent z-10 pointer-events-none"></div>
 
         <motion.div
           className="flex whitespace-nowrap will-change-transform"

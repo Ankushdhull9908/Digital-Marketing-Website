@@ -1,16 +1,37 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
+import { LayoutDashboard, LogOut, User, ChevronDown, Sun, Moon } from "lucide-react";
 
-import { LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
- 
-const Navbar= () => {
-  
+const Navbar = () => {
   const nav = useNavigate();
   const { user, logout } = useAuth();
   const mobileDetailsRef = useRef(null);
- const MARQUEE_ITEMS = ["Influencer Marketing","Brand Partnerships","Content Strategy","Audience Growth","Campaign Analytics","ROI Tracking","Creator Economy","Authentic Reach"];
-const style = `
+
+  // ─── LOCAL STORAGE THEME STATE ──────────────────────────────────────
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+  );
+
+  const handleToggle = (e) => {
+    if (e.target.checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+
+  // Sync theme with the DOM's root HTML token globally
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    const localTheme = localStorage.getItem("theme");
+    document.documentElement.setAttribute("data-theme", localTheme);
+  }, [theme]);
+
+  // ─── MARQUEE SETTINGS ───────────────────────────────────────────────
+  const MARQUEE_ITEMS = ["Influencer Marketing", "Brand Partnerships", "Content Strategy", "Audience Growth", "Campaign Analytics", "ROI Tracking", "Creator Economy", "Authentic Reach"];
+  
+  const style = `
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -24,6 +45,7 @@ const style = `
       animation-play-state: paused;
     }
   `;
+
   const handleLinkClick = () => {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
@@ -35,9 +57,9 @@ const style = `
 
   return (
     <>
-   <style>{style}</style>
-      
-      {/* MARQUE */}
+      <style>{style}</style>
+
+      {/* MARQUEE */}
       <div className="overflow-hidden bg-slate-900 py-2.5 border-b border-white/5 select-none">
         <div className="marquee-container">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
@@ -48,184 +70,132 @@ const style = `
           ))}
         </div>
       </div>
-    <div className="navbar bg-base-100 text-base-content shadow-md px-4 lg:px-20 font-montserrat sticky top-0 z-[100]">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
-            <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
-            <li><Link to="/OurServices" onClick={handleLinkClick}>Our Services</Link></li>
-            <li>
-              <details ref={mobileDetailsRef}>
-                <summary>Advance Features</summary>
-                <ul className="p-2 bg-base-200 rounded-md">
-                  <li><Link to="/resume-builder" onClick={handleLinkClick}>Resume Builder</Link></li>
-                  <li><Link to="/PortfolioTemplates" onClick={handleLinkClick}>Portfolio Maker</Link></li>
-                  <li><Link to="/influencer-form" onClick={handleLinkClick}>Influencer Form</Link></li>
-                  <li><Link to="/jobportal" onClick={handleLinkClick}>Job Portal</Link></li>
-                  <li><a href="https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>Buy Domain</a></li>
-                  <li><Link to="/landingpage" onClick={handleLinkClick}>Landing Page</Link></li>
-                  <li><Link to="/SIPCalculator" onClick={handleLinkClick}>SIP Calculator</Link></li>
-                  <li><Link to="/WhySEO" onClick={handleLinkClick}>Why SEO Important?</Link></li>
-                </ul>
-              </details>
+
+      {/* MAIN NAV */}
+      <div className="navbar bg-base-100 text-base-content shadow-md px-4 lg:px-20 font-montserrat sticky top-0 z-[100]">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+              </svg>
+            </label>
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[50] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
+              <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
+              <li><Link to="/OurServices" onClick={handleLinkClick}>Our Services</Link></li>
+              <li>
+                <details ref={mobileDetailsRef}>
+                  <summary>Advance Features</summary>
+                  <ul className="p-2 bg-base-200 rounded-md">
+                    <li><Link to="/resume-builder" onClick={handleLinkClick}>Resume Builder</Link></li>
+                    <li><Link to="/PortfolioTemplates" onClick={handleLinkClick}>Portfolio Maker</Link></li>
+                    <li><Link to="/influencer-form" onClick={handleLinkClick}>Influencer Form</Link></li>
+                    <li><Link to="/jobportal" onClick={handleLinkClick}>Job Portal</Link></li>
+                    <li><a href="https://www.hostinger.com/" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>Buy Domain</a></li>
+                    <li><Link to="/landingpage" onClick={handleLinkClick}>Landing Page</Link></li>
+                    <li><Link to="/SIPCalculator" onClick={handleLinkClick}>SIP Calculator</Link></li>
+                    <li><Link to="/WhySEO" onClick={handleLinkClick}>Why SEO Important?</Link></li>
+                  </ul>
+                </details>
+              </li>
+              <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
+              <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
+            </ul>
+          </div>
+
+          <Link className="flex items-center gap-2" to="/" onClick={handleLinkClick}>
+            <img
+              src="/logos/logo.png"
+              alt="WebTech Logo"
+              className="h-10 w-auto object-contain lg:h-16 rounded"
+            />
+          </Link>
+        </div>
+
+        <div className="navbar-center hidden lg:flex items-center">
+          <ul className="menu menu-horizontal px-1 font-medium flex items-center">
+            <li><Link to="/" className="hover:text-orange-600 px-3 " onClick={handleLinkClick}>Home</Link></li>
+            <li><Link to="/OurServices" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Our Services</Link></li>
+
+            <li className="dropdown dropdown-hover">
+              <div tabIndex={0} role="button" className="flex items-center gap-1 px-3 hover:text-orange-600 transition-colors">
+                <h1>Advance Features</h1>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              <ul tabIndex={0} className="dropdown-content z-[50] menu p-2 shadow-xl bg-base-100 rounded-box w-52 top-full border border-base-200">
+                <li><Link to="/resume-builder" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Resume Builder</Link></li>
+                <li><Link to="/PortfolioTemplates" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Portfolio Maker</Link></li>
+                <li><Link to="/influencer-form" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Influencer Form</Link></li>
+                <li><Link to="/jobportal" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Job Portal</Link></li>
+                <li><a href="https://www.hostinger.com/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Buy Domain</a></li>
+                <li><Link to="/landingpage" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Landing Page</Link></li>
+                <li><Link to="/SIPCalculator" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>SIP Calculator</Link></li>
+                <li><Link to="/WhySEO" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>Why SEO Important?</Link></li>
+              </ul>
             </li>
-             <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
-            <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
+
+            <li><Link to="/about" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>About</Link></li>
+            <li><Link to="/contact" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Contact</Link></li>
           </ul>
         </div>
 
-        <Link className="flex items-center gap-2" to="/" onClick={handleLinkClick}>
-          <img 
-            src="/logos/logo.png"
-            alt="WebTech Logo" 
-            className="h-10 w-auto object-contain lg:h-16 rounded" 
-          />
-        </Link>
-      </div>
-{/* --- UPDATED NAVBAR CENTER --- */}
-<div className="navbar-center hidden lg:flex items-center">
-  <ul className="menu menu-horizontal px-1 font-medium flex items-center">
-    {/* Using flex and gap-4 for perfectly even spacing between items */}
-    <div className="flex items-center gap-6"> 
-      <li><Link to="/" className="hover:text-orange-600 px-3 " onClick={handleLinkClick}>Home</Link></li>
-      <li><Link to="/OurServices" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Our Services</Link></li>
+        <div className="navbar-end gap-2">
+          {/* ─── MODERN CONTROLLER TOGGLE ─── */}
+          
 
-      <li className="dropdown dropdown-hover">
-        <div tabIndex={0} role="button" className="flex items-center gap-1 px-3 hover:text-orange-600 transition-colors">
-          <h1>Advance Features</h1>
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </div>
-       {/* --- UPDATED DROPDOWN LIST --- */}
-<ul 
-  tabIndex={0} 
-  className="dropdown-content z-[50] menu p-2 shadow-xl bg-base-100 rounded-box w-52 top-full border border-base-200 flex flex-col gap-1"
->
-  <li>
-    <Link to="/resume-builder" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Resume Builder
-    </Link>
-  </li>
-  <li>
-    <Link to="/PortfolioTemplates" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Portfolio Maker
-    </Link>
-  </li>
-  <li>
-    <Link to="/influencer-form" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Influencer Form
-    </Link>
-  </li>
-  <li>
-    <Link to="/jobportal" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Job Portal
-    </Link>
-  </li>
-  <li>
-    <a 
-      href="https://www.hostinger.com/..." 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" 
-      onClick={handleLinkClick}
-    >
-      Buy Domain
-    </a>
-  </li>
-  <li>
-    <Link to="/landingpage" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Landing Page
-    </Link>
-  </li>
-  <li>
-    <Link to="/SIPCalculator" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      SIP Calculator
-    </Link>
-  </li>
-  <li>
-    <Link to="/WhySEO" className="hover:text-orange-600 py-2 px-4 flex items-center transition-colors" onClick={handleLinkClick}>
-      Why SEO Important?
-    </Link>
-  </li>
-</ul>
-      </li>
-
-      <li><Link to="/about" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>About</Link></li>
-      <li><Link to="/contact" className="hover:text-orange-600 px-3 transition-colors" onClick={handleLinkClick}>Contact</Link></li>
-    </div>
-  </ul>
-</div>
-
-      <div className="navbar-end gap-2">
-        {!user ? (
-          <button className="btn btn-primary btn-sm lg:btn-md p-2 px-6 rounded-lg">
-            <Link to="/auth">Login | Signup</Link>
-          </button>
-        ) : (
-          <div className="dropdown dropdown-end">
-            {/* --- IMPROVED AVATAR SECTION --- */}
-            <div 
-              tabIndex={0} 
-              role="button" 
-              className="flex items-center gap-2 p-1 hover:bg-base-200 rounded-full transition-all border border-transparent active:scale-95"
-            >
-              <div className="avatar">
-                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 bg-indigo-600 text-white flex items-center justify-center font-bold">
-                  {user?.name ? user.name[0].toUpperCase() : "U"}
+          {!user ? (
+            <button className="btn btn-primary btn-sm lg:btn-md p-2 px-6 rounded-lg">
+              <Link to="/auth">Login | Signup</Link>
+            </button>
+          ) : (
+            <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="flex items-center gap-2 p-1 hover:bg-base-200 rounded-full transition-all border border-transparent active:scale-95">
+                <div className="avatar">
+                  <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 bg-indigo-600 text-white flex items-center justify-center font-bold">
+                    {user?.name ? user.name[0].toUpperCase() : "U"}
+                  </div>
                 </div>
+                <ChevronDown size={14} className="text-base-content/50" />
               </div>
-              <ChevronDown size={14} className="text-base-content/50" />
+
+              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow-2xl bg-base-100 rounded-2xl w-60 border border-base-200 animate-in fade-in zoom-in duration-200">
+                <div className="px-4 py-3 mb-2 border-b border-base-200">
+                  <p className="font-bold text-sm truncate">{user?.name || "Account"}</p>
+                  <p className="text-[11px] opacity-60 truncate">{user?.email || "User profile"}</p>
+                </div>
+                <li>
+                  <Link to="/dashboard" className="flex items-center gap-3 py-2.5 rounded-lg active:bg-primary" onClick={handleLinkClick}>
+                    <LayoutDashboard size={18} className="text-primary" />
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/profile" className="flex items-center gap-3 py-2.5 rounded-lg" onClick={handleLinkClick}>
+                    <User size={18} />
+                    <span>Account Settings</span>
+                  </Link>
+                </li>
+                <div className="h-px bg-base-200 my-1"></div>
+                <li>
+                  <button onClick={logout} className="flex items-center gap-3 py-2.5 rounded-lg text-error hover:bg-error/10 font-semibold">
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                  </button>
+                </li>
+              </ul>
             </div>
-
-            {/* --- CLEAN PROFESSIONAL DROPDOWN --- */}
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[100] p-2 shadow-2xl bg-base-100 rounded-2xl w-60 border border-base-200 animate-in fade-in zoom-in duration-200"
-            >
-              {/* User Identity Header */}
-              <div className="px-4 py-3 mb-2 border-b border-base-200">
-                <p className="font-bold text-sm truncate">{user?.name || "Account"}</p>
-                <p className="text-[11px] opacity-60 truncate">{user?.email || "User profile"}</p>
-              </div>
-
-              <li>
-                <Link to="/dashboard" className="flex items-center gap-3 py-2.5 rounded-lg active:bg-primary" onClick={handleLinkClick}>
-                  <LayoutDashboard size={18} className="text-primary" />
-                  <span>Dashboard</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/profile" className="flex items-center gap-3 py-2.5 rounded-lg" onClick={handleLinkClick}>
-                  <User size={18} />
-                  <span>Account Settings</span>
-                </Link>
-              </li>
-
-              <div className="h-px bg-base-200 my-1"></div>
-
-              <li>
-                <button 
-                  onClick={logout}
-                  className="flex items-center gap-3 py-2.5 rounded-lg text-error hover:bg-error/10 font-semibold"
-                >
-                  <LogOut size={18} />
-                  <span>Logout</span>
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
+          )}
+          <label className="swap swap-rotate btn btn-ghost btn-circle btn-sm ml-4">
+            <input type="checkbox" onChange={handleToggle} checked={theme === "dark"} />
+            <Sun className="swap-on w-5 h-5" />
+            <Moon className="swap-off w-5 h-5" />
+          </label>
+        </div>
       </div>
-    </div>
     </>
   );
 };
 
-export default Navbar
+export default Navbar;

@@ -44,7 +44,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-[#FDFDFD] pt-20 pb-10 overflow-hidden font-montserrat">
+    <footer className="relative bg-base-100 pt-20 pb-10 overflow-hidden font-montserrat">
       {/* Brand Aesthetic Background Blobs */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px]  rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px]  rounded-full blur-[100px] translate-x-1/3 translate-y-1/3" />
@@ -63,7 +63,7 @@ const Footer = () => {
               <div className="w-12 h-12  rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 shadow-lg overflow-hidden">
                 <img src='/logos/logo.png' alt="Logo" className="w-24 h-36 object-contain" />
               </div>
-              <span className="ml-4 text-2xl font-black text-slate-900 tracking-tighter">
+              <span className="ml-4 text-2xl font-black text-base-content tracking-tighter">
                 WEB<span className="text-[#3D7E8C]">Tech</span>
               </span>
             </Link>
@@ -79,7 +79,7 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="text-slate-900 font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
+            <h4 className="text-base-content font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
               Quick Links
               <span className="absolute -bottom-2 left-0 w-8 h-1 bg-[#F39221] rounded-full" />
             </h4>
@@ -104,7 +104,7 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h4 className="text-slate-900 font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
+            <h4 className="text-base-content font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
               Information
               <span className="absolute -bottom-2 left-0 w-8 h-1 bg-[#3D7E8C] rounded-full" />
             </h4>
@@ -129,38 +129,38 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h4 className="text-slate-900 font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
+            <h4 className="text-base-content font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
               Contact
-              <span className="absolute -bottom-2 left-0 w-8 h-1 bg-slate-900 rounded-full" />
+              <span className="absolute -bottom-2 left-0 w-8 h-1 bg-base-content rounded-full" />
             </h4>
             <div className="space-y-6">
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-[#3D7E8C] shadow-sm group-hover:bg-[#3D7E8C] group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#3D7E8C] shadow-sm group-hover:bg-[#3D7E8C] group-hover:text-base-content transition-all duration-300">
                   <FaPhoneAlt size={14} />
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Call Us</p>
-                  <p className="text-sm font-bold text-slate-900">{footerLinks.contactInfo.phone}</p>
+                  <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.phone}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-[#F39221] shadow-sm group-hover:bg-[#F39221] group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#F39221] shadow-sm group-hover:bg-[#F39221] group-hover:text-base-content transition-all duration-300">
                   <FaEnvelope size={14} />
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email Us</p>
-                  <p className="text-sm font-bold text-slate-900">{footerLinks.contactInfo.email}</p>
+                  <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.email}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center text-slate-900 shadow-sm group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-base-content shadow-sm group-hover:bg-base-content group-hover:text-base-100 transition-all duration-300">
                   <FaMapMarkerAlt size={14} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Location</p>
-                  <p className="text-sm font-bold text-slate-900">{footerLinks.contactInfo.address}</p>
+                  <p className="text-[10px] font-black text-base-content uppercase tracking-widest">Location</p>
+                  <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.address}</p>
                 </div>
               </div>
             </div>
@@ -181,7 +181,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
-                className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-white hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 shadow-sm"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-base-100 border border-slate-200 text-base-content hover:text-base-content hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 shadow-sm"
               >
                 {social.icon}
               </motion.a>

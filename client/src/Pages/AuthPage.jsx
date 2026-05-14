@@ -63,18 +63,18 @@ function AuthPage() {
 
   return (
     // Advanced Gradient and Blurry Background
-    <div className="min-h-screen flex items-center justify-center bg-sky-50 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-base-100 relative overflow-hidden">
       
       {/* Background Decorative Blurs for Depth */}
-      <div className="absolute top-10 left-10 w-72 h-72 bg-blue-100 rounded-full blur-3xl opacity-60"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50"></div>
+      <div className="absolute top-10 left-10 w-72 h-72 bg-base-100 rounded-full blur-3xl opacity-60"></div>
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-base-100 rounded-full blur-3xl opacity-50"></div>
 
       {/* The Card with Dynamic Entrance Animation:
         The `transition-all` and `duration-1000` handle the smooth change.
         `isLoaded` determines the opacity, blur, and scale.
       */}
       <div 
-        className={`bg-white rounded-3xl shadow-2xl shadow-blue-100 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 overflow-hidden border border-white/40 backdrop-blur-sm 
+        className={`bg-base-100 rounded-3xl shadow-2xl shadow-base-200 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 overflow-hidden border border-base-200 backdrop-blur-sm 
         transition-all duration-1000 ease-out transform
         ${isLoaded ? 'opacity-100 scale-100 blur-none' : 'opacity-0 scale-95 blur-sm'}`}
       >
@@ -105,24 +105,24 @@ function AuthPage() {
             <h2 className="text-2xl font-semibold leading-snug">
               {isLogin ? "Your control center for distributed teams." : "Build your future with intelligent tools."}
             </h2>
-            <p className="text-blue-100 mt-4 text-sm max-w-sm">
+            <p className="text-base-300 mt-4 text-sm max-w-sm">
               {isLogin ? "Log in to streamline your operations and connect with your colleagues." : "Sign up for an advanced workflow that scales with your ambition."}
             </p>
           </div>
 
-          <div className="text-xs text-blue-100/70 relative z-10">
+          <div className="text-xs text-base-300/70 relative z-10">
             © 2026 WEB Tech Platform. Professional UI Edition.
           </div>
         </div>
 
 
         {/* === Right Side: The Form (Clean, Modern Blue/White) === */}
-        <div className="p-10 md:p-16 bg-white">
+        <div className="p-10 md:p-16 bg-base-100 flex items-center justify-center relative overflow-hidden">
           <div className="w-full max-w-md mx-auto">
             
             {/* Header with improved typography */}
             <div className="mb-12">
-              <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">
+              <h2 className="text-4xl font-extrabold text-base-900 tracking-tight">
                 {isLogin ? "Sign In" : "Create Account"}
               </h2>
               <p className="text-slate-500 mt-3 text-base">
@@ -138,7 +138,7 @@ function AuthPage() {
                   <label className="block text-sm font-semibold text-slate-800 mb-1.5">Full Name</label>
                   <input
                     type="text"
-                    className="w-full px-5 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-400 text-slate-700"
+                    className="w-full px-5 py-3.5 rounded-xl border border-base-300 bg-base-100 focus:ring-2 focus:ring-blue-500 focus:border-base-300 focus:bg-base-100 outline-none transition-all placeholder:text-base-300 text-base-700"
                     placeholder="E.g. John Doe"
                     onChange={e => setForm({ ...form, name: e.target.value })}
                   />
@@ -147,10 +147,10 @@ function AuthPage() {
 
               {/* Email Field */}
               <div>
-                <label className="block text-sm font-semibold text-slate-800 mb-1.5">Work Email Address</label>
+                <label className="block text-sm font-semibold text-base-800 mb-1.5">Work Email Address</label>
                 <input
                   type="email"
-                  className="w-full px-5 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-400 text-slate-700"
+                  className="w-full px-5 py-3.5 rounded-xl border border-base-300 bg-base-100 focus:ring-2 focus:ring-white focus:border-base-300 focus:bg-base-100 outline-none transition-all placeholder:text-base-300 text-base-700"
                   placeholder="name@company.com"
                   onChange={e => setForm({ ...form, email: e.target.value })}
                 />
@@ -159,12 +159,12 @@ function AuthPage() {
               {/* Password Field */}
               <div>
                 <div className="flex justify-between mb-1.5">
-                  <label className="block text-sm font-semibold text-slate-800">Password</label>
+                  <label className="block text-sm font-semibold text-base-800">Password</label>
                   {isLogin && <span className="text-xs text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-medium">Forgot your password?</span>}
                 </div>
                 <input
                   type="password"
-                  className="w-full px-5 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:bg-white outline-none transition-all placeholder:text-slate-400 text-slate-700"
+                  className="w-full px-5 py-3.5 rounded-xl border border-base-300 bg-base-100 focus:ring-2 focus:ring-white focus:border-base-300 focus:bg-base-100 outline-none transition-all placeholder:text-base-300 text-base-700"
                   placeholder="••••••••"
                   onChange={e => setForm({ ...form, password: e.target.value })}
                 />
@@ -173,15 +173,15 @@ function AuthPage() {
               {/* Terms Checkbox (Signup Only) */}
               {!isLogin && (
                 <div className="flex items-start gap-3 pt-2">
-                  <input type="checkbox" className="mt-1 w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" required />
-                  <p className="text-sm text-slate-600">I agree to the <span className="text-blue-600 underline font-medium cursor-pointer">Terms of Service</span> and <span className="text-blue-600 underline font-medium cursor-pointer">Privacy Policy</span>.</p>
+                  <input type="checkbox" className="mt-1 w-4 h-4 rounded border-base-300 text-blue-600 focus:ring-blue-500" required />
+                  <p className="text-sm text-base-600">I agree to the <span className="text-blue-600 underline font-medium cursor-pointer">Terms of Service</span> and <span className="text-blue-600 underline font-medium cursor-pointer">Privacy Policy</span>.</p>
                 </div>
               )}
 
               {/* Advanced Submit Button (with hover depth) */}
               <button
                 onClick={handleSubmit}
-                className="w-full py-4 mt-6 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 active:scale-[0.98] transition-all shadow-xl shadow-blue-200 hover:shadow-blue-300"
+                className="w-full py-4 mt-6 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 active:scale-[0.98] transition-all shadow-xl shadow-base-200 "
               >
                 {isLogin ? "Sign In to WEB Tech" : "Complete Registration"}
               </button>

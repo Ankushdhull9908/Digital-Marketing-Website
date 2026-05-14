@@ -59,7 +59,7 @@ useEffect(() => {
   ];
 
   return (
-    <div className="bg-[#F8FAFB] text-slate-800 min-h-screen font-montserrat overflow-x-hidden selection:bg-[#F39221]/30 no-scrollbar">
+    <div className="bg-base-100 text-slate-800 min-h-screen font-montserrat overflow-x-hidden selection:bg-[#F39221]/30 no-scrollbar">
  {/* ── TOP CAROUSEL & BANNERS ────────────────────────────────────────── */}
    <div className="w-full relative overflow-hidden ">
   <div className="relative w-full md:w-[100%]  h-[300px] md:h-[450px] lg:h-[600px] overflow-hidden shadow-2xl  bg-slate-200">
@@ -142,7 +142,7 @@ useEffect(() => {
             <Zap className="w-4 h-4 text-[#F39221]" fill="currentColor" />
             <span className="text-xs font-bold uppercase tracking-widest text-slate-600">The Future of Growth</span>
           </motion.div>
-          <motion.h1 variants={fadeInUp} className="text-6xl md:text-8xl font-black mb-6 tracking-tighter leading-tight">
+          <motion.h1 variants={fadeInUp} className="text-6xl text-base-content md:text-8xl font-black mb-6 tracking-tighter leading-tight">
             Elevate Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#3D7E8C]/70">Digital</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F39221] to-orange-400">Empire.</span>
@@ -168,7 +168,7 @@ useEffect(() => {
   initial={{ opacity: 0 }}
   whileInView={{ opacity: 1 }}
   viewport={{ once: true }}
-  className="py-32 px-6 relative bg-white overflow-hidden"
+  className="py-32 px-6 relative bg-base-100 overflow-hidden"
 >
   <div className="max-w-7xl mx-auto">
     
@@ -180,7 +180,7 @@ useEffect(() => {
       >
         Elite Creator Suite
       </motion.div>
-      <h2 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.9]">
+      <h2 className="text-5xl md:text-7xl font-black text-base-content tracking-tighter mb-8 leading-[0.9]">
         Professional <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#F39221]">Build Tools.</span>
       </h2>
       <p className="text-slate-500 font-bold text-xl max-w-3xl mx-auto leading-relaxed">
@@ -347,22 +347,25 @@ useEffect(() => {
   </div>
 </motion.section>
 
-      {/* ── CORE SERVICES ────────────────────────────────────────────────── */}
-      <section className="py-24 px-6 relative">
+{/* ── CORE SERVICES ────────────────────────────────────────────────── */}
+      <section className="py-24 px-6 relative bg-base-100 text-base-content transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="mb-16">
             <h2 className="text-[#F39221] font-black uppercase tracking-[0.3em] text-sm mb-4">Our Core Services</h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Our Digital Marketing Solutions</h3>
+            <h3 className="text-4xl md:text-5xl font-extrabold tracking-tight">Our Digital Marketing Solutions</h3>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <motion.div key={index} variants={fadeInUp} whileHover={{ y: -10 }} className="group p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+              /* 1. Changed bg-slate-100 to bg-base-200 so the card background dynamically adapts.
+                    Changed border-slate-100 to border-base-300 for a crisp, responsive separation line. */
+              <motion.div key={index} variants={fadeInUp} whileHover={{ y: -10 }} className="group p-10 rounded-[2.5rem] bg-base-200 border border-base-300 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
                 <div className={`absolute top-0 right-0 w-24 h-24 ${service.bg} rounded-bl-full translate-x-10 -translate-y-10 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500`}></div>
                 <div className={`w-14 h-14 rounded-2xl ${service.bg} ${service.color} flex items-center justify-center mb-8`}>
                   {React.cloneElement(service.icon, { size: 28, strokeWidth: 2.5 })}
                 </div>
-                <h4 className="text-2xl font-bold mb-4 text-slate-800">{service.title}</h4>
-                <p className="text-slate-500 leading-relaxed font-medium mb-6">{service.desc}</p>
+                <h4 className="text-2xl font-bold mb-4 text-base-content">{service.title}</h4>
+                {/* 2. Changed text-slate-500 to text-base-content/70 so the description is perfectly legible in light AND dark theme */}
+                <p className="text-base-content/70 leading-relaxed font-medium mb-6">{service.desc}</p>
                 <Link to={service.link} className="text-sm font-bold text-[#3D7E8C] flex items-center gap-2 group-hover:gap-3 transition-all" >
                   Learn more <ArrowRight size={16} />
                 </Link>
@@ -395,7 +398,7 @@ useEffect(() => {
                   rel="noopener noreferrer"
                   variants={fadeInUp}
                   whileHover={{ scale: 1.08 }}
-                  className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-white border border-slate-100 hover:shadow-lg transition-all duration-300 w-36"
+                  className="group flex flex-col items-center gap-3 p-6 rounded-2xl bg-slate-100 border border-slate-100 hover:shadow-lg transition-all duration-300 w-36"
                 >
                   {client.logoUrl ? (
                     <img
@@ -430,7 +433,7 @@ function FAQSection({ faqs, fadeInUp, staggerContainer }) {
   const [openId, setOpenId] = useState(null);
 
   return (
-    <section className="py-24 px-6 bg-slate-900 rounded-[3rem] mx-4 my-10 text-white">
+    <section className="py-24 px-6 bg-base-200 rounded-[3rem] mx-4 my-10 text-base-content">
       <div className="max-w-3xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeInUp} className="text-center mb-16">
           <h2 className="text-[#F39221] font-black uppercase tracking-[0.3em] text-sm mb-4">Got Questions?</h2>
@@ -440,13 +443,14 @@ function FAQSection({ faqs, fadeInUp, staggerContainer }) {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="space-y-4">
           {faqs.map((faq) => {
             const isOpen = openId === faq._id;
+
             return (
-              <motion.div key={faq._id} variants={fadeInUp} className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden">
+              <motion.div key={faq._id} variants={fadeInUp} className="rounded-2xl border border-base-content/10 bg-base-100 backdrop-blur-sm overflow-hidden">
                 <button
                   onClick={() => setOpenId(isOpen ? null : faq._id)}
                   className="w-full flex items-center justify-between px-7 py-5 text-left gap-4"
                 >
-                  <span className="font-semibold text-white text-base leading-snug">{faq.question}</span>
+                  <span className="font-semibold  text-base leading-snug">{faq.question}</span>
                   <ChevronDown
                     size={20}
                     className={`text-[#F39221] flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
@@ -462,7 +466,7 @@ function FAQSection({ faqs, fadeInUp, staggerContainer }) {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                      <div className="px-7 pb-6 text-slate-300 text-sm leading-relaxed border-t border-white/10 pt-4">
+                      <div className="px-7 pb-6 text-base-content/70 text-sm leading-relaxed border-t border-base-content/10  pt-4">
                         {faq.answer}
                       </div>
                     </motion.div>

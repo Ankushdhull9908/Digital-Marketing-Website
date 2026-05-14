@@ -44,17 +44,17 @@ const WhySEO = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white font-montserrat text-slate-900 overflow-x-hidden">
+    <div className="min-h-screen bg-base-100 font-montserrat text-base-content overflow-x-hidden">
       
       {/* --- HERO's SECTION --- */}
-      <header className="relative py-20 px-6 bg-slate-50 border-b border-slate-100 overflow-hidden">
+      <header className="relative py-20 px-6 bg-base-100 border-b border-base-300 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
           <motion.div 
             initial={{ opacity: 0, x: -30 }} 
             animate={{ opacity: 1, x: 0 }}
             className="max-w-2xl"
           >
-            <span className="badge badge-lg bg-[#3D7E8C] border-none text-white font-bold py-4 mb-6">GROW ORGANICALLY</span>
+            <span className="badge badge-lg bg-[#3D7E8C] border-none text-base-content font-bold py-4 mb-6">GROW ORGANICALLY</span>
             <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-6">
               Why SEO is Crucial for Your <span className="text-[#F39221]">Business Success.</span>
             </h1>
@@ -69,7 +69,7 @@ const WhySEO = () => {
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="w-full lg:w-1/3 bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100"
+            className="w-full lg:w-1/3 bg-base-100 p-8 rounded-[2.5rem] shadow-2xl border border-base-300"
           >
             <BarChart3 className="text-[#3D7E8C] mb-4" size={48} />
             <h3 className="text-2xl font-black mb-2">Beat the Competition</h3>
@@ -95,9 +95,9 @@ const WhySEO = () => {
             <motion.div 
               key={i} 
               whileHover={{ y: -10 }}
-              className="p-10 bg-white border border-slate-100 rounded-[2rem] shadow-sm hover:shadow-xl transition-all group"
+              className="p-10 bg-base-100 border border-base-300 rounded-[2rem] shadow-sm hover:shadow-xl transition-all group"
             >
-              <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-base-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 {b.icon}
               </div>
               <h4 className="text-xl font-black mb-4">{b.title}</h4>
@@ -106,7 +106,7 @@ const WhySEO = () => {
           ))}
           
           {/* SPECIAL INCLUSIONS CARD */}
-          <div className="lg:col-span-1 bg-slate-900 rounded-[2rem] p-10 text-white flex flex-col justify-between">
+          <div className="lg:col-span-1 bg-base-100 rounded-[2rem] p-10 text-base-content flex flex-col justify-between">
             <h4 className="text-xl font-black mb-6">Our SEO Suite Includes:</h4>
             <ul className="space-y-3">
               {["Keyword Strategy", "On-Page SEO", "Technical Fixes", "Content Optimization", "Backlink Building", "Local SEO"].map(item => (
@@ -120,13 +120,13 @@ const WhySEO = () => {
       </section>
 
       {/* --- PRICING SECTION --- */}
-      <section className="py-24 px-6 bg-[#FDFDFD]">
+      <section className="py-24 px-6 bg-base-100">
         <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-black mb-6">Simple, Transparent <span className="text-[#3D7E8C]">Pricing.</span></h2>
             <p className="text-slate-500 font-medium mb-12">Affordable and result-driven services for businesses of all sizes.</p>
             
-            <div className="bg-white border-2 border-[#3D7E8C]/20 rounded-[3rem] p-8 md:p-14 shadow-2xl relative">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#3D7E8C] text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">
+            <div className="bg-base-100 border-2 border-[#3D7E8C]/20 rounded-[3rem] p-8 md:p-14 shadow-2xl relative">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#3D7E8C] text-base-content px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">
                     Most Popular
                 </div>
                 
@@ -140,14 +140,14 @@ const WhySEO = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-10">
                     {["Custom Strategy", "Website Optimization", "Monthly Reporting", "Dedicated Support"].map(item => (
-                        <div key={item} className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <div key={item} className="flex items-center gap-3 p-4 bg-base-100 rounded-xl border border-base-300">
                             <CheckCircle2 className="text-emerald-500" size={20} />
-                            <span className="font-bold text-sm text-slate-700">{item}</span>
+                            <span className="font-bold text-sm text-base-content">{item}</span>
                         </div>
                     ))}
                 </div>
 
-                <button className="btn btn-block btn-lg bg-[#F39221] hover:bg-[#d8821d] border-none text-white rounded-2xl font-black tracking-widest uppercase">
+                <button className="btn btn-block btn-lg bg-[#F39221] hover:bg-[#d8821d] border-none text-base-content rounded-2xl font-black tracking-widest uppercase">
                     Select This Plan
                 </button>
             </div>
@@ -158,7 +158,7 @@ const WhySEO = () => {
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-                <h2 className="text-4xl font-black mb-8">Why Choose <span className="text-slate-300">WebTech?</span></h2>
+                <h2 className="text-4xl font-black mb-8">Why Choose <span className="text-[#3D7E8C]">WebTech?</span></h2>
                 <div className="space-y-6">
                     {[
                         { t: "Expertise", d: "Highly experienced SEO specialists who know the algorithm." },
@@ -178,9 +178,9 @@ const WhySEO = () => {
                 </div>
             </div>
 
-            <div className="bg-slate-900 rounded-[3rem] p-12 text-white text-center">
+            <div className="bg-base-100 rounded-[3rem] p-12 text-base-content text-center">
                 <h3 className="text-3xl font-black mb-6">Get Started Today!</h3>
-                <p className="text-slate-400 font-medium mb-10 leading-relaxed">
+                <p className="text-slate-500 font-medium mb-10 leading-relaxed">
                     Want to grow your business online and get more customers organically? Let’s take your website to the top of Google!
                 </p>
                 <div className="flex flex-col gap-4">

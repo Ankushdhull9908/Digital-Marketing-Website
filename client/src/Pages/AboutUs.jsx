@@ -20,7 +20,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="bg-white font-sans text-slate-900 selection:bg-[#3D7E8C]/20 overflow-x-hidden">
+    <div className="bg-base-100 font-sans text-base-content selection:bg-[#3D7E8C]/20 overflow-x-hidden">
       
       {/* -- PREMIUM HERO SECTION --- */}
     
@@ -44,7 +44,7 @@ const AboutUs = () => {
           <span className="text-[#F39221] font-black uppercase text-xs tracking-[0.3em] mb-4 block">
             Since 2018
           </span>
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6">
+          <h1 className="text-5xl md:text-7xl font-black text-slate-100 tracking-tighter mb-6">
             About <span className="text-[#3D7E8C]">Us</span>
           </h1>
           <div className="w-24 h-2 bg-[#F39221] mx-auto rounded-full mb-8"></div>
@@ -68,7 +68,7 @@ const AboutUs = () => {
             <span className="text-[#3D7E8C] font-black uppercase text-[11px] tracking-widest mb-4 block">
               Behind the Scenes
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tighter">
+            <h2 className="text-4xl md:text-5xl font-black text-base-content mb-6 tracking-tighter">
               Who we <span className="text-[#F39221]">are.</span>
             </h2>
             <div className="w-16 h-1 bg-[#3D7E8C] rounded-full mb-8"></div>
@@ -103,7 +103,7 @@ const AboutUs = () => {
             className="relative"
           >
             {/* Main Image */}
-            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-base-100">
               <img 
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800" 
                 alt="Our Team Workspace" 
@@ -112,7 +112,7 @@ const AboutUs = () => {
             </div>
 
             {/* Floating Secondary Image */}
-            <div className="absolute -bottom-10 -left-10 z-20 w-1/2 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white hidden md:block">
+            <div className="absolute -bottom-10 -left-10 z-20 w-1/2 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-base-100 hidden md:block">
               <img 
                 src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=400" 
                 alt="Strategy Meeting" 
@@ -145,7 +145,7 @@ const AboutUs = () => {
           <div className="h-[1px] w-8 bg-[#F39221]" />
         </div>
         
-        <h2 className="text-5xl md:text-7xl font-black text-slate-900 leading-[0.95] tracking-tighter">
+        <h2 className="text-5xl md:text-7xl font-black text-base-content leading-[0.95] tracking-tighter">
           Surgical Strategy. <br /> 
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-slate-700">
             Infinite Impact.
@@ -222,7 +222,7 @@ const AboutUs = () => {
     </section>
     
       {/* --- WHY US SECTION --- */}
-      <section className="py-24 px-6 bg-white overflow-hidden">
+      <section className="py-24 px-6 bg-base-100 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           
           {/* Heading at Top */}
@@ -230,7 +230,7 @@ const AboutUs = () => {
             <span className="text-[#F39221] font-black uppercase text-[11px] tracking-widest mb-4 block">
               The Advantage
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter mb-4">
+            <h2 className="text-4xl md:text-6xl font-black text-base-content tracking-tighter mb-4">
               Why <span className="text-[#3D7E8C]">Us.</span>
             </h2>
             <div className="w-24 h-2 bg-[#F39221] mx-auto rounded-full"></div>
@@ -242,12 +242,12 @@ const AboutUs = () => {
             {/* Our Mission */}
             <motion.div 
               {...fadeIn}
-              className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 flex flex-col group hover:bg-white hover:shadow-2xl transition-all duration-500"
+              className="p-10 rounded-[3rem] bg-base-100 border border-base-300 flex flex-col group hover:bg-base-200 hover:shadow-2xl transition-all duration-500"
             >
               <div className="w-14 h-14 bg-[#3D7E8C] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#3D7E8C]/20">
                 <Target size={28} />
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">Our Mission</h3>
+              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Mission</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 To empower brands with lethal precision through smart, ROI-driven marketing solutions that turn browsers into loyal advocates.
               </p>
@@ -256,12 +256,12 @@ const AboutUs = () => {
             {/* Our Vision */}
             <motion.div 
               {...fadeIn}
-              className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 flex flex-col group hover:bg-white hover:shadow-2xl transition-all duration-500"
+              className="p-10 rounded-[3rem] bg-base-100 border border-base-300 flex flex-col group hover:bg-base-200 hover:shadow-2xl transition-all duration-500"
             >
               <div className="w-14 h-14 bg-[#F39221] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#F39221]/20">
                 <Eye size={28} />
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">Our Vision</h3>
+              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Vision</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 To become the global benchmark for digital innovation and strategic brand expansion in an ever-evolving digital landscape.
               </p>
@@ -270,12 +270,12 @@ const AboutUs = () => {
             {/* Our Goals */}
             <motion.div 
               {...fadeIn}
-              className="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 flex flex-col group hover:bg-white hover:shadow-2xl transition-all duration-500"
+              className="p-10 rounded-[3rem] bg-base-100 border border-base-300 flex flex-col group hover:bg-base-200 hover:shadow-2xl transition-all duration-500"
             >
               <div className="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20">
                 <Rocket size={28} />
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">Our Goals</h3>
+              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Goals</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 Deliver measurable 10x growth for our partners, pioneer new automation tech, and maintain 100% data transparency.
               </p>
@@ -300,14 +300,14 @@ const AboutUs = () => {
       </section>
 
       {/* --- SERVICES GRID --- */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-base-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
             <div className="text-left">
               <span className="text-[#F39221] font-black uppercase text-[11px] tracking-widest mb-4 block">Core Capabilities</span>
               <h2 className="text-4xl md:text-5xl font-black  tracking-tighter">What We Do.</h2>
             </div>
-            <div className="w-full md:w-1/3 h-[2px] bg-slate-200 mb-4 hidden md:block"></div>
+            <div className="w-full md:w-1/3 h-[2px] bg-base-300 mb-4 hidden md:block"></div>
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -315,9 +315,9 @@ const AboutUs = () => {
               <motion.div 
                 key={index}
                 whileHover={{ y: -10 }}
-                className="p-10 rounded-[2.5rem] bg-white border border-slate-100 hover:border-[#3D7E8C]/20 shadow-sm hover:shadow-2xl transition-all duration-500 group"
+                className="p-10 rounded-[2.5rem] bg-base-100 border border-base-300 hover:border-[#3D7E8C]/20 shadow-sm hover:shadow-2xl transition-all duration-500 group"
               >
-                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center mb-10 group-hover:bg-[#F39221] transition-colors duration-500">
+                <div className="w-14 h-14 bg-base-100 rounded-2xl flex items-center justify-center mb-10 group-hover:bg-[#F39221] transition-colors duration-500">
                   {React.cloneElement(service.icon, { className: "text-[#3D7E8C] group-hover:text-white transition-colors" })}
                 </div>
                 <h4 className="text-2xl font-black  leading-tight mb-4 tracking-tight">{service.name}</h4>
@@ -332,7 +332,7 @@ const AboutUs = () => {
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <motion.div {...fadeIn}>
-            <h2 className="text-4xl md:text-5xl font-black mb-10 text-slate-900 leading-none">
+            <h2 className="text-4xl md:text-5xl font-black mb-10 text-base-900 leading-none">
               Strategic <span className="text-[#3D7E8C]">Methodology.</span>
             </h2>
             <div className="space-y-12 mt-12">

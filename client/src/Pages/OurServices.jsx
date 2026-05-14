@@ -5,21 +5,21 @@ import {
   Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight 
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
+const ServiceCard = ({ icon: Icon, title, description, features }) => (
   <motion.div 
     whileHover={{ y: -10 }}
-    className="card bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group h-full">
+    className="card bg-base-100 border border-base-300 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group h-full">
     <div className="card-body p-8">
       {/* Icon Container */}
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-6 ${color}`}>
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-6 ${features.includes("SEO") ? "bg-blue-50 text-blue-600" : "bg-base-100 text-base-content"}`}>
         <Icon size={28} />
       </div>
 
       {/* Title & Description*/}
-      <h3 className="text-2xl font-black mb-3 group-hover:text-[#F39221] transition-colors tracking-tight text-slate-900">
+      <h3 className="text-2xl font-black mb-3 group-hover:text-[#F39221] transition-colors tracking-tight text-base-content">
         {title}
       </h3>
-      <p className="text-sm text-slate-500 font-medium leading-relaxed mb-8">
+      <p className="text-sm text-base-content font-medium leading-relaxed mb-8">
         {description}
       </p>
       
@@ -32,7 +32,7 @@ const ServiceCard = ({ icon: Icon, title, description, features, color }) => (
           {features.map((f, i) => (
             <li 
               key={i} 
-              className="px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-900 text-[11px] font-bold rounded-lg uppercase tracking-wider transition-all group-hover:bg-white group-hover:border-[#3D7E8C]/30"
+              className="px-3 py-1.5 bg-base-100 border border-slate-200 text-base-content text-[11px] font-bold rounded-lg uppercase tracking-wider transition-all group-hover:bg-base-200 group-hover:border-[#3D7E8C]/30"
             >
               {f}
             </li>
@@ -140,17 +140,17 @@ const OurServices = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white font-montserrat text-slate-900">
+    <div className="min-h-screen bg-base-100 font-montserrat text-base-content">
       {/* --- HERO SECTION --- */}
-     <section className="relative py-24 px-6 bg-white overflow-hidden">
+     <section className="relative py-24 px-6 bg-base-100 overflow-hidden">
         {/* Subtle Brand Blobs */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-[#3D7E8C]/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#F39221]/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-slate-300 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-slate-300 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-12">
             <div className="max-w-3xl text-center md:text-left">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] text-xs font-black uppercase tracking-widest mb-6">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-slate-200 text-[#3D7E8C] text-xs font-black uppercase tracking-widest mb-6">
                 WHAT WE OFFER
               </span>
               <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-tight">
@@ -169,32 +169,33 @@ const OurServices = () => {
       </section>
 
       {/* --- DIGITAL MARKETING --- */}
-      <section id="special-section" className="py-24 px-6">
+      <section id="special-section" className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-16">
             <h2 className="text-[#F39221] text-3xl font-black">Digital Marketing</h2>
-            <div className="h-px flex-1 bg-slate-100" />
+         
+            <div className="h-px flex-1 bg-base-300" />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
             {marketingServices.map((service, index) => (
-              <ServiceCard key={index} {...service} />
+              <ServiceCard className="bg-base-100" key={index} {...service}  />
             ))}
           </div>
         </div>
       </section>
 
       {/* --- TECH & DEVELOPMENT --- */}
-      <section className="py-24 px-6 bg-[#FDFDFD]">
+      <section className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-16">
             <h2 className="text-[#F39221] text-3xl font-black">Development & Design</h2>
-            <div className="h-px flex-1 bg-slate-100" />
+            <div className="h-px flex-1 bg-base-300" />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {techServices.map((service, index) => (
-              <ServiceCard key={index} {...service} />
+              <ServiceCard className="bg-base-100" key={index} {...service}  />
             ))}
             
             <div className="lg:col-span-1 card bg-gradient-to-br from-[#3D7E8C] to-[#2a5a65] text-white p-8 rounded-[2.5rem] shadow-xl">

@@ -42,9 +42,9 @@ const SipCalculator = () => {
   }).format(val);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] py-12 px-6 font-montserrat text-slate-900 overflow-hidden">
+    <div className="min-h-screen bg-base-100 py-12 px-6 font-montserrat text-base-content overflow-hidden">
       {/* Background Decorative Element */}
-      <div className="absolute top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-b from-slate-50 to-transparent opacity-50 blur-3xl" />
+      <div className="absolute top-0 right-0 -z-10 w-1/2 h-1/2 bg-gradient-to-b from-base-300 to-transparent opacity-50 blur-3xl" />
 
       <div className="max-w-7xl mx-auto">
         
@@ -65,9 +65,9 @@ const SipCalculator = () => {
           <div className="lg:col-span-4 space-y-6">
             
             {/* Input Card 1: Amount */}
-            <div className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
+            <div className="p-8 bg-base-100 border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
               <div className="flex justify-between items-center mb-8">
-                <div className="p-3 bg-slate-50 rounded-2xl group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
+                <div className="p-3 bg-base-200 rounded-2xl group-hover:bg-[#3D7E8C] group-hover:text-base-100 transition-colors">
                   <Wallet size={20} />
                 </div>
                 <input 
@@ -86,9 +86,9 @@ const SipCalculator = () => {
             </div>
 
             {/* Input Card 2: Return */}
-            <div className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
+            <div className="p-8 bg-base-100 border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
               <div className="flex justify-between items-center mb-8">
-                <div className="p-3 bg-slate-50 rounded-2xl group-hover:bg-[#F39221] group-hover:text-white transition-colors">
+                <div className="p-3 bg-base-200 rounded-2xl group-hover:bg-[#F39221] group-hover:text-base-100 transition-colors">
                   <TrendingUp size={20} />
                 </div>
                 <div className="flex items-baseline">
@@ -110,9 +110,9 @@ const SipCalculator = () => {
             </div>
 
             {/* Input Card 3: Duration */}
-            <div className="p-8 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
+            <div className="p-8 bg-base-100 border border-slate-100 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 group">
               <div className="flex justify-between items-center mb-8">
-                <div className="p-3 bg-slate-50 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                <div className="p-3 bg-base-200 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                   <Calendar size={20} />
                 </div>
                 <div className="flex items-baseline">
@@ -124,7 +124,7 @@ const SipCalculator = () => {
                   <span className="font-bold text-slate-400 ml-1">Yrs</span>
                 </div>
               </div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Time Horizon</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-base-400 mb-4">Time Horizon</p>
               <input 
                 type="range" min="1" max="40" step="1" 
                 value={investmentPeriod} 
@@ -173,7 +173,7 @@ const SipCalculator = () => {
             </div>
 
             {/* SMALL INSIGHT CARD 1 */}
-            <div className="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 flex flex-col justify-between hover:bg-white transition-colors duration-300">
+            <div className="bg-base-200 rounded-[2.5rem] p-8 border border-slate-100 flex flex-col justify-between hover:bg-base-100 transition-colors duration-300">
                 <Target className="text-[#3D7E8C] mb-6" size={32} />
                 <div>
                     <h4 className="font-black text-4xl mb-2">{results.wealthGainMult}x</h4>
@@ -182,7 +182,7 @@ const SipCalculator = () => {
             </div>
 
             {/* SMALL INSIGHT CARD 2 */}
-            <div className="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 flex flex-col justify-between hover:bg-white transition-colors duration-300">
+            <div className="bg-base-200 rounded-[2.5rem] p-8 border border-slate-100 flex flex-col justify-between hover:bg-base-100 transition-colors duration-300">
                 <div className="flex justify-between items-start mb-6">
                     <Info className="text-slate-400" size={32} />
                     <ChevronRight className="text-slate-300" />

@@ -32,7 +32,7 @@ const PortfolioTemplates = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-montserrat overflow-hidden">
+    <div className="min-h-screen bg-base-100 text-slate-900 font-montserrat overflow-hidden">
       
       {/* --- DESIGNER BACKGROUND ELEMENTS --- */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -84,7 +84,7 @@ const PortfolioTemplates = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               viewport={{ once: true }}
-              className={`relative group p-4 rounded-[3rem] border ${template.accent} bg-white/50 backdrop-blur-sm hover:bg-white transition-all duration-500`}
+              className={`relative group p-4 rounded-[3rem] border ${template.accent} bg-base-100 backdrop-blur-sm hover:bg-base-200 transition-all duration-500`}
             >
               {/* IMAGE WRAPPER */}
               <div className="relative h-[400px] rounded-[2.5rem] overflow-hidden mb-8 shadow-2xl">
@@ -95,7 +95,8 @@ const PortfolioTemplates = () => {
                 />
                 
                 {/* Floating Badge */}
-                <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-xl">
+                <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-base-content
+                 shadow-xl">
                   {template.tag}
                 </div>
 
@@ -115,13 +116,13 @@ const PortfolioTemplates = () => {
                 <p className="text-[#3D7E8C] font-bold text-xs uppercase tracking-widest mb-2">
                   {template.category}
                 </p>
-                <h2 className="text-3xl font-black text-slate-900 mb-6 tracking-tight">
+                <h2 className="text-3xl font-black text-base-content mb-6 tracking-tight">
                   {template.name}
                 </h2>
                 
                <Link 
   to={`/portfolio-maker/${template.id}`} 
-  className="flex items-center gap-4 text-slate-900 font-black group/btn"
+  className="flex items-center gap-4 text-base-content font-black group/btn"
 >
   <span className="bg-slate-900 text-white p-3 rounded-full group-hover/btn:bg-[#F39221] transition-colors">
     <ArrowRight size={20} />
@@ -139,17 +140,17 @@ const PortfolioTemplates = () => {
         <div className="mt-40 grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-slate-100 pt-20">
             <div className="flex flex-col gap-4">
                 <Zap className="text-[#F39221]" size={32} />
-                <h4 className="font-black text-xl">Rapid Deployment</h4>
+                <h4 className="font-black text-base-content text-xl">Rapid Deployment</h4>
                 <p className="text-slate-500 text-sm font-medium">From zero to live in under 10 minutes with our optimized builder.</p>
             </div>
             <div className="flex flex-col gap-4">
                 <Layers className="text-[#3D7E8C]" size={32} />
-                <h4 className="font-black text-xl">Modular Components</h4>
+                <h4 className="font-black text-base-content text-xl">Modular Components</h4>
                 <p className="text-slate-500 text-sm font-medium">Mix and match sections effortlessly to create a unique flow.</p>
             </div>
             <div className="flex flex-col gap-4">
                 <Sparkles className="text-purple-500" size={32} />
-                <h4 className="font-black text-xl">High Fidelity</h4>
+                <h4 className="font-black text-base-content text-xl">High Fidelity</h4>
                 <p className="text-slate-500 text-sm font-medium">Pixel-perfect designs that look stunning on any screen size.</p>
             </div>
         </div>
