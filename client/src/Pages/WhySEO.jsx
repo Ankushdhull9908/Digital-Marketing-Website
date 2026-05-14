@@ -13,7 +13,6 @@ import {
   Globe
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 const WhySEO = () => {
   const benefits = [
     {
