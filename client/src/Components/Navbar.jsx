@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Context";
 import { LayoutDashboard, LogOut, User, ChevronDown, Sun, Moon } from "lucide-react";
-
 const Navbar = () => {
   const nav = useNavigate();
   const { user, logout } = useAuth();
