@@ -19,6 +19,7 @@ import WhySEO from './Pages/WhySEO'
 import ScrollToTop from './Components/ScrollToTop'
 import Contact from './Pages/Contact'
 import IndustriesWeWorkWith from './Pages/IndustriesWeWorkWith'
+import Blog from './Pages/Blog'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path='/SIPCalculator' element={<SipCalculator/>}/>
         <Route path='/WhySEO' element={<WhySEO/>}/>
         <Route path='/industries' element={<IndustriesWeWorkWith/>}/>
+        <Route path='/blog/:id' element={<Blog/>}/>
       </Routes>
       <Footer/>
     </>
