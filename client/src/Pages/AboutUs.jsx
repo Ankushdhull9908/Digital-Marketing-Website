@@ -200,27 +200,27 @@ const AboutUs = () => {
             </p>
           </div>
         </motion.div>
-
-        {/* TEAM CARD: SLATE (5 Cols, 1 Row) */}
+          {/* TEAM CARD: SLATE (5 Cols, 1 Row) */}
         <motion.div 
-          className="lg:col-span-5 h-auto row-span-1  md:p-12 rounded-[2.5rem] bg-slate-900 text-white shadow-2xl relative overflow-hidden group border border-slate-800"
+          className="lg:col-span-5 row-span-1 p-8 md:p-12 rounded-[2.5rem] bg-[#3D7E8C] text-white shadow-xl relative overflow-hidden group border border-white/10"
           whileHover={{ y: -5 }}
           {...fadeIn}
         >
-           <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-[#F39221]/20 rounded-full blur-3xl group-hover:bg-[#F39221]/30 transition-colors" />
-           
-           <div className="relative z-10 h-full flex flex-col justify-between">
-            <p className="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em]">The Brain Trust</p>
+          {/* Decorative SVG Pattern */}
+          <svg className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform" width="200" height="200" viewBox="0 0 100 100">
+            <circle cx="100" cy="0" r="80" fill="white" />
+          </svg>
+          
+          <div className="relative z-10 h-full flex flex-col justify-between">
+             <p className="text-slate-300 font-bold  uppercase text-[20px] tracking-[0.2em]">The Brain Trust</p>
             <p className="text-lg md:text-xl font-medium leading-relaxed">
              Our team is composed of   <span className="text-white font-black">developers, data scientists,</span> and creative strategists who share one obsession:<span className="text-[#F39221] font-black"> measurable business growth.</span>
             </p>
-           
           </div>
         </motion.div>
-
       </div>
     </section>
-     {/* --- WHY US SECTION --- */}
+    
       {/* --- WHY US SECTION --- */}
       <section className="py-24 px-6 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
