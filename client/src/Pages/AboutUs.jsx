@@ -9,7 +9,6 @@ const AboutUs = () => {
     viewport: { once: true },
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
   };
-
   const services = [
     { name: "Search Engine Optimization", icon: <BarChart3 size={24} /> },
     { name: "Google Ads (PPC)", icon: <Target size={24} /> },
