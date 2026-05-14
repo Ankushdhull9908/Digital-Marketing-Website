@@ -12,7 +12,6 @@ import { useAuth } from "../context/Context";
 const Home = () => {
   const { faqs, packages, clients, loading } = useAuth();
   const { hash } = useLocation();
-
   console.log('FAQS')
 const carouselImages = [
     "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
