@@ -20,6 +20,7 @@ const Footer = () => {
       { name: 'About', to: '/about' },
       { name: 'Contact', to: '/contact' },
       { name: 'Our Service', to: '/OurServices' },
+      { name: 'Blog Page', to: '/blog/:id' },
     ],
     importantLinks: [
       { name: 'Privacy Policy', to: '/privacy-policy' },
