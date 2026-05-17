@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Clock, User } from "lucide-react";
 
 const BlogSection = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const blogs = [
     {
