@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Target, Eye,  CheckCircle2, Award, Users, BarChart3, ArrowRight,PhoneCall, MousePointer2 , MessageSquare ,Brain, Code, Rocket, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 const AboutUs = () => {
-  const fadeIn ={
+  const fadeIn ={ 
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
