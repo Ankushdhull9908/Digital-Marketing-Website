@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, User } from "lucide-react";
 
@@ -94,6 +94,11 @@ const BlogSection = () => {
             </motion.div>
           ))}
         </div>
+        <div className="flex justify-center items-center w-full">
+  <Link to="/blog/:id" className="w-full max-w-xs p-6 m-auto mt-10 bg-[#3D7E8C] text-white font-black text-sm uppercase tracking-widest rounded-xl hover:bg-[#F39221] transition-colors duration-300 flex items-center justify-center gap-2">
+    READ MORE <ArrowRight size={16} />
+  </Link>
+</div>
       </div>
     </section>
   );
