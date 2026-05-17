@@ -78,7 +78,7 @@ const BlogSection = () => {
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-dashed border-slate-200">
                   <div>
-                    <p className="text-sm font-bold text-slate-800">BeBran Digital</p>
+                    <p className="text-sm font-bold text-slate-800">WebTech Digital</p>
                     <p className="text-xs text-slate-500 font-medium">{blog.author}</p>
                   </div>
                   <div className="w-12 h-12 rounded-full bg-[#3D7E8C]/10 flex items-center justify-center">

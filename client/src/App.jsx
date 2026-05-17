@@ -36,7 +36,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/resume-builder' element={<ResumeBuilder/>}></Route>
         <Route path='/TemplateSelect' element={<TemplateSelect/>}></Route>
-        <Route path='/PortfolioTemplates' element={<PortfolioTemplates/>}></Route>
+        <Route path='/PortfolioTemplates' element={<PortfolioMaker/>}></Route>
         <Route path="/portfolio-maker/:templateId" element={<PortfolioMaker />} />
         <Route path='/jobportal' element={<JobPortal/>}></Route>
         <Route path='/OurServices' element={<OurServices/>}></Route>

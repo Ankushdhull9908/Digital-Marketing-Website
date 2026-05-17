@@ -235,53 +235,61 @@ const handleOpenModal = (packageTitle) => {
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {packageData.map((pkg, i) => (
-          <motion.div
-            key={i}
-            whileHover={{ y: -10 }}
-            className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden ${
-              pkg.featured 
-                ? 'bg-[#16676e] border-[#F39221] shadow-2xl scale-105 z-10' 
-                : 'bg-[#27717e] border-white/5'
-            }`}
+  {packageData.map((pkg, i) => (
+    <motion.div
+      key={i}
+      whileHover={{ y: -10 }}
+      className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden text-white ${
+        pkg.featured
+          ? "bg-[#16676e] border-[#F39221] shadow-2xl scale-105 z-10"
+          : "bg-[#27717e] border-white/5"
+      }`}
+    >
+      {pkg.featured && (
+        <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
+          Most Popular
+        </div>
+      )}
+
+      <div className="relative z-10">
+        <h3 className="text-2xl font-black mb-3 tracking-tight">
+          {pkg.title}
+        </h3>
+        <p className="text-white text-sm font-medium mb-8 leading-relaxed h-12">
+          {pkg.desc}
+        </p>
+      </div>
+
+      <div className="mb-10 relative z-10">
+        <div className="flex items-baseline gap-1">
+          <span className="text-4xl font-black">
+            ₹{pkg.prices[activeTab]}
+          </span>
+          <span className="text-white text-lg font-bold">/-</span>
+        </div>
+      </div>
+
+      <div className="space-y-5 flex-grow mb-12 relative z-10">
+        {pkg.features.map((f, idx) => (
+          <div
+            key={idx}
+            className="flex items-start gap-4 text-xs font-bold text-white"
           >
-            {pkg.featured && (
-              <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                Most Popular
-              </div>
-            )}
-
-            <div className="relative z-10">
-              <h3 className="text-2xl font-black mb-3 text-white tracking-tight">{pkg.title}</h3>
-              <p className="text-slate-400 text-sm font-medium mb-8 leading-relaxed h-12">{pkg.desc}</p>
-            </div>
-
-            <div className="mb-10 relative z-10">
-              <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-black text-slate-300 ">₹{pkg.prices[activeTab]}</span>
-                <span className="text-slate-500 text-lg font-bold">/-</span>
-              </div>
-            </div>
-
-            <div className="space-y-5 flex-grow mb-12 relative z-10">
-              {pkg.features.map((f, idx) => (
-                <div key={idx} className="flex items-start gap-4 text-xs font-bold text-slate-300">
-                  <CheckCircle size={14} className="text-[#3D7E8C] mt-0.5" />
-                  <span>{f}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Added onClick handler to open the form */}
-            <button 
-              onClick={() => handleOpenModal(pkg.title)}
-              className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#f39121] text-black hover:bg-[#ed9a3b]"
-            >
-              Get Started Now
-            </button>
-          </motion.div>
+            <CheckCircle size={14} className="text-[#F39221] mt-0.5" />
+            <span>{f}</span>
+          </div>
         ))}
       </div>
+
+      <button
+        onClick={() => handleOpenModal(pkg.title)}
+        className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#F39221] text-black hover:bg-[#ED9A3B]"
+      >
+        Get Started Now
+      </button>
+    </motion.div>
+  ))}
+</div>
 
       {/* Centered Modal Pop-up Form */}
       <AnimatePresence>

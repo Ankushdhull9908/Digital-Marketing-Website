@@ -334,7 +334,7 @@ const Webthech = () => {
   <div className="flex items-center gap-4">
     <div className="px-8 py-4 bg-[#3D7E8C] rounded-full inline-flex items-center justify-center shadow-lg shadow-[#3D7E8C]/20">
       <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-        Projects
+        Our Projects
       </h2>
     </div>
     <div className="hidden sm:block h-1 w-16 bg-[#F39221] rounded-full"></div>
@@ -342,7 +342,7 @@ const Webthech = () => {
   
   <div className="pl-6 mt-10" >
     <Link to="" className="text-sm font-bold text-[#F39221] flex items-center gap-2 group-hover:gap-3 hover:text-green-500 transition-all">
-      Learn more <ArrowRight size={16} />
+      View more <ArrowRight size={16} />
     </Link>
   </div>
 </motion.div>
