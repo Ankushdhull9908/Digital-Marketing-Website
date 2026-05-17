@@ -164,6 +164,7 @@ useEffect(() => {
       </section>
 
 {/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
+{/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
 <motion.section 
   initial={{ opacity: 0 }}
   whileInView={{ opacity: 1 }}
@@ -197,7 +198,7 @@ useEffect(() => {
           title: "Resume Builder", 
           desc: "Engineered for the modern job market to beat automated screening systems.",
           benefit: "Designed to help you bypass HR filters and secure interviews at top-tier tech firms.",
-          color: "#3D7E8C" 
+          color: "#F39221" 
         },
         { 
           to: "/portfolio-maker/:templateId", 
@@ -214,7 +215,7 @@ useEffect(() => {
           title: "Influencer Hub", 
           desc: "Bridging the gap between creative talent and premium brand partnerships.",
           benefit: "Streamline your collaboration process and professionalize your creator-to-brand pitch.",
-          color: "#60A5FA" 
+          color: "#F39221" 
         },
         { 
           to: "/jobportal", 
@@ -222,7 +223,7 @@ useEffect(() => {
           title: "Job Portal", 
           desc: "Curated opportunities from startups to Fortune 500 companies worldwide.",
           benefit: "Access a private ecosystem of high-growth roles that aren't advertised on mainstream sites.",
-          color: "#34D399" 
+          color: "#F39221" 
         },
         { 
           to: "https://www.hostinger.com/in/free-domain?utm_id=381673073&msclkid=5b0f7f6e5c631613eac0168be30069bd&utm_source=bing&utm_medium=cpc&utm_campaign=Brand-Exact|NT:Bing|LO:IN&utm_term=hostinger&utm_content=Exact+|+Hostinger" , 
@@ -230,7 +231,7 @@ useEffect(() => {
           title: "Domain Engine", 
           desc: "Secure your digital identity with a unique address and professional email.",
           benefit: "Protect your intellectual property and establish instant credibility with a custom URL.",
-          color: "#A78BFA" 
+          color: "#F39221" 
         },
         { 
           to: "/landingpage", 
@@ -238,7 +239,7 @@ useEffect(() => {
           title: "Launchpad", 
           desc: "High-conversion storefronts optimized for speed and mobile engagement.",
           benefit: "Turn cold traffic into loyal customers with high-speed, conversion-optimized architecture.",
-          color: "#F43F5E" 
+          color: "#F39221" 
         },
       ].map((tool, idx) => {
         const isExternal = tool.to.startsWith('http');
@@ -264,6 +265,7 @@ useEffect(() => {
                   style={{ backgroundColor: tool.color }} 
                 />
 
+                {/* Status Overlay */}
                 {tool.hot && (
                   <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
                     ELITE TOOL
@@ -271,7 +273,7 @@ useEffect(() => {
                 )}
 
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className="mb-12 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
+                  <div className="mb-6 w-20 h-20 rounded-3xl bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:bg-white/[0.07] group-hover:border-white/20 transition-all duration-500">
                     <div style={{ color: tool.color }} className="group-hover:scale-110 transition-transform duration-500">
                       {tool.icon}
                     </div>
@@ -284,7 +286,7 @@ useEffect(() => {
                     <p className="text-xs font-bold text-slate-300 italic">"{tool.benefit}"</p>
                   </div>
 
-                  <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+                  <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black text-white/20 tracking-widest uppercase">Status</span>
                       <span className="text-xs font-bold text-[#34D399] flex items-center gap-1.5">
