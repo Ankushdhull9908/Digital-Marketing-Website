@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion'; 
-import { 
+import {  
   CheckCircle2, TrendingUp, Users, Target, BarChart3, 
   ShieldCheck, ArrowRight, Lightbulb, Search, Rocket, 
   Settings2, LineChart, GraduationCap, Utensils, 
