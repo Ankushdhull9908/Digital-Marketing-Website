@@ -9,7 +9,7 @@ const ResultHero = () => {
   const { faqs } = useAuth(); 
   const [activeTab, setActiveTab] = useState('Monthly');
 
-  const allClients = [
+  const allClients = [ 
     {
       id: 1,
       name: "Alex Rivera",
