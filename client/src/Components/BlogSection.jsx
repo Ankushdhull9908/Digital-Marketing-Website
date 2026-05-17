@@ -14,7 +14,6 @@ const BlogSection = () => {
       author: "Sr. Writer",
       date: "May 12, 2026",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=500&auto=format&fit=crop",
-      color: "bg-[#059669]", // Emerald/Green theme from your image
     },
     {
       id: 2,
@@ -23,7 +22,6 @@ const BlogSection = () => {
       author: "Sr. Writer",
       date: "May 10, 2026",
       image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=500&auto=format&fit=crop",
-      color: "bg-[#0284c7]", // Blue theme
     },
     {
       id: 3,
@@ -32,7 +30,6 @@ const BlogSection = () => {
       author: "Sr. Writer",
       date: "May 08, 2026",
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=500&auto=format&fit=crop",
-      color: "bg-[#7c3aed]", // Purple theme
     },
   ];
 
@@ -59,20 +56,22 @@ const BlogSection = () => {
               className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 cursor-pointer group"
             >
               {/* Image Header with Overlay Text */}
-              <div className={`relative h-64 ${blog.color} p-8 flex flex-col justify-center text-white`}>
-                <div className="absolute top-4 left-4 flex items-center gap-2">
+              <div 
+                style={{ backgroundImage: `url(${blog.image})` }}
+                className="relative h-64 bg-cover bg-center p-8 flex flex-col justify-center text-black"
+              >
+                {/* Modern Dark & Blurred Overlay */}
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-[3px] z-0" />
+
+                <div className="absolute top-4 left-4 flex items-center gap-2 z-10">
                    <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                      <span className="text-[10px] font-bold">WebTech</span>
+                      <span className="text-[10px] font-bold text-white">WebTech</span>
                    </div>
                 </div>
-                <h3 className="text-xl font-black uppercase leading-tight mt-4 group-hover:scale-105 transition-transform duration-500">
+                {/* Changed text color to white for better legibility against the dark blurred image background */}
+                <h3 className="text-xl font-black uppercase leading-tight mt-4 group-hover:scale-105 transition-transform duration-500 z-10 text-white">
                   {blog.title}
                 </h3>
-                <p className="text-xs mt-4 opacity-80 font-medium">bebran.com</p>
-                {/* Decorative background shapes */}
-                <div className="absolute bottom-0 right-0 opacity-10">
-                   <div className="w-32 h-32 bg-white rounded-tl-full" />
-                </div>
               </div>
 
               {/* Author Info Section */}
@@ -95,10 +94,10 @@ const BlogSection = () => {
           ))}
         </div>
         <div className="flex justify-center items-center w-full">
-  <Link to="/blog/:id" className="w-full max-w-xs p-6 m-auto mt-10 bg-[#3D7E8C] text-white font-black text-sm uppercase tracking-widest rounded-xl hover:bg-[#F39221] transition-colors duration-300 flex items-center justify-center gap-2">
-    READ MORE <ArrowRight size={16} />
-  </Link>
-</div>
+          <Link to="/blog/:id" className="w-full max-w-xs p-6 m-auto mt-10 bg-[#3D7E8C] text-white font-black text-sm uppercase tracking-widest rounded-xl hover:bg-[#F39221] transition-colors duration-300 flex items-center justify-center gap-2">
+            READ MORE <ArrowRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
   );

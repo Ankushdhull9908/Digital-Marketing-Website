@@ -6,7 +6,7 @@ import {
   Settings2, LineChart, GraduationCap, Utensils, 
   ShoppingCart, Building2, Briefcase 
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 30 },
@@ -327,20 +327,25 @@ const Webthech = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                 
                 {/* Asymmetric Branding / Section Headline Module matching "Projects" bubble positioning */}
-                <motion.div 
-                  variants={fadeInUp} 
-                  className="col-span-1 md:col-span-2 flex items-center py-6 md:py-0 pl-2"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="px-8 py-4 bg-[#3D7E8C] rounded-full inline-flex items-center justify-center shadow-lg shadow-[#3D7E8C]/20">
-                      <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                        Projects
-                      </h2>
-                    </div>
-                    <div className="hidden sm:block h-1 w-16 bg-[#F39221] rounded-full"></div>
-                  </div>
-                </motion.div>
-
+               <motion.div 
+  variants={fadeInUp} 
+  className="col-span-1 md:col-span-2 flex flex-col items-start gap-4 py-6 md:py-0 pl-2 w-full"
+>
+  <div className="flex items-center gap-4">
+    <div className="px-8 py-4 bg-[#3D7E8C] rounded-full inline-flex items-center justify-center shadow-lg shadow-[#3D7E8C]/20">
+      <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+        Projects
+      </h2>
+    </div>
+    <div className="hidden sm:block h-1 w-16 bg-[#F39221] rounded-full"></div>
+  </div>
+  
+  <div className="pl-6 mt-10" >
+    <Link to="" className="text-sm font-bold text-[#F39221] flex items-center gap-2 group-hover:gap-3 hover:text-green-500 transition-all">
+      Learn more <ArrowRight size={16} />
+    </Link>
+  </div>
+</motion.div>
                 {/* Remaining 2 images positioned tightly to the right */}
                 {bottomRowProjects.map((project, idx) => (
                   <motion.div

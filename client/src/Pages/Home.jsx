@@ -163,7 +163,7 @@ useEffect(() => {
         </motion.div>
       </section>
 
-{/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
+
 {/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
 <motion.section 
   initial={{ opacity: 0 }}
@@ -245,7 +245,8 @@ useEffect(() => {
         const isExternal = tool.to.startsWith('http');
         
         // Define the common classes for the card style
-        const cardClasses = "group relative flex flex-col h-full min-h-[620px] bg-slate-950 p-12 rounded-[3.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[#00000040]";
+        const cardClasses = "group relative flex flex-col h-full min-h-[620px] bg-[#27717e] p-12 rounded-[3.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:shadow-[#00000040]";
+        
 
         return (
           <motion.div
@@ -264,7 +265,9 @@ useEffect(() => {
                   className="absolute -top-24 -right-24 w-64 h-50 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
                   style={{ backgroundColor: tool.color }} 
                 />
-
+                <svg className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform" width="200" height="200" viewBox="0 0 100 100">
+                    <circle cx="100" cy="0" r="80" fill="white" />
+                 </svg>
                 {/* Status Overlay */}
                 {tool.hot && (
                   <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
@@ -307,7 +310,9 @@ useEffect(() => {
                   className="absolute -top-24 -right-24 w-64 h-50 blur-[100px] opacity-10 group-hover:opacity-30 transition-opacity duration-700" 
                   style={{ backgroundColor: tool.color }} 
                 />
-
+                <svg className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform" width="200" height="200" viewBox="0 0 100 100">
+                  <circle cx="100" cy="0" r="80" fill="white" />
+                  </svg>
                 {tool.hot && (
                   <div className="absolute top-10 right-12 bg-[#F39221] text-black text-[11px] font-black px-5 py-2 rounded-full shadow-2xl tracking-[0.2em] z-20">
                     ELITE TOOL

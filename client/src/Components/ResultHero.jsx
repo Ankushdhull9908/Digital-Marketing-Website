@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion ,AnimatePresence} from 'framer-motion';
 import { 
   CheckCircle, HelpCircle, 
-  ChevronDown, Play
+  ChevronDown, Play ,Clock, User,X
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
 const ResultHero = () => {
@@ -83,7 +83,17 @@ const ResultHero = () => {
       featured: false
     }
   ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState("");
+const handleOpenModal = (packageTitle) => {
+    setSelectedPackage(packageTitle);
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPackage("");
+  };
   return (
     <div className="font-montserrat text-base-content overflow-hidden w-full">
       
@@ -189,87 +199,168 @@ const ResultHero = () => {
       </section>
 
       {/* --- SECTION 3: PRICING --- */}
-      <section className="py-24 px-6 bg-base-200">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-              Our <span className="text-[#F39221]">Packages</span>
-            </h2>
-            <div className="w-24 h-2 bg-[#3D7E8C] mx-auto rounded-full"></div>
-          </div>
+    <section className="py-24 px-6 bg-base-200">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+          Our <span className="text-[#F39221]">Packages</span>
+        </h2>
+        <div className="w-24 h-2 bg-[#3D7E8C] mx-auto rounded-full"></div>
+      </div>
 
-          {/* Duration Toggle */}
-          <div className="flex justify-center mb-20 px-6">
-            <div className="flex flex-wrap md:flex-nowrap justify-center gap-4 w-full max-w-7xl">
-              {durations.map((d) => (
-                <button
-                  key={d.id}
-                  onClick={() => setActiveTab(d.id)}
-                  className={`flex flex-col items-center justify-center flex-1 min-w-[180px] py-8 rounded-[2.5rem] transition-all duration-300 border-2 ${
-                    activeTab === d.id 
-                    ? 'bg-slate-900 border-slate-900 text-white shadow-2xl scale-105 z-10' 
-                    : 'bg-white border-slate-100 text-slate-400 hover:border-[#3D7E8C]/50'
-                  }`}
-                >
-                  <span className="text-base font-black uppercase tracking-[0.2em]">{d.label}</span>
-                  <span className={`text-[10px] font-bold mt-1 uppercase tracking-widest ${activeTab === d.id ? 'text-[#F39221]' : 'text-slate-400'}`}>
-                    {d.sub}
-                  </span>
-                  {activeTab === d.id && (
-                    <motion.div layoutId="activeUnderline" className="w-12 h-1.5 bg-[#3D7E8C] mt-4 rounded-full" />
-                  )}
-                </button>
+      {/* Duration Toggle */}
+      <div className="flex justify-center mb-20 px-6">
+        <div className="flex flex-wrap md:flex-nowrap justify-center gap-4 w-full max-w-7xl">
+          {durations.map((d) => (
+            <button
+              key={d.id}
+              onClick={() => setActiveTab(d.id)}
+              className={`flex flex-col items-center justify-center flex-1 min-w-[180px] py-8 rounded-[2.5rem] transition-all duration-300 border-2 ${
+                activeTab === d.id 
+                ? 'bg-slate-900 border-slate-900 text-white shadow-2xl scale-105 z-10' 
+                : 'bg-white border-slate-100 text-slate-400 hover:border-[#3D7E8C]/50'
+              }`}
+            >
+              <span className="text-base font-black uppercase tracking-[0.2em]">{d.label}</span>
+              <span className={`text-[10px] font-bold mt-1 uppercase tracking-widest ${activeTab === d.id ? 'text-[#F39221]' : 'text-slate-400'}`}>
+                {d.sub}
+              </span>
+              {activeTab === d.id && (
+                <motion.div layoutId="activeUnderline" className="w-12 h-1.5 bg-[#3D7E8C] mt-4 rounded-full" />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {packageData.map((pkg, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ y: -10 }}
+            className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden ${
+              pkg.featured 
+                ? 'bg-[#16676e] border-[#F39221] shadow-2xl scale-105 z-10' 
+                : 'bg-[#27717e] border-white/5'
+            }`}
+          >
+            {pkg.featured && (
+              <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                Most Popular
+              </div>
+            )}
+
+            <div className="relative z-10">
+              <h3 className="text-2xl font-black mb-3 text-white tracking-tight">{pkg.title}</h3>
+              <p className="text-slate-400 text-sm font-medium mb-8 leading-relaxed h-12">{pkg.desc}</p>
+            </div>
+
+            <div className="mb-10 relative z-10">
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-slate-300 ">₹{pkg.prices[activeTab]}</span>
+                <span className="text-slate-500 text-lg font-bold">/-</span>
+              </div>
+            </div>
+
+            <div className="space-y-5 flex-grow mb-12 relative z-10">
+              {pkg.features.map((f, idx) => (
+                <div key={idx} className="flex items-start gap-4 text-xs font-bold text-slate-300">
+                  <CheckCircle size={14} className="text-[#3D7E8C] mt-0.5" />
+                  <span>{f}</span>
+                </div>
               ))}
             </div>
-          </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {packageData.map((pkg, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -10 }}
-                className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden ${
-                  pkg.featured 
-                    ? 'bg-slate-900 border-[#F39221] shadow-2xl scale-105 z-10' 
-                    : 'bg-slate-950 border-white/5'
-                }`}
+            {/* Added onClick handler to open the form */}
+            <button 
+              onClick={() => handleOpenModal(pkg.title)}
+              className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#f39121] text-black hover:bg-[#ed9a3b]"
+            >
+              Get Started Now
+            </button>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Centered Modal Pop-up Form */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop Blur Overlap */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseModal}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+
+            {/* Form Container */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md bg-[#16676e] border border-[#3D7E8C] p-8 rounded-[2.5rem] shadow-2xl z-10 text-white"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={handleCloseModal}
+                className="absolute top-6 right-6 text-slate-300 hover:text-[#F39221] transition-colors"
               >
-                {pkg.featured && (
-                  <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                    Most Popular
-                  </div>
-                )}
+                <X size={24} />
+              </button>
 
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-black mb-3 text-white tracking-tight">{pkg.title}</h3>
-                  <p className="text-slate-400 text-sm font-medium mb-8 leading-relaxed h-12">{pkg.desc}</p>
+              {/* Form Header */}
+              <div className="mb-6">
+                <h3 className="text-2xl font-black tracking-tight mb-1">Get Started</h3>
+                <p className="text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                  Package: <span className="text-[#F39221]">{selectedPackage}</span>
+                </p>
+              </div>
+
+              {/* Input Fields */}
+              <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Name</label>
+                  <input 
+                    type="text" 
+                    placeholder="John Doe" 
+                    className="w-full px-4 py-3 bg-[#27717e] border border-white/10 rounded-xl focus:outline-none focus:border-[#F39221] text-white font-medium text-sm transition-all"
+                  />
                 </div>
 
-                <div className="mb-10 relative z-10">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-black text-slate-300 ">₹{pkg.prices[activeTab]}</span>
-                    <span className="text-slate-500 text-lg font-bold">/-</span>
-                  </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Email Address</label>
+                  <input 
+                    type="email" 
+                    placeholder="john@example.com" 
+                    className="w-full px-4 py-3 bg-[#27717e] border border-white/10 rounded-xl focus:outline-none focus:border-[#F39221] text-white font-medium text-sm transition-all"
+                  />
                 </div>
 
-                <div className="space-y-5 flex-grow mb-12 relative z-10">
-                  {pkg.features.map((f, idx) => (
-                    <div key={idx} className="flex items-start gap-4 text-xs font-bold text-slate-300">
-                      <CheckCircle size={14} className="text-[#3D7E8C] mt-0.5" />
-                      <span>{f}</span>
-                    </div>
-                  ))}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Phone Number</label>
+                  <input 
+                    type="tel" 
+                    placeholder="+91 98765 43210" 
+                    className="w-full px-4 py-3 bg-[#27717e] border border-white/10 rounded-xl focus:outline-none focus:border-[#F39221] text-white font-medium text-sm transition-all"
+                  />
                 </div>
 
-                <button className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#f39121] text-black hover:bg-[#ed9a3b]">
-                  Get Started Now
+                <button 
+                  type="submit" 
+                  className="w-full mt-6 py-4 rounded-xl text-sm font-black uppercase tracking-widest transition-all bg-[#f39121] text-black hover:bg-[#ed9a3b] shadow-lg shadow-[#f39121]/20"
+                >
+                  Submit Request
                 </button>
-              </motion.div>
-            ))}
+              </form>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        )}
+      </AnimatePresence>
+    </div>
+  </section>
 
       {/* --- SECTION 4: FAQ --- */}
       <section className="py-24 px-6 bg-base-200">
