@@ -20,6 +20,7 @@ import ScrollToTop from './Components/ScrollToTop'
 import Contact from './Pages/Contact'
 import IndustriesWeWorkWith from './Pages/IndustriesWeWorkWith'
 import Blog from './Pages/Blog'
+import UserDashboard from './Pages/UserDashboard'
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         <Route path='/WhySEO' element={<WhySEO/>}/>
         <Route path='/industries' element={<IndustriesWeWorkWith/>}/>
         <Route path='/blog/:id' element={<Blog/>}/>
+        <Route path='/UserDashboard' element={<UserDashboard/>}/>
       </Routes>
       <Footer/>
     </>
