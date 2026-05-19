@@ -19,9 +19,11 @@ export const ContextProvider = ({ children }) => {
   // check token on reload
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setUser({ token });
+    console.log('data came from localstorage',token)
+    if (token) setUser({ token});
   }, []);
-
+ 
+  console.log('user data',user)
   // fetch all public homepage data once on mount
   useEffect(() => {
     const fetchAll = async () => {

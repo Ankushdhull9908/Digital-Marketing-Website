@@ -4,11 +4,15 @@ import { useAuth } from "../context/Context";
 function AuthPage() {
   const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+const [adminCode, setAdminCode] = useState("");
   const navigate = useNavigate();
   // State to trigger the entrance animation after the component mounts
   const [isLoaded, setIsLoaded] = useState(false);
 
-  var API = "https://digital-marketing-temp.onrender.com" ? "https://digital-marketing-temp.onrender.com": "http://localhost:5000"
+  //"https://digital-marketing-temp.onrender.com" ? "https://digital-marketing-temp.onrender.com": 
+
+  var API = "http://localhost:5000"
 
   const [form, setForm] = useState({
     name: "",
@@ -24,35 +28,47 @@ function AuthPage() {
   }, []);
 
   const handleSubmit = async () => {
-    try {
-      const url = isLogin
-        ? `${API}/api/auth/login`
-        :`${API}/api/auth/signup`;
 
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
+    console.log('api is',API)
+  try {
+    const url = isLogin
+      ? `${API}/api/auth/login`
+      : `${API}/api/auth/signup`;
 
-      const data = await res.json();
+    const body = isLogin
+      ? { email: form.email, password: form.password, isAdmin, adminCode }
+      : { ...form };
 
-      if (!res.ok) {
-        alert(data.message);
-        return;
-      }
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-      if (isLogin) {
-        login(data.token);
-        navigate("/dashboard");
-      } else {
-        alert("Signup successful! Please login");
-        setIsLogin(true);
-      }
-    } catch (error) {
-      alert("Something went wrong");
+    const data = await res.json();
+
+    console.log('data came is',data)
+
+    if (!res.ok) {
+      alert(data.message);
+      return;
     }
-  };
+
+    
+
+    if (isLogin) {
+      login(data);
+
+      data.user.role==="user" ? navigate("/userdashboard") : navigate("/dashboard")
+      
+    } else {
+      alert("Signup successful! Please login");
+      setIsLogin(true);
+    }
+  } catch (error) {
+    alert("Something went wrong");
+  }
+};
 
   // Define the image source and alt text based on the auth state.
   const imageSrc = isLogin
@@ -168,6 +184,47 @@ function AuthPage() {
                   onChange={e => setForm({ ...form, password: e.target.value })}
                 />
               </div>
+              {isLogin && (
+  <div className="space-y-3">
+    <div className="flex items-center gap-3 pt-1">
+      <input
+        type="checkbox"
+        id="adminCheck"
+        className="w-4 h-4 rounded border-base-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+        checked={isAdmin}
+        onChange={(e) => {
+          setIsAdmin(e.target.checked);
+          if (!e.target.checked) setAdminCode("");
+        }}
+      />
+      <label
+        htmlFor="adminCheck"
+        className="text-sm font-semibold text-blue-700 cursor-pointer select-none"
+      >
+        Are you Admin?
+      </label>
+    </div>
+
+    {/* Admin Code Field - appears only when checked */}
+    {isAdmin && (
+      <div className="transition-all duration-300 ease-in-out">
+        <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+          Admin Secret Code
+        </label>
+        <div className="relative">
+          <input
+            type="password"
+            className="w-full px-5 py-3.5 rounded-xl border-2 border-blue-500 bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-blue-300 text-base-700"
+            placeholder="Enter admin secret code"
+            value={adminCode}
+            onChange={(e) => setAdminCode(e.target.value)}
+          />
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 text-lg">🔑</span>
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
               {/* Terms Checkbox (Signup Only) */}
               {!isLogin && (

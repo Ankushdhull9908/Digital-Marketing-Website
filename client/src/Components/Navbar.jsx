@@ -12,6 +12,8 @@ const Navbar = () => {
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
 
+  //console.log('user data',user.token.role)
+
   const handleToggle = (e) => {
     if (e.target.checked) {
       setTheme("dark");
@@ -165,7 +167,7 @@ const Navbar = () => {
                   <p className="text-[11px] opacity-60 truncate">{user?.email || "User profile"}</p>
                 </div>
                 <li>
-                  <Link to="/dashboard" className="flex items-center gap-3 py-2.5 rounded-lg active:bg-primary" onClick={handleLinkClick}>
+                  <Link to={user.role==="user" ? '/userdashboard':'/dashboard'} className="flex items-center gap-3 py-2.5 rounded-lg active:bg-primary" onClick={handleLinkClick}>
                     <LayoutDashboard size={18} className="text-primary" />
                     <span>Dashboard</span>
                   </Link>
