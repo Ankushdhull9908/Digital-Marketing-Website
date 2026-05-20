@@ -26,7 +26,7 @@ const Footer = () => {
     importantLinks: [
       { name: 'Privacy Policy', to: '/privacy-policy' },
       { name: 'Terms & Conditions', to: '/terms-and-conditions' },
-      { name: 'Career', to: '/career' },
+      { name: 'Career', to: '/Career' },
       { name: 'Why SEO', to: '/WhySEO' },
     ],
     contactInfo: {

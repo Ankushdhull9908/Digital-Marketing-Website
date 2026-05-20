@@ -21,6 +21,7 @@ import Contact from './Pages/Contact'
 import IndustriesWeWorkWith from './Pages/IndustriesWeWorkWith'
 import Blog from './Pages/Blog'
 import UserDashboard from './Pages/UserDashboard'
+import Career from './Pages/Carrer'
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path='/industries' element={<IndustriesWeWorkWith/>}/>
         <Route path='/blog/:id' element={<Blog/>}/>
         <Route path='/UserDashboard' element={<UserDashboard/>}/>
+        <Route path='/Career' element={<Career/>}/>
       </Routes>
       <Footer/>
     </>
