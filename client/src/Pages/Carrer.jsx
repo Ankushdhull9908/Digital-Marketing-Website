@@ -7,7 +7,7 @@ import {
   Clock, 
   Compass, 
   Terminal, 
-  Heart, 
+  Heart,  
   Zap, 
   ChevronRight,
   X
