@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"; 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion"; 
 import {  
   Search, Share2, Layout, MapPin, ArrowRight, Zap, Target,
   BarChart, Users, Briefcase, Globe, ChevronDown, Check,PenTool , Palette ,Rocket
