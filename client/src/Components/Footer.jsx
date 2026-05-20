@@ -45,7 +45,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-base-100 pt-20 pb-10 overflow-hidden font-montserrat">
+    <footer className="relative bg-base-300 pt-20 pb-10 overflow-hidden font-montserrat">
       {/* Brand Aesthetic Background Blobs */}
       <div className="absolute top-0 left-0 w-[500px] h-[500px]  rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px]  rounded-full blur-[100px] translate-x-1/3 translate-y-1/3" />
@@ -160,7 +160,7 @@ const Footer = () => {
                   <FaMapMarkerAlt size={14} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-base-content uppercase tracking-widest">Location</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Location</p>
                   <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.address}</p>
                 </div>
               </div>

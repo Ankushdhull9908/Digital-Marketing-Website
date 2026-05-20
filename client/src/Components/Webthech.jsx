@@ -341,7 +341,7 @@ const Webthech = () => {
   </div>
   
   <div className="pl-6 mt-10" >
-    <Link to="" className="text-sm font-bold text-[#F39221] flex items-center gap-2 group-hover:gap-3 hover:text-green-500 transition-all">
+    <Link to="/industries" className="text-sm font-bold text-[#F39221] flex items-center gap-2 group-hover:gap-3 hover:text-green-500 transition-all">
       View more <ArrowRight size={16} />
     </Link>
   </div>

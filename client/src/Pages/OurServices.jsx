@@ -140,32 +140,64 @@ const OurServices = () => {
 
   return (
     <div className="min-h-screen bg-base-100 font-montserrat text-base-content">
-      {/* --- HERO SECTION --- */}
-     <section className="relative py-24 px-6 bg-base-100 overflow-hidden">
-        {/* Subtle Brand Blobs */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-slate-300 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-slate-300 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
+ {/* --- HERO SECTION --- */}
+    <section className="relative py-32 px-6 bg-slate-950 overflow-hidden border-b border-slate-900">
+      
+      {/* 1. VISIBLE UNSPLASH BACKGROUND IMAGE LAYER */}
+      <div 
+        className="absolute inset-0 opacity-15 pointer-events-none mix-blend-screen bg-cover bg-center"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1920&auto=format&fit=crop')`
+        }}
+      />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="max-w-3xl text-center md:text-left">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-slate-200 text-[#3D7E8C] text-xs font-black uppercase tracking-widest mb-6">
-                WHAT WE OFFER
-              </span>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-tight">
-               End-to-End <span className="text-[#3D7E8C]">Digital</span> <br /> 
-                <span className="text-[#F39221] italic">Solutions.</span>
-              </h1>
-              <p className="text-lg text-slate-500 font-medium leading-relaxed max-w-xl">
-               We help your business grow, scale, and succeed online. Everything you need under one roof.
-              </p>
-            </div>
-            <Link to="/contact"  className="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-[#3D7E8C] transition-all duration-300 flex items-center gap-3 group">
-              Start a Project <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+      {/* 2. TECH DOT GRID OVERLAY */}
+      <div 
+        className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-overlay"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+          backgroundSize: '24px 24px'
+        }}
+      />
+
+      {/* 3. IMMERSIVE BRAND LIGHT BLOBS (Teal and Orange Ambient Glows) */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#3D7E8C]/15 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#F39221]/15 rounded-full blur-[120px] translate-x-1/2 translate-y-1/2 pointer-events-none" />
+
+      {/* 4. CONTENT CONTAINER */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-12">
+          
+          {/* Content Block */}
+          <div className="max-w-3xl text-center lg:text-left">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-[#3D7E8C]/10 border border-[#3D7E8C]/30 text-[#3D7E8C] text-xs font-black uppercase tracking-widest mb-8 shadow-sm">
+              What We Offer
+            </span>
+            
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-[1.15] text-white">
+              End-to-End <span className="text-[#3D7E8C]">Digital</span> <br /> 
+              <span className="text-[#F39221] italic">Solutions.</span>
+            </h1>
+            
+            <p className="text-base md:text-lg text-slate-400 font-medium leading-relaxed max-w-xl">
+              We help your business grow, scale, and succeed online. Everything you need mapped under one robust ecosystem.
+            </p>
+          </div>
+          
+          {/* Action Call to Action Button */}
+          <div className="w-full lg:w-auto flex justify-center lg:justify-end pb-2">
+            <Link 
+              to="/contact"  
+              className="w-full sm:w-auto text-center bg-[#F39221] text-black px-10 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-[#ed9a3b] transition-all duration-300 flex items-center justify-center gap-3 group shadow-lg shadow-[#F39221]/10 hover:shadow-[#F39221]/20 hover:-translate-y-0.5"
+            >
+              Start a Project 
+              <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
             </Link>
           </div>
+
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* --- DIGITAL MARKETING --- */}
       <section id="special-section" className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">

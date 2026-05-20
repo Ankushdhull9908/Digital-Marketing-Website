@@ -156,15 +156,15 @@ useEffect(() => {
               Start Your Project <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
             </Link>
+            <Link to="/industries" >
             <motion.button whileHover={{ backgroundColor: "#f1f5f9" }} className="px-8 py-4 bg-white text-slate-700 rounded-2xl font-bold border border-slate-200 transition-colors">
               View Case Studies
             </motion.button>
+            </Link>
           </motion.div>
         </motion.div>
       </section>
 
-
-{/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS (600px+ HEIGHT) ─────────────────────────────────────────── */}
 {/* ── ULTRA-CAPACITY PROFESSIONAL TOOLS ─────────────────────────────────────────── */}
 <motion.section
   initial={{ opacity: 0 }}
