@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Search, Megaphone, Target, PenTool, MessageSquare, 
-  Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight 
+  Globe, Code, Smartphone, ShoppingCart, Cpu, Palette, ArrowRight  
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 const ServiceCard = ({ icon: Icon, title, description, features }) => (
