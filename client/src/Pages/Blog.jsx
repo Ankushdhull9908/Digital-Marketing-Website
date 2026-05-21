@@ -265,25 +265,7 @@ const Blog = () => {
           {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-6">
             {/* Table of Contents */}
-            <div className="bg-white rounded-[2rem] shadow-lg p-6 sticky top-28">
-              <h3 className="text-xl font-bold text-slate-900 mb-4">
-                Table of Contents
-              </h3>
-              <div className="space-y-3">
-                {toc.map((item, index) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="flex items-start gap-3 text-slate-700 hover:text-slate-900 font-medium transition-colors"
-                  >
-                    <span className="text-xs font-bold text-slate-400 mt-1">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span>{item}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
+            
 
             {/* Related Articles */}
             <div className="bg-white rounded-[2rem] shadow-lg p-6">

@@ -79,22 +79,11 @@ useEffect(() => {
     {/* Overlay Content */}
     <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent flex flex-col justify-center p-6 md:p-24">
       <div className="max-w-[1600px] mx-auto w-full">
-        <motion.span 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-[#3D7E8C] font-black tracking-[0.3em] text-[10px] md:text-sm uppercase mb-2 md:mb-4 block"
-        >
-          Premium Agency Experience
-        </motion.span>
-        <motion.h2 
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-white text-3xl md:text-7xl lg:text-8xl font-black italic tracking-tighter leading-[0.9]"
-        >
-          EMPOWERING <br />
-          <span className="text-[#F39221] not-italic">DIGITAL</span> BRANDS.
-        </motion.h2>
+        
+         
+       
+        
+        
       </div>
     </div>
 

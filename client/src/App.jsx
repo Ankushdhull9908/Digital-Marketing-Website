@@ -6,7 +6,7 @@ import ResumeBuilder from './Pages/ResumeBuilder'
 import TemplateSelect from './Pages/TemplatesSelect'
 import AboutUs from './Pages/AboutUs'
 import JobPortal from './Pages/JobPortal'
-import PortfolioMaker from './Pages/PortfolioMaker'
+import ResumeMaker from './Pages/ResumeMaker'
 import AuthPage from './Pages/AuthPage'
 import Dashboard from './Pages/Dashboard'
 import InfluencerPage from './Pages/InfluencerPage'
@@ -22,6 +22,7 @@ import IndustriesWeWorkWith from './Pages/IndustriesWeWorkWith'
 import Blog from './Pages/Blog'
 import UserDashboard from './Pages/UserDashboard'
 import Career from './Pages/Carrer'
+import BlogList from './Pages/BlogList'
 
 
 function App() {
@@ -36,10 +37,10 @@ function App() {
         <Route path="/" element={<Home/>} /> 
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path='/resume-builder' element={<ResumeBuilder/>}></Route>
+        <Route path='/resume-builder' element={<ResumeMaker/>}></Route>
         <Route path='/TemplateSelect' element={<TemplateSelect/>}></Route>
-        <Route path='/PortfolioTemplates' element={<PortfolioMaker/>}></Route>
-        <Route path="/portfolio-maker/:templateId" element={<PortfolioMaker />} />
+        <Route path='/PortfolioTemplates' element={<ResumeBuilder/>}></Route>
+        <Route path="/portfolio-maker/:templateId" element={<ResumeBuilder />} />
         <Route path='/jobportal' element={<JobPortal/>}></Route>
         <Route path='/OurServices' element={<OurServices/>}></Route>
         <Route path='/contact' element={<Contact/>}/>
@@ -50,6 +51,7 @@ function App() {
         <Route path='/WhySEO' element={<WhySEO/>}/>
         <Route path='/industries' element={<IndustriesWeWorkWith/>}/>
         <Route path='/blog/:id' element={<Blog/>}/>
+        <Route path="/blog" element={<BlogList />} />
         <Route path='/UserDashboard' element={<UserDashboard/>}/>
         <Route path='/Career' element={<Career/>}/>
       </Routes>

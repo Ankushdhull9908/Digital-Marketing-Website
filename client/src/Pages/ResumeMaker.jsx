@@ -206,7 +206,7 @@ function EditorialTemplate({ d, accent }) {
       {/* Big Hero */}
       <div style={{ padding: "64px 64px 48px", position: "relative" }}>
         <div style={{ position: "absolute", top: 0, right: 0, width: 200, height: 200, background: a, opacity: 0.06 }} />
-        <div style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 16 }}>Portfolio — {new Date().getFullYear()}</div>
+        <div style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 16 }}>Resume — {new Date().getFullYear()}</div>
         <h1 style={{ fontSize: 72, fontWeight: 900, lineHeight: 1, margin: 0, letterSpacing: "-3px" }}>{d.name}</h1>
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12 }}>
           <div style={{ height: 2, width: 48, background: a }} />
@@ -763,7 +763,7 @@ function TemplatePicker({ onSelect }) {
       <div className="text-center mb-14">
         <div className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6"
           style={{ background: "#2E9E6E20", color: "#2E9E6E", border: "1px solid #2E9E6E40" }}>
-          Portfolio Builder
+          Resume Builder
         </div>
         <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-4" style={{ letterSpacing: "-2px" }}>
           Choose Your<br /><span style={{ background: "linear-gradient(90deg,#2E9E6E,#F5A623)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Template</span>
@@ -833,7 +833,7 @@ function Editor({ templateId, onBack }) {
     const w = window.open("", "_blank");
     w.document.write(`
       <!DOCTYPE html><html><head>
-      <title>${data.name} — Portfolio</title>
+      <title>${data.name} — Resume</title>
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
       <style>
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -975,7 +975,7 @@ function Editor({ templateId, onBack }) {
 /* ════════════════════════════════════════════════════════
    ROOT
 ════════════════════════════════════════════════════════ */
-export default function PortfolioMaker() {
+export default function ResumeMaker() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   return (
