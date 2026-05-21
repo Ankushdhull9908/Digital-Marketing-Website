@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-
+ 
   :root {
     --blue-950: #060e1e;
     --blue-900: #0b1a35;
