@@ -55,8 +55,8 @@ const styles = `
   .lp-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 7vw;
-    height: 72px;
+    padding: 1rem 7vw;
+    height: 100px;
     background: rgba(6,14,30,0.75);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(96,165,250,0.1);
@@ -798,58 +798,78 @@ export default function LandingPage() {
           <button className="lp-nav-cta">Get Started →</button>
         </nav>
 
-        {/* HERO */}
-        <section className="lp-hero" id="home">
-          <div className="lp-hero-bg-grid" />
-          <div className="lp-hero-blob1" />
-          <div className="lp-hero-blob2" />
+{/* HERO */}
+<section className="lp-hero" id="home">
+  <div className="lp-hero-bg-grid" />
+  <div className="lp-hero-blob1" />
+  <div className="lp-hero-blob2" />
 
-          <div className="lp-hero-content">
-            <div className="lp-hero-eyebrow">
-              <span className="lp-hero-dot" />
-              India's #1 Influencer Platform
-            </div>
-            <h1 className="lp-hero-title">
-              Where Brands Meet <br />
-              <span className="lp-hero-title-accent">Real Creators</span>
-            </h1>
-            <p className="lp-hero-sub">
-              CollabX connects brands with the perfect influencers — from nano creators to mega stars — to run campaigns that actually convert.
-            </p>
-            <div className="lp-hero-btns">
-              <a href="#services" className="btn-primary">Explore Services →</a>
-              <a href="#how" className="btn-ghost">▶ See How It Works</a>
-            </div>
-            <div className="lp-hero-stats">
-              <div className="lp-stat-item">
-                <div className="lp-stat-num">12K+</div>
-                <div className="lp-stat-label">Verified Creators</div>
-              </div>
-              <div className="lp-stat-item">
-                <div className="lp-stat-num">3,400+</div>
-                <div className="lp-stat-label">Brand Campaigns</div>
-              </div>
-              <div className="lp-stat-item">
-                <div className="lp-stat-num">98%</div>
-                <div className="lp-stat-label">Client Satisfaction</div>
-              </div>
-            </div>
-          </div>
+  <div className="lp-hero-content">
+    <div className="lp-hero-eyebrow">
+      <span className="lp-hero-dot" />
+      India's #1 Influencer Platform
+    </div>
+    <h1 className="lp-hero-title">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          // You can handle saving the text here if needed, e.g., console.log(e.target.innerText)
+        }}
+        style={{ outline: "none" }}
+      >
+        Where Brands Meet
+      </span>
+      <br />
+      <span 
+        className="lp-hero-title-accent"
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          // You can handle saving the text here if needed
+        }}
+        style={{ outline: "none" }}
+      >
+        Real Creators
+      </span>
+    </h1>
+    <p className="lp-hero-sub">
+      CollabX connects brands with the perfect influencers — from nano creators to mega stars — to run campaigns that actually convert.
+    </p>
+    <div className="lp-hero-btns">
+      <a href="#services" className="btn-primary">Explore Services →</a>
+      <a href="#how" className="btn-ghost">▶ See How It Works</a>
+    </div>
+    <div className="lp-hero-stats">
+      <div className="lp-stat-item">
+        <div className="lp-stat-num">12K+</div>
+        <div className="lp-stat-label">Verified Creators</div>
+      </div>
+      <div className="lp-stat-item">
+        <div className="lp-stat-num">3,400+</div>
+        <div className="lp-stat-label">Brand Campaigns</div>
+      </div>
+      <div className="lp-stat-item">
+        <div className="lp-stat-num">98%</div>
+        <div className="lp-stat-label">Client Satisfaction</div>
+      </div>
+    </div>
+  </div>
 
-          <div className="lp-hero-visual">
-            <div className="lp-hero-ring" />
-            <div className="lp-hero-img-wrap">
-              <ImgSlot src={imgs.hero} onUpload={url => setImg("hero", url)} rounded="28px" aspect="4/3" />
-            </div>
-            <div className="lp-hero-badge">
-              <div className="lp-hero-badge-icon">🚀</div>
-              <div>
-                <div className="lp-hero-badge-text">Campaign Live!</div>
-                <div className="lp-hero-badge-sub">+2.4M Impressions Today</div>
-              </div>
-            </div>
-          </div>
-        </section>
+  <div className="lp-hero-visual">
+    <div className="lp-hero-ring" />
+    <div className="lp-hero-img-wrap">
+      <ImgSlot src={imgs.hero} onUpload={url => setImg("hero", url)} rounded="28px" aspect="4/3" />
+    </div>
+    <div className="lp-hero-badge">
+      <div className="lp-hero-badge-icon">🚀</div>
+      <div>
+        <div className="lp-hero-badge-text">Campaign Live!</div>
+        <div className="lp-hero-badge-sub">+2.4M Impressions Today</div>
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* MARQUEE */}
         <div className="lp-marquee-wrap">
