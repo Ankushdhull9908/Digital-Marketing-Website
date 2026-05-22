@@ -12,7 +12,9 @@ const [adminCode, setAdminCode] = useState("");
 
   //"https://digital-marketing-temp.onrender.com" ? "https://digital-marketing-temp.onrender.com": 
 
-  var API = "http://localhost:5000"
+  var API ="https://digital-marketing-temp.onrender.com"
+  ? "https://digital-marketing-temp.onrender.com"
+  : "http://localhost:5000";
 
   const [form, setForm] = useState({
     name: "",
