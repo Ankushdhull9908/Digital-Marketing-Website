@@ -7,6 +7,7 @@ import {
   FaLinkedinIn, 
   FaInstagram, 
   FaGithub,
+  FaPinterestP,
   FaPhoneAlt,
   FaEnvelope,
   FaMapMarkerAlt
@@ -38,10 +39,11 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <FaFacebookF />, href: 'https://facebook.com' },
-    { icon: <FaTwitter />, href: 'https://twitter.com' },
+    { icon: <FaTwitter />, href: 'https://x.com/webtech83' },
     { icon: <FaLinkedinIn />, href: 'https://linkedin.com' },
     { icon: <FaInstagram />, href: 'https://instagram.com' },
     { icon: <FaGithub />, href: 'https://github.com' },
+    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/webtechieservice/?invite_code=9b9ebf3b0f9d4275acbfc0a9fb060e9b&sender=1092615697005505038' },
   ];
 
   return (
@@ -182,7 +184,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5 }}
-                className="w-10 h-10 flex items-center justify-center rounded-xl bg-base-100 border border-slate-200 text-base-content hover:text-base-content hover:bg-slate-900 hover:border-slate-900 transition-all duration-300 shadow-sm"
+                className="w-10 h-10 flex items-center justify-center rounded-xl bg-base-100 border border-slate-200 text-base-content hover:text-base-content hover:bg-base-900 hover:border-base-900 transition-all duration-300 shadow-sm"
               >
                 {social.icon}
               </motion.a>

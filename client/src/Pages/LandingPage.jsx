@@ -805,6 +805,40 @@ export default function LandingPage() {
   <div className="lp-hero-blob2" />
 
   <div className="lp-hero-content">
+    
+    {/* MODERN BACK BUTTON */}
+    <div className="lp-hero-back-wrapper" style={{ marginBottom: "1.5rem" }}>
+      <button 
+        onClick={() => window.history.back()}
+        className="lp-back-btn"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          background: "rgba(255, 255, 255, 0.05)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          padding: "0.5rem 1rem",
+          borderRadius: "100px",
+          color: "#fff",
+          fontSize: "0.85rem",
+          fontWeight: "700",
+          cursor: "pointer",
+          transition: "all 0.2s ease",
+          backdropFilter: "blur(4px)"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+          e.currentTarget.style.transform = "translateX(-2px)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+          e.currentTarget.style.transform = "translateX(0)";
+        }}
+      >
+        ← Back
+      </button>
+    </div>
+
     <div className="lp-hero-eyebrow">
       <span className="lp-hero-dot" />
       <span 
