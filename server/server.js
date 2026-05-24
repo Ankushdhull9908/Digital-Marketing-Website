@@ -28,7 +28,7 @@ app.use("/api/contact",     contactRoutes);
 app.use("/api/testimonials",TestimonialRoutes);
 app.use("/api/jobs",        JobRoutes);
 app.use("/api/influencer",  influencerRoutes);
-app.use("api/homepage",    homepageRoutes);  // ← NEW
+app.use("/api/homepage",    homepageRoutes);  // ← NEW
 
 // test
 app.get("/", (req, res) => {

@@ -3,14 +3,13 @@ import React, { useState, useEffect } from "react";
 import {
   LayoutDashboard, FileText, BarChart3, LogOut, Plus, HelpCircle,
   Users, Package, Mail, Edit3, Trash2, Eye, X, Check, Star, Quote, Briefcase,
-  ChevronDown, ChevronUp, Globe, Image, BookOpen, FileCode, Layers,
-  Home, AlignLeft, ToggleLeft, Hash, Link as LinkIcon, Upload,
+  ChevronDown, ChevronUp, Image,
   Monitor, ImagePlay, FolderKanban, Video, ToggleRight,
 } from "lucide-react";
 
-//"
-
-var API = "https://digital-marketing-temp.onrender.com/api"? "https://digital-marketing-temp.onrender.com/api" : "http://localhost:5000/api";
+var API = "https://digital-marketing-temp.onrender.com/api"
+  ? "https://digital-marketing-temp.onrender.com/api"
+  : "http://localhost:5000/api";
 
 const get   = (url)       => fetch(API + url).then(r => r.json());
 const post  = (url, body) => fetch(API + url, { method:"POST",   headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) }).then(r => r.json());
@@ -81,422 +80,7 @@ function StarRating({ rating }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ██████  PAGES CMS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Sub-pages registry — tells the CMS which page has which sections
-const PAGE_REGISTRY = [
-  {
-    id: "home",
-    label: "Home Page",
-    icon: <Home size={16} />,
-    color: "blue",
-    sections: [
-      { key: "banner",       label: "Hero Banner / Carousel",  type: "banner"    },
-      { key: "hero",         label: "Hero Text & CTA",         type: "hero"      },
-      { key: "services",     label: "Core Services Grid",      type: "services"  },
-    ],
-  },
-  {
-    id: "blog",
-    label: "Blog",
-    icon: <BookOpen size={16} />,
-    color: "purple",
-    sections: [
-      { key: "posts",        label: "Blog Posts",              type: "blog_posts" },
-    ],
-  },
-  {
-    id: "resume",
-    label: "Resume Maker",
-    icon: <FileCode size={16} />,
-    color: "green",
-    sections: [
-      { key: "resume_hero",  label: "Page Header & CTA",       type: "resume_hero" },
-      { key: "resume_templates", label: "Resume Templates",   type: "resume_templates" },
-    ],
-  },
-  {
-    id: "industries",
-    label: "Industries Page",
-    icon: <Layers size={16} />,
-    color: "amber",
-    sections: [
-      { key: "industries_hero", label: "Page Header",          type: "generic_hero" },
-      { key: "industry_cards",  label: "Industry Cards",       type: "industry_cards" },
-    ],
-  },
-];
-
-// ── Helper: render the right editor based on section type ────────────────────
-function SectionEditor({ page, section, onClose }) {
-  const [data, setData] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState("");
-
-  useEffect(() => {
-    // Load existing content from API
-    get(`/page-content/${page}/${section.key}`)
-      .then(d => setData(d?.content || getDefaultContent(section.type)))
-      .catch(() => setData(getDefaultContent(section.type)));
-  }, [page, section.key]);
-
-  const save = async () => {
-    setSaving(true);
-    try {
-      await post(`/page-content/${page}/${section.key}`, { content: data });
-      setToast("Saved!");
-      setTimeout(() => { setToast(""); onClose(); }, 900);
-    } catch {
-      setToast("Error saving");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  if (!data) return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-8 text-slate-400">Loading…</div>
-    </div>
-  );
-
-  const editorProps = { data, setData };
-
-  return (
-    <Modal title={`Edit: ${section.label}`} onClose={onClose} onSave={save} wide>
-      {toast && <div className="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-2 rounded-xl">{toast}</div>}
-
-      {section.type === "banner"           && <BannerEditor       {...editorProps} />}
-      {section.type === "hero"             && <HeroEditor         {...editorProps} />}
-      {section.type === "services"         && <ServicesEditor     {...editorProps} />}
-      {section.type === "blog_posts"       && <BlogPostsEditor    {...editorProps} />}
-      {section.type === "resume_hero"      && <GenericHeroEditor  {...editorProps} />}
-      {section.type === "resume_templates" && <ResumeTemplatesEditor {...editorProps} />}
-      {section.type === "generic_hero"     && <GenericHeroEditor  {...editorProps} />}
-      {section.type === "industry_cards"   && <IndustryCardsEditor {...editorProps} />}
-    </Modal>
-  );
-}
-
-function getDefaultContent(type) {
-  switch (type) {
-    case "banner":          return { images: ["", "", ""] };
-    case "hero":            return { badge: "", headline: "", subheadline: "", cta1: "", cta2: "" };
-    case "services":        return { title: "", subtitle: "", items: [] };
-    case "blog_posts":      return { posts: [] };
-    case "resume_hero":     return { headline: "", subheadline: "", cta: "" };
-    case "resume_templates":return { templates: [] };
-    case "generic_hero":    return { headline: "", subheadline: "" };
-    case "industry_cards":  return { cards: [] };
-    default:                return {};
-  }
-}
-
-// ── Section-specific editors ─────────────────────────────────────────────────
-
-function BannerEditor({ data, setData }) {
-  const updateImg = (i, val) => {
-    const imgs = [...(data.images || ["","",""])];
-    imgs[i] = val;
-    setData({ ...data, images: imgs });
-  };
-  const addImg  = () => setData({ ...data, images: [...(data.images || []), ""] });
-  const removeImg = (i) => setData({ ...data, images: data.images.filter((_, idx) => idx !== i) });
-
-  return (
-    <div className="space-y-4">
-      <p className="text-xs text-slate-500 font-medium">Add image URLs that cycle in the hero carousel on the Home page.</p>
-      {(data.images || []).map((url, i) => (
-        <div key={i} className="flex gap-2 items-center">
-          <div className="flex-1 space-y-1">
-            <label className={label}>Slide {i + 1} Image URL</label>
-            <input className={inp} value={url} onChange={e => updateImg(i, e.target.value)} placeholder="https://images.unsplash.com/..." />
-          </div>
-          {url && <img src={url} alt="" className="w-16 h-10 rounded-lg object-cover border border-slate-200 flex-shrink-0" onError={e => e.target.style.display='none'} />}
-          <button onClick={() => removeImg(i)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg"><Trash2 size={15}/></button>
-        </div>
-      ))}
-      <button onClick={addImg} className="flex items-center gap-1.5 text-indigo-600 text-sm font-semibold hover:underline">
-        <Plus size={14} /> Add Another Slide
-      </button>
-    </div>
-  );
-}
-
-function HeroEditor({ data, setData }) {
-  const f = k => e => setData(p => ({ ...p, [k]: e.target.value }));
-  return (
-    <div className="space-y-4">
-      <div><label className={label}>Top Badge Text</label><input className={inp} value={data.badge || ""} onChange={f("badge")} placeholder="The Future of Growth" /></div>
-      <div><label className={label}>Main Headline</label><input className={inp} value={data.headline || ""} onChange={f("headline")} placeholder="Elevate Your Digital Empire." /></div>
-      <div><label className={label}>Sub-headline</label><textarea className={inp} rows={3} value={data.subheadline || ""} onChange={f("subheadline")} placeholder="Webtech Services is a leading…" /></div>
-      <div className="grid grid-cols-2 gap-3">
-        <div><label className={label}>CTA Button 1</label><input className={inp} value={data.cta1 || ""} onChange={f("cta1")} placeholder="Start Your Project" /></div>
-        <div><label className={label}>CTA Button 2</label><input className={inp} value={data.cta2 || ""} onChange={f("cta2")} placeholder="View Our Work" /></div>
-      </div>
-    </div>
-  );
-}
-
-function ServicesEditor({ data, setData }) {
-  const updateItem = (i, k, v) => {
-    const items = [...(data.items || [])];
-    items[i] = { ...items[i], [k]: v };
-    setData({ ...data, items });
-  };
-  const addItem = () => setData({ ...data, items: [...(data.items || []), { title: "", desc: "", link: "" }] });
-  const removeItem = i => setData({ ...data, items: (data.items || []).filter((_, idx) => idx !== i) });
-
-  return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-2 gap-3">
-        <div><label className={label}>Section Title</label><input className={inp} value={data.title || ""} onChange={e => setData({ ...data, title: e.target.value })} placeholder="Our Core Services" /></div>
-        <div><label className={label}>Section Subtitle</label><input className={inp} value={data.subtitle || ""} onChange={e => setData({ ...data, subtitle: e.target.value })} placeholder="Our Digital Marketing Solutions" /></div>
-      </div>
-      <div className="border-t border-slate-100 pt-4">
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Service Cards</p>
-        {(data.items || []).map((item, i) => (
-          <div key={i} className="bg-slate-50 rounded-xl p-4 mb-3 border border-slate-200 space-y-2">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs font-bold text-slate-500">Service #{i + 1}</span>
-              <button onClick={() => removeItem(i)} className="p-1 text-red-400 hover:bg-red-50 rounded"><Trash2 size={13}/></button>
-            </div>
-            <input className={inp} value={item.title || ""} onChange={e => updateItem(i, "title", e.target.value)} placeholder="Service title" />
-            <textarea className={inp} rows={2} value={item.desc || ""} onChange={e => updateItem(i, "desc", e.target.value)} placeholder="Short description…" />
-            <input className={inp} value={item.link || ""} onChange={e => updateItem(i, "link", e.target.value)} placeholder="Link e.g. /WhySEO" />
-          </div>
-        ))}
-        <button onClick={addItem} className="flex items-center gap-1.5 text-indigo-600 text-sm font-semibold hover:underline">
-          <Plus size={14} /> Add Service
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function BlogPostsEditor({ data, setData }) {
-  const updatePost = (i, k, v) => {
-    const posts = [...(data.posts || [])];
-    posts[i] = { ...posts[i], [k]: v };
-    setData({ ...data, posts });
-  };
-  const addPost    = () => setData({ ...data, posts: [...(data.posts || []), { title: "", category: "", date: "", readTime: "", image: "", intro: "", theme: "" }] });
-  const removePost = i  => setData({ ...data, posts: (data.posts || []).filter((_, idx) => idx !== i) });
-
-  return (
-    <div className="space-y-4">
-      {(data.posts || []).map((post, i) => (
-        <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-500">Post #{i + 1}</span>
-            <button onClick={() => removePost(i)} className="p-1 text-red-400 hover:bg-red-50 rounded"><Trash2 size={13}/></button>
-          </div>
-          <input className={inp} value={post.title || ""} onChange={e => updatePost(i, "title", e.target.value)} placeholder="Blog post title" />
-          <div className="grid grid-cols-3 gap-2">
-            <input className={inp} value={post.category || ""} onChange={e => updatePost(i, "category", e.target.value)} placeholder="Category" />
-            <input className={inp} value={post.date || ""} onChange={e => updatePost(i, "date", e.target.value)} placeholder="May 12, 2026" />
-            <input className={inp} value={post.readTime || ""} onChange={e => updatePost(i, "readTime", e.target.value)} placeholder="7 min read" />
-          </div>
-          <input className={inp} value={post.image || ""} onChange={e => updatePost(i, "image", e.target.value)} placeholder="Cover image URL" />
-          {post.image && <img src={post.image} alt="" className="w-full h-24 object-cover rounded-lg" onError={e => e.target.style.display='none'} />}
-          <textarea className={inp} rows={2} value={post.intro || ""} onChange={e => updatePost(i, "intro", e.target.value)} placeholder="Short intro / excerpt…" />
-          <div className="grid grid-cols-2 gap-2">
-            <input className={inp} value={post.theme || ""} onChange={e => updatePost(i, "theme", e.target.value)} placeholder="Card color e.g. bg-[#059669]" />
-            <input className={inp} value={post.accent || ""} onChange={e => updatePost(i, "accent", e.target.value)} placeholder="Accent hex e.g. #059669" />
-          </div>
-        </div>
-      ))}
-      <button onClick={addPost} className="flex items-center gap-1.5 text-indigo-600 text-sm font-semibold hover:underline">
-        <Plus size={14} /> Add Blog Post
-      </button>
-    </div>
-  );
-}
-
-function GenericHeroEditor({ data, setData }) {
-  const f = k => e => setData(p => ({ ...p, [k]: e.target.value }));
-  return (
-    <div className="space-y-4">
-      <div><label className={label}>Main Headline</label><input className={inp} value={data.headline || ""} onChange={f("headline")} placeholder="Page headline" /></div>
-      <div><label className={label}>Sub-headline</label><textarea className={inp} rows={3} value={data.subheadline || ""} onChange={f("subheadline")} placeholder="Supporting text…" /></div>
-      <div><label className={label}>CTA Button Text</label><input className={inp} value={data.cta || ""} onChange={f("cta")} placeholder="Get Started" /></div>
-    </div>
-  );
-}
-
-function ResumeTemplatesEditor({ data, setData }) {
-  const updateT = (i, k, v) => {
-    const templates = [...(data.templates || [])];
-    templates[i] = { ...templates[i], [k]: v };
-    setData({ ...data, templates });
-  };
-  const addT    = () => setData({ ...data, templates: [...(data.templates || []), { name: "", previewUrl: "", isActive: true }] });
-  const removeT = i  => setData({ ...data, templates: (data.templates || []).filter((_, idx) => idx !== i) });
-
-  return (
-    <div className="space-y-3">
-      <p className="text-xs text-slate-500">Manage available resume template previews shown on the Resume Maker page.</p>
-      {(data.templates || []).map((t, i) => (
-        <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-500">Template #{i + 1}</span>
-            <div className="flex gap-2 items-center">
-              <label className="flex items-center gap-1.5 text-xs text-slate-500 cursor-pointer">
-                <input type="checkbox" className="accent-indigo-600" checked={t.isActive !== false} onChange={e => updateT(i, "isActive", e.target.checked)} />
-                Active
-              </label>
-              <button onClick={() => removeT(i)} className="p-1 text-red-400 hover:bg-red-50 rounded"><Trash2 size={13}/></button>
-            </div>
-          </div>
-          <input className={inp} value={t.name || ""} onChange={e => updateT(i, "name", e.target.value)} placeholder="Template name e.g. Classic" />
-          <input className={inp} value={t.previewUrl || ""} onChange={e => updateT(i, "previewUrl", e.target.value)} placeholder="Preview image URL" />
-          {t.previewUrl && <img src={t.previewUrl} alt="" className="w-24 h-32 object-cover rounded-lg border border-slate-200" onError={e => e.target.style.display='none'} />}
-        </div>
-      ))}
-      <button onClick={addT} className="flex items-center gap-1.5 text-indigo-600 text-sm font-semibold hover:underline">
-        <Plus size={14} /> Add Template
-      </button>
-    </div>
-  );
-}
-
-function IndustryCardsEditor({ data, setData }) {
-  const updateCard = (i, k, v) => {
-    const cards = [...(data.cards || [])];
-    cards[i] = { ...cards[i], [k]: v };
-    setData({ ...data, cards });
-  };
-  const addCard    = () => setData({ ...data, cards: [...(data.cards || []), { title: "", description: "", image: "", link: "" }] });
-  const removeCard = i  => setData({ ...data, cards: (data.cards || []).filter((_, idx) => idx !== i) });
-
-  return (
-    <div className="space-y-3">
-      {(data.cards || []).map((card, i) => (
-        <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-500">Industry #{i + 1}</span>
-            <button onClick={() => removeCard(i)} className="p-1 text-red-400 hover:bg-red-50 rounded"><Trash2 size={13}/></button>
-          </div>
-          <input className={inp} value={card.title || ""} onChange={e => updateCard(i, "title", e.target.value)} placeholder="Industry name e.g. Healthcare" />
-          <textarea className={inp} rows={2} value={card.description || ""} onChange={e => updateCard(i, "description", e.target.value)} placeholder="Short description…" />
-          <input className={inp} value={card.image || ""} onChange={e => updateCard(i, "image", e.target.value)} placeholder="Card image URL" />
-          <input className={inp} value={card.link || ""} onChange={e => updateCard(i, "link", e.target.value)} placeholder="Link path e.g. /industries/healthcare" />
-        </div>
-      ))}
-      <button onClick={addCard} className="flex items-center gap-1.5 text-indigo-600 text-sm font-semibold hover:underline">
-        <Plus size={14} /> Add Industry Card
-      </button>
-    </div>
-  );
-}
-
-// ── Pages Hub ─────────────────────────────────────────────────────────────────
-function PagesHub() {
-  const [activePage, setActivePage] = useState(null);  // null = show page list
-  const [editSection, setEditSection] = useState(null); // { section }
-
-  if (editSection) {
-    return (
-      <SectionEditor
-        page={activePage.id}
-        section={editSection}
-        onClose={() => setEditSection(null)}
-      />
-    );
-  }
-
-  // ── Page list view ──────────────────────────────────────────────────────────
-  if (!activePage) {
-    return (
-      <div className="space-y-4">
-        <p className="text-sm text-slate-500 font-medium">Select a page to manage its content sections.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {PAGE_REGISTRY.map(page => {
-            const colorMap = {
-              blue:   "bg-blue-50 text-blue-700 border-blue-200",
-              purple: "bg-purple-50 text-purple-700 border-purple-200",
-              green:  "bg-green-50 text-green-700 border-green-200",
-              amber:  "bg-amber-50 text-amber-700 border-amber-200",
-            };
-            return (
-              <button
-                key={page.id}
-                onClick={() => setActivePage(page)}
-                className={`flex items-center gap-4 p-5 rounded-2xl border-2 text-left hover:shadow-md transition-all ${colorMap[page.color]}`}
-              >
-                <div className="w-10 h-10 rounded-xl bg-white/60 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  {page.icon}
-                </div>
-                <div>
-                  <p className="font-bold text-base">{page.label}</p>
-                  <p className="text-xs opacity-70 mt-0.5">{page.sections.length} manageable section{page.sections.length !== 1 ? "s" : ""}</p>
-                </div>
-                <ChevronDown size={16} className="ml-auto rotate-[-90deg] opacity-50" />
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-
-  // ── Section list for chosen page ────────────────────────────────────────────
-  const sectionIcons = {
-    banner:           <Image size={16} />,
-    hero:             <AlignLeft size={16} />,
-    services:         <Hash size={16} />,
-    blog_posts:       <BookOpen size={16} />,
-    resume_hero:      <AlignLeft size={16} />,
-    resume_templates: <FileCode size={16} />,
-    generic_hero:     <AlignLeft size={16} />,
-    industry_cards:   <Layers size={16} />,
-  };
-
-  return (
-    <div className="space-y-5">
-      <button onClick={() => setActivePage(null)} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-sm font-semibold transition-colors">
-        <ChevronDown size={16} className="rotate-90" /> Back to Pages
-      </button>
-
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-5 border-b border-slate-100 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
-            {activePage.icon}
-          </div>
-          <div>
-            <h3 className="font-bold text-slate-800">{activePage.label}</h3>
-            <p className="text-xs text-slate-400">{activePage.sections.length} sections available to edit</p>
-          </div>
-        </div>
-
-        <div className="divide-y divide-slate-100">
-          {activePage.sections.map(section => (
-            <div key={section.key} className="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">
-                  {sectionIcons[section.type] || <Globe size={16} />}
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-700 text-sm">{section.label}</p>
-                  <p className="text-xs text-slate-400 mt-0.5 capitalize">{section.type.replace("_", " ")} section</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setEditSection(section)}
-                className="flex items-center gap-1.5 bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors"
-              >
-                <Edit3 size={14} /> Edit
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ██████  EXISTING PANELS (unchanged)
+// ██████  PANELS
 // ─────────────────────────────────────────────────────────────────────────────
 
 function InfluencerHubPanel() {
@@ -1561,8 +1145,7 @@ function Dashboard() {
 
   const nav = [
     { id:"overview",     label:"Dashboard",      icon:<LayoutDashboard size={18}/> },
-    { id:"homepage",     label:"Homepage",        icon:<Monitor size={18}/>, badge:"NEW", dividerAfter: false },
-    { id:"pages",        label:"Pages",          icon:<Globe size={18}/>,   dividerAfter: true },
+    { id:"homepage",     label:"Homepage",        icon:<Monitor size={18}/>, badge:"NEW", dividerAfter: true },
     { id:"faqs",         label:"FAQs",           icon:<HelpCircle size={18}/> },
     { id:"clients",      label:"Clients",        icon:<Users size={18}/> },
     { id:"packages",     label:"Packages",       icon:<Package size={18}/> },
@@ -1576,7 +1159,6 @@ function Dashboard() {
   const tabMeta = {
     overview:     { title: "Overview",        sub: "Welcome back — here's what's happening." },
     homepage:     { title: "Homepage Sections", sub: "Manage slider images, project gallery, and client testimonial videos." },
-    pages:        { title: "Pages",           sub: "Manage content for each page of your website." },
     faqs:         { title: "FAQs",            sub: "Manage homepage FAQ section." },
     clients:      { title: "Clients",         sub: "Add and manage client logos on the homepage." },
     packages:     { title: "Packages",        sub: "Control pricing plans shown on the homepage." },
@@ -1586,11 +1168,6 @@ function Dashboard() {
     influencer:   { title: "Influencer Hub",  sub: "Manage brand campaigns and influencer profiles." },
     analytics:    { title: "Analytics",       sub: "Site performance overview." },
   };
-
-  const dummyPages = [
-    { name:"Gym Landing Page",   url:"/page/gym",       date:"12 Apr 2026", status:"Published" },
-    { name:"Marketing Campaign", url:"/page/marketing", date:"10 Apr 2026", status:"Draft" },
-  ];
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
@@ -1614,10 +1191,7 @@ function Dashboard() {
                 }`}
               >
                 {n.icon} {n.label}
-                {n.id === "pages" && (
-                  <span className="ml-auto px-1.5 py-0.5 rounded-md bg-indigo-100 text-indigo-600 text-[10px] font-bold">CMS</span>
-                )}
-                {n.badge && n.id !== "pages" && (
+                {n.badge && (
                   <span className="ml-auto px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-600 text-[10px] font-bold">{n.badge}</span>
                 )}
                 {n.id === "contacts" && (
@@ -1643,12 +1217,7 @@ function Dashboard() {
             <h2 className="text-xl font-bold text-slate-800">{tabMeta[tab]?.title || tab}</h2>
             <p className="text-xs text-slate-500 mt-0.5">{tabMeta[tab]?.sub || ""}</p>
           </div>
-          {tab === "pages" && (
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-xl border border-indigo-100">
-              <Globe size={14} className="text-indigo-500" />
-              <span className="text-xs font-semibold text-indigo-600">Content Management System</span>
-            </div>
-          )}
+        
         </header>
 
         <main className="p-8 overflow-y-auto flex-1">
@@ -1678,49 +1247,11 @@ function Dashboard() {
                 </button>
               </div>
 
-              {/* Quick access to Pages CMS */}
-              <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl border border-indigo-100 p-6 mb-6 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-1">Content Management</p>
-                  <h3 className="text-lg font-bold text-slate-800">Manage Your Website Pages</h3>
-                  <p className="text-sm text-slate-500 mt-1">Update banner images, hero text, blog posts, and more — no code needed.</p>
-                </div>
-                <button
-                  onClick={() => setTab("pages")}
-                  className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors flex-shrink-0 ml-6"
-                >
-                  <Globe size={16} /> Open CMS
-                </button>
-              </div>
-
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-slate-800">Your Landing Pages</h3>
-                  <button className="text-sm text-indigo-600 font-semibold hover:underline" onClick={() => setTab("pages")}>View All</button>
-                </div>
-                <table className="w-full text-left">
-                  <thead><tr className="text-slate-400 text-xs uppercase tracking-wider bg-slate-50/50">
-                    <th className="px-6 py-4">Page Name</th><th className="px-6 py-4">Status</th><th className="px-6 py-4">Created</th>
-                  </tr></thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {dummyPages.map((p,i) => (
-                      <tr key={i} className="hover:bg-slate-50">
-                        <td className="px-6 py-4"><p className="font-bold text-slate-700">{p.name}</p><p className="text-xs text-slate-400">{p.url}</p></td>
-                        <td className="px-6 py-4"><Badge text={p.status} color={p.status==="Published"?"green":"amber"}/></td>
-                        <td className="px-6 py-4 text-sm text-slate-500">{p.date}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
             </>
           )}
 
           {/* ── HOMEPAGE SECTIONS ── */}
           {tab === "homepage" && <HomepagePanel />}
-
-          {/* ── PAGES CMS ── */}
-          {tab === "pages" && <PagesHub />}
 
           {tab === "faqs"         && <FAQPanel />}
           {tab === "clients"      && <ClientsPanel />}
