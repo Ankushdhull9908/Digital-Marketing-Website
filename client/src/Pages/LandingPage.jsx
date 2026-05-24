@@ -807,7 +807,14 @@ export default function LandingPage() {
   <div className="lp-hero-content">
     <div className="lp-hero-eyebrow">
       <span className="lp-hero-dot" />
-      India's #1 Influencer Platform
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        India's #1 Influencer Platform
+      </span>
     </div>
     <h1 className="lp-hero-title">
       <span 
@@ -834,24 +841,103 @@ export default function LandingPage() {
       </span>
     </h1>
     <p className="lp-hero-sub">
-      CollabX connects brands with the perfect influencers — from nano creators to mega stars — to run campaigns that actually convert.
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none", display: "block" }}
+      >
+        CollabX connects brands with the perfect influencers — from nano creators to mega stars — to run campaigns that actually convert.
+      </span>
     </p>
     <div className="lp-hero-btns">
-      <a href="#services" className="btn-primary">Explore Services →</a>
-      <a href="#how" className="btn-ghost">▶ See How It Works</a>
+      <a href="#services" className="btn-primary">
+        <span 
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e) => {}}
+          style={{ outline: "none" }}
+        >
+          Explore Services →
+        </span>
+      </a>
+      <a href="#how" className="btn-ghost">
+        <span 
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e) => {}}
+          style={{ outline: "none" }}
+        >
+          ▶ See How It Works
+        </span>
+      </a>
     </div>
     <div className="lp-hero-stats">
       <div className="lp-stat-item">
-        <div className="lp-stat-num">12K+</div>
-        <div className="lp-stat-label">Verified Creators</div>
+        <div className="lp-stat-num">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            12K+
+          </span>
+        </div>
+        <div className="lp-stat-label">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            Verified Creators
+          </span>
+        </div>
       </div>
       <div className="lp-stat-item">
-        <div className="lp-stat-num">3,400+</div>
-        <div className="lp-stat-label">Brand Campaigns</div>
+        <div className="lp-stat-num">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            3,400+
+          </span>
+        </div>
+        <div className="lp-stat-label">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            Brand Campaigns
+          </span>
+        </div>
       </div>
       <div className="lp-stat-item">
-        <div className="lp-stat-num">98%</div>
-        <div className="lp-stat-label">Client Satisfaction</div>
+        <div className="lp-stat-num">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            98%
+          </span>
+        </div>
+        <div className="lp-stat-label">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            Client Satisfaction
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -864,8 +950,26 @@ export default function LandingPage() {
     <div className="lp-hero-badge">
       <div className="lp-hero-badge-icon">🚀</div>
       <div>
-        <div className="lp-hero-badge-text">Campaign Live!</div>
-        <div className="lp-hero-badge-sub">+2.4M Impressions Today</div>
+        <div className="lp-hero-badge-text">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            Campaign Live!
+          </span>
+        </div>
+        <div className="lp-hero-badge-sub">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            +2.4M Impressions Today
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -884,112 +988,319 @@ export default function LandingPage() {
         </div>
 
         {/* SERVICES */}
-        <section className="lp-section alt" id="services">
-          <div className="lp-section-header center reveal">
-            <span className="lp-section-tag">Our Services</span>
-            <h2 className="lp-section-title">Everything You Need to<br />Run Winning Campaigns</h2>
-            <p className="lp-section-sub">From discovery to delivery, we power every stage of your influencer marketing journey.</p>
-          </div>
-          <div className="lp-services-grid">
-            {SERVICES.map((svc, i) => (
-              <div className="lp-service-card reveal" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
-                <ImgSlot
-                  src={imgs[`service${i+1}`]}
-                  onUpload={url => setImg(`service${i+1}`, url)}
-                  style={{ marginBottom: 20 }}
-                  rounded="14px"
-                  aspect="16/9"
-                />
-                <div className="lp-service-icon">{svc.icon}</div>
-                <div className="lp-service-name">{svc.name}</div>
-                <div className="lp-service-desc">{svc.desc}</div>
-                <div className="lp-service-arrow">Learn more →</div>
-              </div>
-            ))}
-          </div>
-        </section>
+      <section className="lp-section alt" id="services">
+  <div className="lp-section-header center reveal">
+    <span className="lp-section-tag">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        Our Services
+      </span>
+    </span>
+    <h2 className="lp-section-title">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        Everything You Need to<br />Run Winning Campaigns
+      </span>
+    </h2>
+    <p className="lp-section-sub">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none", display: "block" }}
+      >
+        From discovery to delivery, we power every stage of your influencer marketing journey.
+      </span>
+    </p>
+  </div>
+  <div className="lp-services-grid">
+    {SERVICES.map((svc, i) => (
+      <div className="lp-service-card reveal" key={i} style={{ transitionDelay: `${i * 0.1}s` }}>
+        <ImgSlot
+          src={imgs[`service${i+1}`]}
+          onUpload={url => setImg(`service${i+1}`, url)}
+          style={{ marginBottom: 20 }}
+          rounded="14px"
+          aspect="16/9"
+        />
+        <div className="lp-service-icon">{svc.icon}</div>
+        <div className="lp-service-name">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            {svc.name}
+          </span>
+        </div>
+        <div className="lp-service-desc">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none", display: "block" }}
+          >
+            {svc.desc}
+          </span>
+        </div>
+        <div className="lp-service-arrow">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            Learn more →
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
-        {/* ABOUT */}
-        <section className="lp-section" id="about">
-          <div className="lp-about-grid">
-            <div className="reveal-left">
-              <div className="lp-about-img-grid">
-                <div className="lp-about-img-main">
-                  <ImgSlot src={imgs.about_main} onUpload={url => setImg("about_main", url)} rounded="20px" aspect="16/9" />
-                </div>
-                <div className="lp-about-img-sm">
-                  <ImgSlot src={imgs.about_sm1} onUpload={url => setImg("about_sm1", url)} rounded="16px" aspect="1" />
-                </div>
-                <div className="lp-about-img-sm">
-                  <ImgSlot src={imgs.about_sm2} onUpload={url => setImg("about_sm2", url)} rounded="16px" aspect="1" />
-                </div>
+       {/* ABOUT */}
+<section className="lp-section" id="about">
+  <div className="lp-about-grid">
+    <div className="reveal-left">
+      <div className="lp-about-img-grid">
+        <div className="lp-about-img-main">
+          <ImgSlot src={imgs.about_main} onUpload={url => setImg("about_main", url)} rounded="20px" aspect="16/9" />
+        </div>
+        <div className="lp-about-img-sm">
+          <ImgSlot src={imgs.about_sm1} onUpload={url => setImg("about_sm1", url)} rounded="16px" aspect="1" />
+        </div>
+        <div className="lp-about-img-sm">
+          <ImgSlot src={imgs.about_sm2} onUpload={url => setImg("about_sm2", url)} rounded="16px" aspect="1" />
+        </div>
+      </div>
+    </div>
+    <div className="reveal-right">
+      <span className="lp-section-tag">
+        <span 
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e) => {}}
+          style={{ outline: "none" }}
+        >
+          About Us
+        </span>
+      </span>
+      <h2 className="lp-section-title">
+        <span 
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e) => {}}
+          style={{ outline: "none" }}
+        >
+          Built for the New Era of Creator Commerce
+        </span>
+      </h2>
+      <p className="lp-section-sub">
+        <span 
+          contentEditable
+          suppressContentEditableWarning
+          onBlur={(e) => {}}
+          style={{ outline: "none", display: "block" }}
+        >
+          We're a team of marketers, engineers, and creators who believe the future of advertising is authentic human connection.
+        </span>
+      </p>
+      <div className="lp-features-list">
+        {[
+          { icon:"🎯", title:"Precision Matching", desc:"AI-powered matchmaking ensures you find the exact right creator for your niche and budget." },
+          { icon:"🔒", title:"Verified Profiles", desc:"Every influencer on our platform is verified for authenticity — no fake followers, ever." },
+          { icon:"📈", title:"Proven ROI", desc:"Our campaigns average 4.2x return on ad spend across all categories and platforms." },
+        ].map((f,i) => (
+          <div className="lp-feature-item" key={i}>
+            <div className="lp-feature-icon">{f.icon}</div>
+            <div>
+              <div className="lp-feature-title">
+                <span 
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => {}}
+                  style={{ outline: "none" }}
+                >
+                  {f.title}
+                </span>
+              </div>
+              <div className="lp-feature-desc">
+                <span 
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => {}}
+                  style={{ outline: "none", display: "block" }}
+                >
+                  {f.desc}
+                </span>
               </div>
             </div>
-            <div className="reveal-right">
-              <span className="lp-section-tag">About Us</span>
-              <h2 className="lp-section-title">Built for the New Era of Creator Commerce</h2>
-              <p className="lp-section-sub">We're a team of marketers, engineers, and creators who believe the future of advertising is authentic human connection.</p>
-              <div className="lp-features-list">
-                {[
-                  { icon:"🎯", title:"Precision Matching", desc:"AI-powered matchmaking ensures you find the exact right creator for your niche and budget." },
-                  { icon:"🔒", title:"Verified Profiles", desc:"Every influencer on our platform is verified for authenticity — no fake followers, ever." },
-                  { icon:"📈", title:"Proven ROI", desc:"Our campaigns average 4.2x return on ad spend across all categories and platforms." },
-                ].map((f,i) => (
-                  <div className="lp-feature-item" key={i}>
-                    <div className="lp-feature-icon">{f.icon}</div>
-                    <div>
-                      <div className="lp-feature-title">{f.title}</div>
-                      <div className="lp-feature-desc">{f.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
-        </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
-        {/* HOW IT WORKS */}
-        <section className="lp-section dark" id="how">
-          <div className="lp-section-header center reveal">
-            <span className="lp-section-tag">How It Works</span>
-            <h2 className="lp-section-title">From Zero to Campaign Live<br />in Four Simple Steps</h2>
-            <p className="lp-section-sub">Our streamlined process gets brands and creators collaborating faster than ever before.</p>
-          </div>
-          <div className="lp-steps-grid">
-            {HOW_IT_WORKS.map((step, i) => (
-              <div className="lp-step reveal" key={i} style={{ transitionDelay:`${i*0.12}s` }}>
-                <div className="lp-step-num">{step.num}</div>
-                <div className="lp-step-title">{step.title}</div>
-                <div className="lp-step-desc">{step.desc}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+     {/* HOW IT WORKS */}
+<section className="lp-section dark" id="how">
+  <div className="lp-section-header center reveal">
+    <span className="lp-section-tag">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        How It Works
+      </span>
+    </span>
+    <h2 className="lp-section-title">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        From Zero to Campaign Live<br />in Four Simple Steps
+      </span>
+    </h2>
+    <p className="lp-section-sub">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none", display: "block" }}
+      >
+        Our streamlined process gets brands and creators collaborating faster than ever before.
+      </span>
+    </p>
+  </div>
+  <div className="lp-steps-grid">
+    {HOW_IT_WORKS.map((step, i) => (
+      <div className="lp-step reveal" key={i} style={{ transitionDelay:`${i*0.12}s` }}>
+        <div className="lp-step-num">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            {step.num}
+          </span>
+        </div>
+        <div className="lp-step-title">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none" }}
+          >
+            {step.title}
+          </span>
+        </div>
+        <div className="lp-step-desc">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none", display: "block" }}
+          >
+            {step.desc}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
         {/* TESTIMONIALS */}
-        <section className="lp-section alt" id="testimonials">
-          <div className="lp-section-header center reveal">
-            <span className="lp-section-tag">Testimonials</span>
-            <h2 className="lp-section-title">Loved by Brands<br />and Creators Alike</h2>
-            <p className="lp-section-sub">Don't take our word for it — hear from people who've scaled their growth with CollabX.</p>
+<section className="lp-section alt" id="testimonials">
+  <div className="lp-section-header center reveal">
+    <span className="lp-section-tag">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        Testimonials
+      </span>
+    </span>
+    <h2 className="lp-section-title">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none" }}
+      >
+        Loved by Brands<br />and Creators Alike
+      </span>
+    </h2>
+    <p className="lp-section-sub">
+      <span 
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {}}
+        style={{ outline: "none", display: "block" }}
+      >
+        Don't take our word for it — hear from people who've scaled their growth with CollabX.
+      </span>
+    </p>
+  </div>
+  <div className="lp-testi-grid">
+    {TESTIMONIALS.map((t,i) => (
+      <div className="lp-testi-card reveal" key={i} style={{ transitionDelay:`${i*0.1}s` }}>
+        <div className="lp-testi-stars">{"★".repeat(t.stars)}</div>
+        <div className="lp-testi-quote">"</div>
+        <div className="lp-testi-text">
+          <span 
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {}}
+            style={{ outline: "none", display: "block" }}
+          >
+            {t.quote}
+          </span>
+        </div>
+        <div className="lp-testi-author">
+          <div className="lp-testi-avatar">{t.icon}</div>
+          <div>
+            <div className="lp-testi-name">
+              <span 
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => {}}
+                style={{ outline: "none" }}
+              >
+                {t.name}
+              </span>
+            </div>
+            <div className="lp-testi-role">
+              <span 
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => {}}
+                style={{ outline: "none" }}
+              >
+                {t.role}
+              </span>
+            </div>
           </div>
-          <div className="lp-testi-grid">
-            {TESTIMONIALS.map((t,i) => (
-              <div className="lp-testi-card reveal" key={i} style={{ transitionDelay:`${i*0.1}s` }}>
-                <div className="lp-testi-stars">{"★".repeat(t.stars)}</div>
-                <div className="lp-testi-quote">"</div>
-                <div className="lp-testi-text">{t.quote}</div>
-                <div className="lp-testi-author">
-                  <div className="lp-testi-avatar">{t.icon}</div>
-                  <div>
-                    <div className="lp-testi-name">{t.name}</div>
-                    <div className="lp-testi-role">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
         {/* CONTACT */}
         <section className="lp-section" id="contact">
