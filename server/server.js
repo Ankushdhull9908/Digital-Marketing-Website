@@ -6,9 +6,10 @@ import packageRoutes from "./routes/packages.js";
 import clientRoutes from "./routes/clients.js";
 import faqRoutes from "./routes/faqs.js";
 import contactRoutes from "./routes/contact.js";
-import TestimonialRoutes from './routes/Testimonials.js'
-import JobRoutes from './routes/Jobs.js'
-import influencerRoutes from './routes/influencer.js'
+import TestimonialRoutes from './routes/Testimonials.js';
+import JobRoutes from './routes/Jobs.js';
+import influencerRoutes from './routes/influencer.js';
+import homepageRoutes from './routes/homepage.js'; // ← NEW
 
 const app = express();
 
@@ -19,14 +20,15 @@ app.use(express.json());
 connectDB();
 
 // routes
-app.use("/api/auth", authRoutes);
-app.use("/api/packages", packageRoutes);
-app.use("/api/clients", clientRoutes);
-app.use("/api/faqs", faqRoutes);
-app.use("/api/contact", contactRoutes);
-app.use("/api/testimonials", TestimonialRoutes);
-app.use("/api/jobs",JobRoutes );
-app.use("/api/influencer", influencerRoutes);
+app.use("/api/auth",        authRoutes);
+app.use("/api/packages",    packageRoutes);
+app.use("/api/clients",     clientRoutes);
+app.use("/api/faqs",        faqRoutes);
+app.use("/api/contact",     contactRoutes);
+app.use("/api/testimonials",TestimonialRoutes);
+app.use("/api/jobs",        JobRoutes);
+app.use("/api/influencer",  influencerRoutes);
+app.use("api/homepage",    homepageRoutes);  // ← NEW
 
 // test
 app.get("/", (req, res) => {
