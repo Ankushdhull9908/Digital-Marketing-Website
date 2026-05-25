@@ -4,7 +4,7 @@ import {
   TrendingUp, 
   Target, 
   DollarSign, 
-  ShieldCheck, 
+  ShieldCheck,  
   Clock, 
   CheckCircle2, 
   ArrowRight,
