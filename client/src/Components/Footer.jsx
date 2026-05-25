@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   FaFacebookF,  
-  FaTwitter, 
+  FaTwitter,  
   FaLinkedinIn, 
   FaInstagram, 
   FaGithub,
