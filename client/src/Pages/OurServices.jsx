@@ -200,21 +200,38 @@ const OurServices = () => {
     </section>
 
       {/* --- DIGITAL MARKETING --- */}
-      <section id="special-section" className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4 mb-16">
-            <h2 className="text-[#F39221] text-3xl font-black">Digital Marketing</h2>
-         
-            <div className="h-px flex-1 bg-base-300" />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
-            {marketingServices.map((service, index) => (
-              <ServiceCard className="bg-base-100" key={index} {...service}  />
-            ))}
-          </div>
+    <section id="special-section" className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
+  <div className="max-w-7xl mx-auto">
+    <div className="flex items-center gap-4 mb-16">
+      <h2 className="text-[#F39221] text-3xl font-black">Digital Marketing</h2>
+      <div className="h-px flex-1 bg-base-300" />
+    </div>
+
+    {/* Flex container to place image on left, cards on right */}
+    <div className="flex flex-col lg:flex-row gap-8">
+      
+      {/* Left side: Image */}
+      <div className="hidden lg:block lg:w-1/3">
+        <div className="sticky top-24 h-[600px] rounded-[2.5rem] overflow-hidden shadow-xl">
+          <img 
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" 
+            alt="Digital Marketing" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-[#3D7E8C]/20" />
         </div>
-      </section>
+      </div>
+
+      {/* Right side: Cards */}
+      <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
+        {marketingServices.map((service, index) => (
+          <ServiceCard className="bg-base-100" key={index} {...service} />
+        ))}
+      </div>
+      
+    </div>
+  </div>
+</section>
 
       {/* --- TECH & DEVELOPMENT --- */}
       <section className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">

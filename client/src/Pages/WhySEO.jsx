@@ -45,43 +45,54 @@ const WhySEO = () => {
   return (
     <div className="min-h-screen bg-base-100 font-montserrat text-base-content overflow-x-hidden">
       
-      {/* --- HERO's SECTION --- */}
-      <header className="relative py-20 px-6 bg-base-100 border-b border-base-300 overflow-hidden">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }} 
-            animate={{ opacity: 1, x: 0 }}
-            className="max-w-2xl"
-          >
-            <span className="badge badge-lg bg-[#3D7E8C] border-none text-base-content font-bold py-4 mb-6">GROW ORGANICALLY</span>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-6">
-              Why SEO is Crucial for Your <span className="text-[#F39221]">Business Success.</span>
-            </h1>
-            <p className="text-lg text-slate-500 font-medium mb-8">
-              In today’s digital world, having a website is just the start. If you aren't visible on Google, you're invisible to your customers.
-            </p>
-            <button className="btn btn-lg bg-slate-900 text-white rounded-xl px-8 hover:scale-105 transition-transform group">
-              Start Your Growth <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full lg:w-1/3 bg-base-100 p-8 rounded-[2.5rem] shadow-2xl border border-base-300"
-          >
-            <BarChart3 className="text-[#3D7E8C] mb-4" size={48} />
-            <h3 className="text-2xl font-black mb-2">Beat the Competition</h3>
-            <p className="text-sm text-slate-400 font-medium leading-relaxed">
-              SEO helps you rank higher in search results, bringing in quality leads and long-term growth without relying on expensive paid ads.
-            </p>
-          </motion.div>
-        </div>
-        
-        {/* Background Decoration */}
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#3D7E8C]/5 rounded-full blur-[100px]" />
-      </header>
+ {/* --- HERO'S SECTION --- */}
+<header className="relative py-20 px-6 bg-base-100 border-b border-base-300 overflow-hidden">
+  
+  {/* Modern Background Image Layer - Increased opacity for better visibility */}
+  <div 
+    className="absolute inset-0 opacity-90 pointer-events-none bg-cover bg-center"
+    style={{
+      backgroundImage: `url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop')`
+    }}
+  />
+  
+  {/* Softened gradient overlay: from 90% opacity to 50% opacity */}
+  <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/50 to-transparent" />
 
+  <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10">
+    <motion.div 
+      initial={{ opacity: 0, x: -30 }} 
+      animate={{ opacity: 1, x: 0 }}
+      className="max-w-2xl"
+    >
+      <span className="badge badge-lg bg-[#3D7E8C] border-none text-white font-bold py-4 mb-6">GROW ORGANICALLY</span>
+      <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-6 text-slate-100">
+        Why SEO is Crucial for Your <span className="text-[#F39221]">Business Success.</span>
+      </h1>
+      <p className="text-lg text-slate-300 font-medium mb-8">
+        In today’s digital world, having a website is just the start. If you aren't visible on Google, you're invisible to your customers.
+      </p>
+      <Link to="/contact" className="btn btn-lg bg-slate-900 text-white rounded-xl px-8 hover:scale-105 transition-transform group">
+        Start Your Growth <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </motion.div>
+    
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="w-full lg:w-1/3 bg-slate-900 backdrop-blur-sm p-8 rounded-[2.5rem] shadow-2xl border border-base-300"
+    >
+      <BarChart3 className="text-[#3D7E8C] mb-4" size={48} />
+      <h3 className="text-2xl text-slate-100 font-black mb-2">Beat the Competition</h3>
+      <p className="text-sm text-slate-500 font-medium leading-relaxed">
+        SEO helps you rank higher in search results, bringing in quality leads and long-term growth without relying on expensive paid ads.
+      </p>
+    </motion.div>
+  </div>
+  
+  {/* Background Decoration - Reduced intensity */}
+  <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#3D7E8C]/10 rounded-full blur-[100px]" />
+</header>
       {/* --- BENEFITS GRID --- */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20">
