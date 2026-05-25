@@ -9,7 +9,7 @@ import {
   CheckCircle2, 
   ArrowRight,
   BarChart3,
-  Search,
+  Search, 
   Globe
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
