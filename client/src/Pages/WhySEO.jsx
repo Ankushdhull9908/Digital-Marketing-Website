@@ -165,43 +165,47 @@ const WhySEO = () => {
       </section>
 
       {/* --- WHY CHOOSE US & CTA --- */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<section className="py-24 px-6 max-w-7xl mx-auto">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    
+    {/* Left Side: Features */}
+    <div>
+      <h2 className="text-4xl font-black mb-8">Why Choose <span className="text-[#3D7E8C]">WebTech?</span></h2>
+      <div className="space-y-6">
+        {[
+          { t: "Expertise", d: "Highly experienced SEO specialists who know the algorithm." },
+          { t: "Proven Growth", d: "Strategies focused on real leads and sales, not just traffic." },
+          { t: "Transparency", d: "Regular work reports and a fully transparent process." }
+        ].map((item, i) => (
+          <div key={i} className="flex gap-4">
+            <div className="w-8 h-8 rounded-full bg-[#3D7E8C]/10 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="text-[#3D7E8C]" size={18} />
+            </div>
             <div>
-                <h2 className="text-4xl font-black mb-8">Why Choose <span className="text-[#3D7E8C]">WebTech?</span></h2>
-                <div className="space-y-6">
-                    {[
-                        { t: "Expertise", d: "Highly experienced SEO specialists who know the algorithm." },
-                        { t: "Proven Growth", d: "Strategies focused on real leads and sales, not just traffic." },
-                        { t: "Transparency", d: "Regular work reports and a fully transparent process." }
-                    ].map((item, i) => (
-                        <div key={i} className="flex gap-4">
-                            <div className="w-8 h-8 rounded-full bg-[#3D7E8C]/10 flex items-center justify-center shrink-0">
-                                <CheckCircle2 className="text-[#3D7E8C]" size={18} />
-                            </div>
-                            <div>
-                                <h5 className="font-black text-lg">{item.t}</h5>
-                                <p className="text-sm text-slate-500 font-medium">{item.d}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+              <h5 className="font-black text-lg">{item.t}</h5>
+              <p className="text-sm text-slate-500 font-medium">{item.d}</p>
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
 
-            <div className="bg-base-100 rounded-[3rem] p-12 text-base-content text-center">
-                <h3 className="text-3xl font-black mb-6">Get Started Today!</h3>
-                <p className="text-slate-500 font-medium mb-10 leading-relaxed">
-                    Want to grow your business online and get more customers organically? Let’s take your website to the top of Google!
-                </p>
-                <div className="flex flex-col gap-4">
-                    <Link to="/contact" className="btn btn-white bg-white text-slate-900 border-none rounded-xl font-black uppercase tracking-widest hover:bg-slate-200">
-                        Contact Us Now
-                    </Link>
-                    <p className="text-[10px] uppercase font-black tracking-[0.2em] text-slate-500">No strings attached. Free consultation.</p>
-                </div>
-            </div>
-        </div>
-      </section>
+    {/* Right Side: Modern Image */}
+    <div className="relative group">
+      <div className="absolute -inset-4 bg-[#F39221]/20 rounded-[3rem] blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
+      <img 
+        src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" 
+        alt="Team working on strategy" 
+        className="relative w-full h-[450px] object-cover rounded-[2.5rem] shadow-2xl"
+      />
+      {/* Optional: Floating Badge on Image */}
+      <div className="absolute bottom-8 left-8 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-slate-100">
+        <p className="text-xs font-black uppercase tracking-widest text-slate-900">100% Results Oriented</p>
+      </div>
+    </div>
+    
+  </div>
+</section>
 
     </div>
   );
