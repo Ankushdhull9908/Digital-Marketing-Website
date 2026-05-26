@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion ,AnimatePresence} from 'framer-motion';
 import { 
   CheckCircle, HelpCircle, 
-  ChevronDown, Play ,Clock, User,X
+  ChevronDown, Play ,Clock, User,X,Quote,
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
 const ResultHero = () => {
@@ -98,7 +98,6 @@ const handleOpenModal = (packageTitle) => {
     <div className="font-montserrat text-base-content overflow-hidden w-full">
       
       {/* --- SECTION 1: EXPECTED RESULTS --- */}
-      {/* 1. Changed bg-slate-50 to bg-base-200 for a responsive sectional contrast */}
       <section className="py-20 px-6 bg-base-200 transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -114,6 +113,38 @@ const handleOpenModal = (packageTitle) => {
               <div key={i} className="flex items-center gap-4 p-6 bg-base-100 text-base-content rounded-2xl shadow-sm border-b-4 border-[#3D7E8C]">
                 <CheckCircle className="text-[#3D7E8C]" size={24} />
                 <span className="font-bold text-lg">{res}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+         {/* --- SECTION 2: TESTIMONIALS --- */}
+      <section className="py-24 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex items-center gap-4 mb-12 justify-center">
+            <h2 className="text-3xl md:text-5xl font-black text-center tracking-tight">
+              <span className="text-[#3D7E8C]">🔷</span> Client Testimonials
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              "Webtech Services helped us grow our business online and generate quality leads.",
+              "Highly professional team with great digital marketing strategies."
+            ].map((text, i) => (
+              <div key={i} className="relative p-10 rounded-[2rem] bg-[#F8FAFB] border border-slate-100">
+                <Quote className="absolute top-6 left-6 text-[#F39221]/20" size={40} fill="currentColor" />
+                <p className="italic text-lg text-slate-600 mb-6 relative z-10 leading-relaxed">"{text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#3D7E8C] flex items-center justify-center text-white font-bold">
+                    {i === 0 ? "B" : "M"}
+                  </div>
+                  <div>
+                    <p className="font-black text-sm text-slate-900 leading-none">{i === 0 ? "Business Owner" : "Marketing Director"}</p>
+                    <p className="text-xs text-slate-400 mt-1">Verified Client</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
