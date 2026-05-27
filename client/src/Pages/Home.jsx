@@ -11,21 +11,29 @@ import ResultHero from "../Components/ResultHero";
 import { useAuth } from "../context/Context";
 import BlogSection from "../Components/BlogSection";
 const Home = () => {
-  const { faqs, packages, clients, loading } = useAuth();
+  const {
+  faqs,
+  packages,
+  clients,
+  loading,
+  sliderImages
+} = useAuth();
   const { hash } = useLocation();
   console.log('FAQS')
-const carouselImages = [
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
-   "https://i.pinimg.com/736x/fd/51/50/fd515007f2f92de868516ea503897c91.jpg",
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop"
-  ];
+const carouselImages =
+  sliderImages?.length > 0
+    ? sliderImages.map((img) => img.imageUrl)
+    : [];
 const [currentIndex, setCurrentIndex] = useState(0);
   React.useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [carouselImages.length]);
+  if (!carouselImages.length) return;
+
+  const timer = setInterval(() => {
+    setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+  }, 5000);
+
+  return () => clearInterval(timer);
+}, [carouselImages.length]);
   // ── animation variants ───────────────────────────────────────────────────
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -67,7 +75,7 @@ useEffect(() => {
     <AnimatePresence mode="wait">
       <motion.img
         key={currentIndex}
-        src={carouselImages[currentIndex]}
+        src={carouselImages[currentIndex] || ""}
         initial={{ opacity: 0, scale: 1.1 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 1.05 }}

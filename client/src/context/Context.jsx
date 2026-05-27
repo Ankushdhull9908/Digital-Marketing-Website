@@ -15,7 +15,8 @@ export const ContextProvider = ({ children }) => {
   const [clients,  setClients]  = useState([]);
   const [loading,  setLoading]  = useState(true);
   const [Testimonials,setTestimonials] = useState([])
-
+  const [homepage, setHomepage] = useState(null);
+const [sliderImages, setSliderImages] = useState([]);
   // check token on reload
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,16 +29,23 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [faqData, pkgData, clientData,test] = await Promise.all([
-          get("/faqs"),          // only active FAQs (no ?all=true)
-          get("/packages"),      // only active packages
-          get("/clients"),
-          get("/testimonials")      // only active clients
-        ]);
+        const [faqData, pkgData, clientData, test, homepageData] = await Promise.all([
+  get("/faqs"),
+  get("/packages"),
+  get("/clients"),
+  get("/testimonials"),
+  get("/homepage")
+]);
+        console.log('homepage',homepageData)
         setFaqs(Array.isArray(faqData)     ? faqData     : []);
         setPackages(Array.isArray(pkgData) ? pkgData     : []);
         setClients(Array.isArray(clientData) ? clientData : []);
         setTestimonials(Array.isArray(test) ? test : [])
+        setHomepage(homepageData);
+
+if (homepageData?.slider?.images) {
+  setSliderImages(homepageData.slider.images);
+}
       } catch (err) {
         console.error("Failed to load homepage data:", err);
       } finally {
@@ -65,7 +73,18 @@ export const ContextProvider = ({ children }) => {
   };
 
   return (
-    <Context.Provider value={{ user, login, logout, faqs, packages, clients, loading,Testimonials }}>
+    <Context.Provider value={{
+  user,
+  login,
+  logout,
+  faqs,
+  packages,
+  clients,
+  loading,
+  Testimonials,
+  homepage,
+  sliderImages
+}}>
       {children}
     </Context.Provider>
   );
