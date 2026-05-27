@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion ,AnimatePresence} from 'framer-motion';
 import { 
-  CheckCircle, HelpCircle, 
+  CheckCircle, HelpCircle,  
   ChevronDown, Play ,Clock, User,X,Quote,
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
