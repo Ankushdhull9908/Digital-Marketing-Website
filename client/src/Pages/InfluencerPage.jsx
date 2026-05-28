@@ -8,7 +8,7 @@ const PLATFORMS = [
   { id: "instagram", label: "Instagram", icon: "📸" },
   { id: "youtube",   label: "YouTube",   icon: "▶️" },
   { id: "tiktok",    label: "TikTok",    icon: "🎵" },
-  { id: "twitter",   label: "Twitter/X", icon: "𝕏" },
+  { id: "twitter",   label: "Twitter/X", icon: "𝕏" }, 
   { id: "linkedin",  label: "LinkedIn",  icon: "💼" },
   { id: "facebook",  label: "Facebook",  icon: "📘" },
 ];
