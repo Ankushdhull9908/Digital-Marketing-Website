@@ -4,515 +4,6 @@ var API = "https://digital-marketing-temp.onrender.com/api/influencer"
   ? "https://digital-marketing-temp.onrender.com/api/influencer"
   : "http://localhost:5000/api/influencer";
 
-const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #060910;
-    --surface: #0d1220;
-    --surface2: #131a2e;
-    --border: rgba(255,255,255,0.07);
-    --border-active: rgba(99,179,255,0.4);
-    --text: #f0f4ff;
-    --text-muted: #6b7a99;
-    --text-dim: #3d4a66;
-    --accent: #4f8ef7;
-    --accent2: #7c3aed;
-    --accent-glow: rgba(79,142,247,0.25);
-    --success: #10b981;
-    --amber: #f59e0b;
-    --step-done: #10b981;
-    --step-active: #4f8ef7;
-    --step-idle: #1e2a44;
-  }
-
-  .ip2-root {
-    font-family: 'Outfit', sans-serif;
-    min-height: 100vh;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 16px 80px;
-    position: relative;
-  }
-
-  /* Ambient background orbs */
-  .ip2-orb1 {
-    position: fixed; pointer-events: none; z-index: 0;
-    top: -120px; left: -80px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(79,142,247,0.10) 0%, transparent 65%);
-    border-radius: 50%;
-    animation: pulse1 8s ease-in-out infinite alternate;
-  }
-  .ip2-orb2 {
-    position: fixed; pointer-events: none; z-index: 0;
-    bottom: -100px; right: -60px;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 65%);
-    border-radius: 50%;
-    animation: pulse1 11s ease-in-out infinite alternate-reverse;
-  }
-  @keyframes pulse1 {
-    from { transform: scale(1) translate(0,0); }
-    to   { transform: scale(1.15) translate(20px, 15px); }
-  }
-
-  /* Header */
-  .ip2-header {
-    text-align: center;
-    margin-bottom: 48px;
-    position: relative; z-index: 1;
-    animation: fadeUp 0.7s ease both;
-  }
-  .ip2-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 16px;
-    padding: 6px 16px;
-    border: 1px solid rgba(79,142,247,0.25);
-    border-radius: 100px;
-    background: rgba(79,142,247,0.07);
-  }
-  .ip2-headline {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-  .ip2-headline em {
-    font-style: normal;
-    background: linear-gradient(90deg, var(--accent), #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .ip2-sub {
-    font-size: 0.95rem; color: var(--text-muted); font-weight: 300; max-width: 420px; margin: 0 auto; line-height: 1.65;
-  }
-
-  /* Role selector */
-  .ip2-role-wrap {
-    display: flex; gap: 14px;
-    margin-bottom: 48px;
-    position: relative; z-index: 1;
-  }
-  .ip2-role-card {
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    padding: 28px 40px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-    min-width: 180px;
-  }
-  .ip2-role-card:hover {
-    border-color: var(--border-active);
-    background: var(--surface2);
-    transform: translateY(-3px);
-  }
-  .ip2-role-card.active {
-    border-color: var(--accent);
-    background: rgba(79,142,247,0.08);
-    box-shadow: 0 0 0 1px var(--accent), 0 8px 40px var(--accent-glow);
-  }
-  .ip2-role-icon {
-    font-size: 2rem;
-    width: 56px; height: 56px;
-    background: var(--surface2);
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .ip2-role-card.active .ip2-role-icon {
-    background: rgba(79,142,247,0.15);
-  }
-  .ip2-role-label {
-    font-size: 0.95rem; font-weight: 600; color: var(--text);
-  }
-  .ip2-role-desc {
-    font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.5;
-  }
-
-  /* Wizard shell */
-  .ip2-wizard {
-    width: 100%; max-width: 680px;
-    position: relative; z-index: 1;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  /* Step progress bar */
-  .ip2-stepper {
-    display: flex; align-items: center; justify-content: center;
-    gap: 0; margin-bottom: 40px;
-    padding: 0 8px;
-  }
-  .ip2-step-item {
-    display: flex; flex-direction: column; align-items: center;
-    flex: 1; position: relative;
-  }
-  .ip2-step-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 18px; left: calc(50% + 18px);
-    width: calc(100% - 36px);
-    height: 1.5px;
-    background: var(--border);
-    transition: background 0.4s ease;
-    z-index: 0;
-  }
-  .ip2-step-item.done:not(:last-child)::after {
-    background: var(--step-done);
-  }
-  .ip2-step-dot {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 700;
-    border: 1.5px solid var(--border);
-    background: var(--step-idle);
-    color: var(--text-dim);
-    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-    position: relative; z-index: 1;
-    cursor: pointer;
-  }
-  .ip2-step-item.active .ip2-step-dot {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-    box-shadow: 0 0 20px var(--accent-glow);
-  }
-  .ip2-step-item.done .ip2-step-dot {
-    background: var(--step-done);
-    border-color: var(--step-done);
-    color: white;
-  }
-  .ip2-step-label {
-    font-size: 0.68rem; font-weight: 500;
-    color: var(--text-dim);
-    margin-top: 8px; text-align: center;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    transition: color 0.3s;
-  }
-  .ip2-step-item.active .ip2-step-label { color: var(--accent); }
-  .ip2-step-item.done .ip2-step-label  { color: var(--step-done); }
-
-  /* Step panel */
-  .ip2-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
-    position: relative;
-  }
-  .ip2-panel::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #a78bfa 70%, transparent 100%);
-    opacity: 0.5;
-  }
-
-  .ip2-panel-head {
-    padding: 32px 40px 0;
-    display: flex; align-items: flex-start; gap: 16px;
-  }
-  .ip2-panel-icon-wrap {
-    width: 48px; height: 48px; flex-shrink: 0;
-    background: rgba(79,142,247,0.1);
-    border: 1px solid rgba(79,142,247,0.2);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem;
-  }
-  .ip2-panel-title {
-    font-size: 1.25rem; font-weight: 700; color: var(--text);
-    line-height: 1.2;
-  }
-  .ip2-panel-subtitle {
-    font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; line-height: 1.5;
-  }
-  .ip2-step-counter {
-    margin-left: auto;
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 1px;
-    color: var(--text-dim); white-space: nowrap;
-    padding-top: 4px;
-  }
-
-  .ip2-panel-body {
-    padding: 28px 40px 32px;
-    display: flex; flex-direction: column; gap: 20px;
-  }
-
-  /* Form fields */
-  .ip2-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .ip2-row.single { grid-template-columns: 1fr; }
-  .ip2-field { display: flex; flex-direction: column; gap: 6px; }
-  .ip2-label {
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 1px;
-    text-transform: uppercase; color: var(--text-muted);
-  }
-  .ip2-input, .ip2-select, .ip2-textarea {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 11px 14px;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem; color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    width: 100%;
-  }
-  .ip2-input::placeholder, .ip2-textarea::placeholder { color: var(--text-dim); }
-  .ip2-input:focus, .ip2-select:focus, .ip2-textarea:focus {
-    border-color: var(--border-active);
-    box-shadow: 0 0 0 3px rgba(79,142,247,0.1);
-  }
-  .ip2-select option { background: #0d1220; }
-  .ip2-textarea { resize: vertical; min-height: 88px; }
-
-  /* Chips */
-  .ip2-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .ip2-chip {
-    padding: 7px 15px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem; font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .ip2-chip:hover { border-color: rgba(79,142,247,0.4); color: var(--text); }
-  .ip2-chip.on {
-    background: rgba(79,142,247,0.15);
-    border-color: var(--accent);
-    color: var(--text);
-    box-shadow: 0 0 12px rgba(79,142,247,0.15);
-  }
-  .ip2-chip-check { font-size: 0.65rem; opacity: 0; transition: opacity 0.2s; }
-  .ip2-chip.on .ip2-chip-check { opacity: 1; }
-
-  /* Niche tag (square-ish) */
-  .ip2-niche {
-    padding: 7px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.78rem; font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .ip2-niche:hover { border-color: var(--border-active); color: var(--text); }
-  .ip2-niche.on {
-    background: rgba(79,142,247,0.12);
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  /* Stat range slider */
-  .ip2-range-group { display: flex; flex-direction: column; gap: 8px; }
-  .ip2-range-head { display: flex; justify-content: space-between; align-items: baseline; }
-  .ip2-range-head label { font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
-  .ip2-range-val { font-size: 0.9rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
-  input[type=range].ip2-range {
-    width: 100%; height: 4px;
-    -webkit-appearance: none;
-    background: var(--border);
-    border-radius: 4px; outline: none; cursor: pointer;
-  }
-  input[type=range].ip2-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px; height: 18px;
-    background: var(--accent);
-    border-radius: 50%; cursor: pointer;
-    border: 2px solid var(--bg);
-    box-shadow: 0 0 8px var(--accent-glow);
-  }
-
-  /* Nav */
-  .ip2-nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 40px 28px;
-    border-top: 1px solid var(--border);
-  }
-  .ip2-btn-back {
-    display: flex; align-items: center; gap: 8px;
-    padding: 10px 20px; border-radius: 10px;
-    border: 1px solid var(--border);
-    background: transparent; color: var(--text-muted);
-    font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .ip2-btn-back:hover { border-color: var(--border-active); color: var(--text); }
-  .ip2-btn-next {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px 28px; border-radius: 10px;
-    border: none;
-    background: var(--accent); color: white;
-    font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700;
-    cursor: pointer; transition: all 0.25s;
-    box-shadow: 0 4px 20px var(--accent-glow);
-  }
-  .ip2-btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
-  .ip2-btn-next:active { transform: translateY(0); }
-  .ip2-btn-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .ip2-btn-submit {
-    background: linear-gradient(135deg, var(--accent), #7c3aed);
-    box-shadow: 0 4px 24px rgba(124,58,237,0.35);
-  }
-
-  /* Progress line under stepper */
-  .ip2-progress-bar {
-    height: 2px; background: var(--border);
-    border-radius: 2px; margin-bottom: 32px; overflow: hidden;
-  }
-  .ip2-progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--accent), #7c3aed);
-    border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-  }
-
-  /* Success state */
-  .ip2-success {
-    text-align: center; padding: 60px 40px;
-  }
-  .ip2-success-icon {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: rgba(16,185,129,0.12);
-    border: 2px solid var(--success);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; margin: 0 auto 24px;
-    animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;
-  }
-  @keyframes popIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-  }
-  .ip2-success h3 {
-    font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 10px;
-  }
-  .ip2-success p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
-
-  /* Toast */
-  .ip2-toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-    background: var(--surface2); border: 1px solid rgba(79,142,247,0.3);
-    color: var(--text); padding: 12px 24px;
-    border-radius: 12px; font-size: 0.875rem; font-weight: 500;
-    z-index: 9999; animation: fadeUp 0.35s ease;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    white-space: nowrap;
-  }
-
-  /* Browse section */
-  .ip2-browse-wrap {
-    width: 100%; max-width: 680px;
-    position: relative; z-index: 1;
-    margin-top: 28px;
-  }
-  .ip2-browse-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .ip2-browse-title {
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-muted); display: flex; align-items: center; gap: 8px;
-  }
-  .ip2-browse-title::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--accent); }
-  .ip2-filter-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 16px; }
-  .ip2-filter-chip {
-    padding: 5px 13px; border-radius: 100px;
-    border: 1px solid var(--border);
-    background: transparent; color: var(--text-muted);
-    font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .ip2-filter-chip.on { background: var(--accent); border-color: var(--accent); color: white; }
-  .ip2-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .ip2-mini-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 18px;
-    cursor: pointer; transition: all 0.25s;
-  }
-  .ip2-mini-card:hover {
-    border-color: var(--border-active);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  }
-  .ip2-mini-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .ip2-avatar {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: rgba(79,142,247,0.15);
-    display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;
-  }
-  .ip2-mini-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
-  .ip2-mini-sub  { font-size: 0.72rem; color: var(--text-muted); margin-top: 1px; }
-  .ip2-mini-stats { display: flex; gap: 14px; flex-wrap: wrap; }
-  .ip2-mini-stat { font-size: 0.73rem; color: var(--text-muted); }
-  .ip2-mini-stat strong { display: block; font-size: 0.83rem; font-weight: 700; color: var(--text); }
-  .ip2-apply-hint { margin-top: 10px; font-size: 0.72rem; color: var(--accent); font-weight: 600; }
-
-  /* Apply modal */
-  .ip2-modal-backdrop {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9998; animation: fadeIn 0.2s ease;
-  }
-  .ip2-modal {
-    background: var(--surface2);
-    border: 1px solid var(--border-active);
-    border-radius: 20px; padding: 32px;
-    max-width: 460px; width: 90%;
-    animation: fadeUp 0.3s ease;
-  }
-  .ip2-modal h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-  .ip2-modal p  { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; }
-  .ip2-modal-actions { display: flex; gap: 10px; margin-top: 16px; }
-  .ip2-btn-cancel {
-    flex: 1; padding: 11px; border-radius: 10px;
-    border: 1px solid var(--border); background: transparent;
-    color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.875rem; font-weight: 500;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .ip2-btn-cancel:hover { border-color: var(--border-active); color: var(--text); }
-  .ip2-btn-confirm {
-    flex: 2; padding: 11px; border-radius: 10px;
-    border: none; background: var(--accent); color: white;
-    font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 4px 16px var(--accent-glow);
-  }
-  .ip2-btn-confirm:hover { transform: translateY(-1px); }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  @media (max-width: 600px) {
-    .ip2-panel-head { padding: 24px 22px 0; }
-    .ip2-panel-body { padding: 20px 22px 24px; }
-    .ip2-nav { padding: 16px 22px 22px; }
-    .ip2-row { grid-template-columns: 1fr; }
-    .ip2-role-wrap { flex-direction: column; }
-    .ip2-cards-grid { grid-template-columns: 1fr; }
-  }
-`;
-
 const PLATFORMS = [
   { id: "instagram", label: "Instagram", icon: "📸" },
   { id: "youtube",   label: "YouTube",   icon: "▶️" },
@@ -553,6 +44,26 @@ const BRAND_STEPS = [
   { label: "Details",  icon: "📋" },
 ];
 
+const STATS = [
+  { value: "12,400+", label: "Creators Registered" },
+  { value: "3,200+",  label: "Brand Campaigns" },
+  { value: "₹48Cr+",  label: "Deals Closed" },
+  { value: "94%",     label: "Satisfaction Rate" },
+];
+
+const HOW_IT_WORKS = [
+  { icon: "✍️", title: "Create Your Profile", desc: "Influencers build their media kit; brands post campaign briefs — takes under 5 minutes." },
+  { icon: "🔍", title: "Discover & Match",    desc: "Smart filters surface the right creators for every niche, tier, and audience demographic." },
+  { icon: "🤝", title: "Connect & Negotiate", desc: "Apply directly to campaigns or receive inbound pitches from brands that love your content." },
+  { icon: "🚀", title: "Execute & Grow",       desc: "Close the deal, deliver great content, and unlock your next collab with a growing reputation." },
+];
+
+const TESTIMONIALS = [
+  { name: "Priya Menon", handle: "@priyacooks", niche: "Food & Cooking", followers: "280K", text: "Landed 4 paid collabs in my first month. The platform actually understands what micro-influencers need.", avatar: "PM" },
+  { name: "Arjun Sethi",  handle: "@techwitharjun", niche: "Tech & Gadgets", followers: "95K",  text: "The campaign briefs are super detailed — no more back-and-forth emails just to understand the requirements.", avatar: "AS" },
+  { name: "Sneha Kapoor", handle: "@snehalifestyle", niche: "Lifestyle",      followers: "1.2M", text: "Finally a platform that treats influencers like professionals, not just ad inventory.", avatar: "SK" },
+];
+
 export default function InfluencerPage() {
   const [role, setRole]           = useState(null);
   const [step, setStep]           = useState(0);
@@ -560,7 +71,6 @@ export default function InfluencerPage() {
   const [loading, setLoading]     = useState(false);
   const [toast, setToast]         = useState("");
 
-  // influencer state
   const [platforms, setPlatforms] = useState([]);
   const [niches, setNiches]       = useState([]);
   const [followers, setFollowers] = useState(50000);
@@ -574,7 +84,6 @@ export default function InfluencerPage() {
     collabType:"", ratePerPost:"", pastCollaborations:"",
   });
 
-  // brand state
   const [brandNiches, setBrandNiches] = useState([]);
   const [brand, setBrand] = useState({
     company:"", contact:"", email:"", phone:"", website:"",
@@ -583,7 +92,6 @@ export default function InfluencerPage() {
     collabType:"", specialNotes:"",
   });
 
-  // browse
   const [liveCampaigns, setLiveCampaigns]     = useState([]);
   const [liveInfluencers, setLiveInfluencers] = useState([]);
   const [browseFilter, setBrowseFilter]       = useState("All");
@@ -606,7 +114,6 @@ export default function InfluencerPage() {
   const steps = role === "influencer" ? INF_STEPS : BRAND_STEPS;
   const progress = ((step+1) / steps.length) * 100;
 
-  // ── Submit influencer ──
   const submitInfluencer = async () => {
     if (!inf.name || !inf.handle || !inf.email) return showToast("❌ Name, handle & email required");
     setLoading(true);
@@ -622,7 +129,6 @@ export default function InfluencerPage() {
     finally { setLoading(false); }
   };
 
-  // ── Submit brand ──
   const submitBrand = async () => {
     if (!brand.company || !brand.email) return showToast("❌ Company name & email required");
     setLoading(true);
@@ -660,370 +166,6 @@ export default function InfluencerPage() {
   const filteredCampaigns   = browseFilter==="All" ? liveCampaigns   : liveCampaigns.filter(b=>b.niche===browseFilter);
   const filteredInfluencers = browseFilter==="All" ? liveInfluencers : liveInfluencers.filter(i=>i.niches?.includes(browseFilter));
 
-  // ── Step panels ──
-  const renderInfStep = () => {
-    if (step === 0) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">👤</div>
-          <div>
-            <div className="ip2-panel-title">Personal Info</div>
-            <div className="ip2-panel-subtitle">Tell brands who you are</div>
-          </div>
-          <div className="ip2-step-counter">Step 1 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Full Name *</label>
-              <input className="ip2-input" placeholder="Rahul Sharma" value={inf.name} onChange={e=>setInf({...inf,name:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Handle *</label>
-              <input className="ip2-input" placeholder="@yourhandle" value={inf.handle} onChange={e=>setInf({...inf,handle:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Email *</label>
-              <input className="ip2-input" type="email" placeholder="you@email.com" value={inf.email} onChange={e=>setInf({...inf,email:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Phone</label>
-              <input className="ip2-input" placeholder="+91 XXXXX XXXXX" value={inf.phone} onChange={e=>setInf({...inf,phone:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Location</label>
-              <input className="ip2-input" placeholder="Mumbai, India" value={inf.location} onChange={e=>setInf({...inf,location:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Engagement Rate (%)</label>
-              <input className="ip2-input" placeholder="e.g. 4.5" value={inf.engRate} onChange={e=>setInf({...inf,engRate:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row single">
-            <div className="ip2-field">
-              <label className="ip2-label">Bio</label>
-              <textarea className="ip2-textarea" placeholder="Tell brands your story in a few lines..." value={inf.bio} onChange={e=>setInf({...inf,bio:e.target.value})} />
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 1) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">📱</div>
-          <div>
-            <div className="ip2-panel-title">Platforms & Niches</div>
-            <div className="ip2-panel-subtitle">Where do you create content?</div>
-          </div>
-          <div className="ip2-step-counter">Step 2 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-field">
-            <label className="ip2-label">Your Platforms</label>
-            <div className="ip2-chips">
-              {PLATFORMS.map(p => (
-                <div key={p.id} className={`ip2-chip ${platforms.includes(p.id)?"on":""}`}
-                  onClick={()=>setPlatforms(prev=>prev.includes(p.id)?prev.filter(x=>x!==p.id):[...prev,p.id])}>
-                  <span>{p.icon}</span>{p.label}<span className="ip2-chip-check">✓</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="ip2-field">
-            <label className="ip2-label">Content Niches</label>
-            <div className="ip2-chips" style={{gap:"8px"}}>
-              {NICHES.map(n => (
-                <div key={n} className={`ip2-niche ${niches.includes(n)?"on":""}`}
-                  onClick={()=>setNiches(prev=>prev.includes(n)?prev.filter(x=>x!==n):[...prev,n])}>
-                  {n}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 2) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">📊</div>
-          <div>
-            <div className="ip2-panel-title">Audience Stats</div>
-            <div className="ip2-panel-subtitle">Help brands understand your reach</div>
-          </div>
-          <div className="ip2-step-counter">Step 3 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-range-group">
-            <div className="ip2-range-head">
-              <label className="ip2-label">Followers</label>
-              <span className="ip2-range-val">{formatRange(followers)}</span>
-            </div>
-            <input type="range" className="ip2-range" min={1000} max={10000000} step={1000}
-              value={followers} onChange={e=>setFollowers(Number(e.target.value))} />
-          </div>
-          <div className="ip2-range-group">
-            <div className="ip2-range-head">
-              <label className="ip2-label">Avg Views / Post</label>
-              <span className="ip2-range-val">{formatRange(avgViews)}</span>
-            </div>
-            <input type="range" className="ip2-range" min={100} max={5000000} step={100}
-              value={avgViews} onChange={e=>setAvgViews(Number(e.target.value))} />
-          </div>
-          <div className="ip2-range-group">
-            <div className="ip2-range-head">
-              <label className="ip2-label">Highest Views</label>
-              <span className="ip2-range-val">{formatRange(highestView)}</span>
-            </div>
-            <input type="range" className="ip2-range" min={1000} max={50000000} step={1000}
-              value={highestView} onChange={e=>setHighestView(Number(e.target.value))} />
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Audience Age</label>
-              <select className="ip2-select" value={audienceAge} onChange={e=>setAudienceAge(e.target.value)}>
-                <option value="">Select</option>
-                <option>13–17</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45+</option>
-              </select>
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Audience Gender</label>
-              <select className="ip2-select" value={audienceGender} onChange={e=>setAudienceGender(e.target.value)}>
-                <option value="">Select</option>
-                <option>Mostly Male</option><option>Mostly Female</option><option>Mixed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 3) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">🤝</div>
-          <div>
-            <div className="ip2-panel-title">Collaboration Prefs</div>
-            <div className="ip2-panel-subtitle">What kind of deals do you want?</div>
-          </div>
-          <div className="ip2-step-counter">Step 4 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Collab Type</label>
-              <select className="ip2-select" value={inf.collabType} onChange={e=>setInf({...inf,collabType:e.target.value})}>
-                <option value="">Select</option>
-                <option>Paid Partnership</option>
-                <option>Barter / Free Product</option>
-                <option>Affiliate</option>
-                <option>Long-term Ambassador</option>
-                <option>Open to all</option>
-              </select>
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Rate per Post (₹)</label>
-              <input className="ip2-input" placeholder="e.g. 15000" value={inf.ratePerPost} onChange={e=>setInf({...inf,ratePerPost:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row single">
-            <div className="ip2-field">
-              <label className="ip2-label">Past Collaborations</label>
-              <textarea className="ip2-textarea" placeholder="Brands you've worked with before..." value={inf.pastCollaborations} onChange={e=>setInf({...inf,pastCollaborations:e.target.value})} />
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  const renderBrandStep = () => {
-    if (step === 0) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">🏢</div>
-          <div>
-            <div className="ip2-panel-title">Company Details</div>
-            <div className="ip2-panel-subtitle">Who's behind this campaign?</div>
-          </div>
-          <div className="ip2-step-counter">Step 1 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Company / Brand *</label>
-              <input className="ip2-input" placeholder="Acme Corp" value={brand.company} onChange={e=>setBrand({...brand,company:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Contact Person</label>
-              <input className="ip2-input" placeholder="Ananya Singh" value={brand.contact} onChange={e=>setBrand({...brand,contact:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Business Email *</label>
-              <input className="ip2-input" type="email" placeholder="marketing@co.com" value={brand.email} onChange={e=>setBrand({...brand,email:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Phone</label>
-              <input className="ip2-input" placeholder="+91 XXXXX XXXXX" value={brand.phone} onChange={e=>setBrand({...brand,phone:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row single">
-            <div className="ip2-field">
-              <label className="ip2-label">Website</label>
-              <input className="ip2-input" placeholder="https://yourcompany.com" value={brand.website} onChange={e=>setBrand({...brand,website:e.target.value})} />
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 1) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">🎯</div>
-          <div>
-            <div className="ip2-panel-title">Influencer Requirements</div>
-            <div className="ip2-panel-subtitle">What kind of creator are you looking for?</div>
-          </div>
-          <div className="ip2-step-counter">Step 2 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Influencer Niche</label>
-              <select className="ip2-select" value={brand.niche} onChange={e=>setBrand({...brand,niche:e.target.value})}>
-                <option value="">Select niche</option>
-                {BRAND_NICHES.map(n=><option key={n}>{n}</option>)}
-              </select>
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Preferred Tier</label>
-              <select className="ip2-select" value={brand.influencerTier} onChange={e=>setBrand({...brand,influencerTier:e.target.value})}>
-                <option value="">Select tier</option>
-                <option>Nano (1K–10K)</option>
-                <option>Micro (10K–100K)</option>
-                <option>Mid-Tier (100K–500K)</option>
-                <option>Macro (500K–1M)</option>
-                <option>Mega / Celebrity (1M+)</option>
-                <option>Open to all</option>
-              </select>
-            </div>
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Platform</label>
-              <select className="ip2-select" value={brand.platformPref} onChange={e=>setBrand({...brand,platformPref:e.target.value})}>
-                <option value="">Any platform</option>
-                {PLATFORMS.map(p=><option key={p.id}>{p.label}</option>)}
-              </select>
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Audience Location</label>
-              <input className="ip2-input" placeholder="Pan India / Mumbai" value={brand.audienceLocation} onChange={e=>setBrand({...brand,audienceLocation:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-field">
-            <label className="ip2-label">Content Categories</label>
-            <div className="ip2-chips" style={{gap:"8px"}}>
-              {BRAND_NICHES.map(n=>(
-                <div key={n} className={`ip2-niche ${brandNiches.includes(n)?"on":""}`}
-                  onClick={()=>setBrandNiches(prev=>prev.includes(n)?prev.filter(x=>x!==n):[...prev,n])}>
-                  {n}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 2) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">💰</div>
-          <div>
-            <div className="ip2-panel-title">Budget & Timeline</div>
-            <div className="ip2-panel-subtitle">Define your campaign scope</div>
-          </div>
-          <div className="ip2-step-counter">Step 3 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Campaign Budget (₹)</label>
-              <input className="ip2-input" placeholder="e.g. 50000" value={brand.budget} onChange={e=>setBrand({...brand,budget:e.target.value})} />
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Timeline</label>
-              <input className="ip2-input" placeholder="e.g. 2 weeks" value={brand.timeline} onChange={e=>setBrand({...brand,timeline:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row">
-            <div className="ip2-field">
-              <label className="ip2-label">Deliverables</label>
-              <select className="ip2-select" value={brand.deliverables} onChange={e=>setBrand({...brand,deliverables:e.target.value})}>
-                <option value="">Select</option>
-                <option>Instagram Post + Story</option>
-                <option>YouTube Dedicated Video</option>
-                <option>YouTube Integration</option>
-                <option>TikTok Video</option>
-                <option>Reels Only</option>
-                <option>Custom Package</option>
-              </select>
-            </div>
-            <div className="ip2-field">
-              <label className="ip2-label">Collaboration Type</label>
-              <select className="ip2-select" value={brand.collabType} onChange={e=>setBrand({...brand,collabType:e.target.value})}>
-                <option value="">Select</option>
-                <option>One-time Campaign</option>
-                <option>Long-term / Ambassador</option>
-                <option>Affiliate Marketing</option>
-                <option>Barter / Product Gifting</option>
-                <option>Event Coverage</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-
-    if (step === 3) return (
-      <>
-        <div className="ip2-panel-head">
-          <div className="ip2-panel-icon-wrap">📋</div>
-          <div>
-            <div className="ip2-panel-title">Campaign Details</div>
-            <div className="ip2-panel-subtitle">Describe what you're looking for</div>
-          </div>
-          <div className="ip2-step-counter">Step 4 of 4</div>
-        </div>
-        <div className="ip2-panel-body">
-          <div className="ip2-row single">
-            <div className="ip2-field">
-              <label className="ip2-label">Campaign Description</label>
-              <textarea className="ip2-textarea" placeholder="Describe your product and campaign goals..." value={brand.description} onChange={e=>setBrand({...brand,description:e.target.value})} />
-            </div>
-          </div>
-          <div className="ip2-row single">
-            <div className="ip2-field">
-              <label className="ip2-label">Special Notes</label>
-              <textarea className="ip2-textarea" placeholder="Any do's, don'ts, or specific requirements for influencers..." style={{minHeight:72}} value={brand.specialNotes} onChange={e=>setBrand({...brand,specialNotes:e.target.value})} />
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  };
-
   const isLastStep = step === steps.length - 1;
 
   const handleNext = () => {
@@ -1035,183 +177,735 @@ export default function InfluencerPage() {
     }
   };
 
-  return (
-    <>
-      <style>{styles}</style>
-      <div className="ip2-root">
-        <div className="ip2-orb1" /><div className="ip2-orb2" />
+  const renderInfStep = () => {
+    if (step === 0) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <section className="relative w-full py-20 px-6 md:px-12 bg-base-200 flex items-center justify-center rounded-t-2xl overflow-hidden">
+            <div className="absolute inset-0 z-0">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2000')` }}
+              />
+              <div className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm" />
+            </div>
+            <div className="relative z-10 w-full max-w-3xl text-left border-l-4 pl-8 border-[#F39221]">
+              <div className="flex items-start gap-6">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shrink-0 shadow-lg bg-[#F39221]/10 border border-[#F39221]/30">
+                  👤
+                </div>
+                <div className="flex-1 text-base-content">
+                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Personal Information</h1>
+                  <p className="text-lg mt-3 max-w-md text-base-content/80">
+                    Tell the brands your story. Building authentic partnerships starts by sharing who you are.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 1 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Full Name *</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="Rahul Sharma" value={inf.name} onChange={e=>setInf({...inf,name:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Handle *</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="@yourhandle" value={inf.handle} onChange={e=>setInf({...inf,handle:e.target.value})} />
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Email *</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" type="email" placeholder="you@email.com" value={inf.email} onChange={e=>setInf({...inf,email:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Phone</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="+91 XXXXX XXXXX" value={inf.phone} onChange={e=>setInf({...inf,phone:e.target.value})} />
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Location</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="Mumbai, India" value={inf.location} onChange={e=>setInf({...inf,location:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Engagement Rate (%)</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="e.g. 4.5" value={inf.engRate} onChange={e=>setInf({...inf,engRate:e.target.value})} />
+            </label>
+          </div>
+          <label className="form-control w-full">
+            <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Bio</span></div>
+            <textarea className="textarea textarea-bordered min-h-[88px] resize-y bg-base-200" placeholder="Tell brands your story in a few lines..." value={inf.bio} onChange={e=>setInf({...inf,bio:e.target.value})} />
+          </label>
+        </div>
+      </>
+    );
 
-        {/* Header */}
-        <div className="ip2-header">
-          <div className="ip2-eyebrow">✦ Influencer Platform ✦</div>
-          <h1 className="ip2-headline">Connect.<br/><em>Collaborate.</em> Grow.</h1>
-          <p className="ip2-sub">The bridge between creators and brands — build real partnerships that move the needle.</p>
+    if (step === 1) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">📱</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Platforms & Niches</div>
+            <div className="text-xs mt-0.5 text-base-content/40">Where do you create content?</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 2 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <span className="text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Your Platforms</span>
+            <div className="flex flex-wrap gap-2">
+              {PLATFORMS.map(p => (
+                <button key={p.id}
+                  className={`btn btn-sm rounded-full gap-1.5 transition-all border ${platforms.includes(p.id) ? 'bg-[#F39221] border-[#F39221] text-white' : 'bg-transparent border-base-content/10 text-base-content/40'}`}
+                  onClick={()=>setPlatforms(prev=>prev.includes(p.id)?prev.filter(x=>x!==p.id):[...prev,p.id])}>
+                  <span>{p.icon}</span>{p.label}
+                  {platforms.includes(p.id) && <span className="text-[0.6rem]">✓</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Content Niches</span>
+            <div className="flex flex-wrap gap-2">
+              {NICHES.map(n => (
+                <button key={n}
+                  className={`btn btn-xs rounded-lg transition-all border ${niches.includes(n) ? 'bg-[#3D7E8C] border-[#3D7E8C] text-white' : 'bg-transparent border-base-content/10 text-base-content/40'}`}
+                  onClick={()=>setNiches(prev=>prev.includes(n)?prev.filter(x=>x!==n):[...prev,n])}>
+                  {n}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+
+    if (step === 2) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">📊</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Audience Stats</div>
+            <div className="text-xs mt-0.5 text-base-content/40">Help brands understand your reach</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 3 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-5">
+          {[
+            { label: "Followers", val: followers, setVal: setFollowers, min: 1000, max: 10000000, step: 1000 },
+            { label: "Avg Views / Post", val: avgViews, setVal: setAvgViews, min: 100, max: 5000000, step: 100 },
+            { label: "Highest Views", val: highestView, setVal: setHighestView, min: 1000, max: 50000000, step: 1000 },
+          ].map(({ label, val, setVal, min, max, step: s }) => (
+            <div key={label} className="flex flex-col gap-2">
+              <div className="flex justify-between items-baseline">
+                <span className="text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">{label}</span>
+                <span className="text-sm font-bold tabular-nums text-[#F39221]">{formatRange(val)}</span>
+              </div>
+              <input type="range" className="range range-xs w-full accent-[#F39221]" min={min} max={max} step={s} value={val} onChange={e=>setVal(Number(e.target.value))} />
+            </div>
+          ))}
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Audience Age</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={audienceAge} onChange={e=>setAudienceAge(e.target.value)}>
+                <option value="">Select</option>
+                <option>13–17</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45+</option>
+              </select>
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Audience Gender</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={audienceGender} onChange={e=>setAudienceGender(e.target.value)}>
+                <option value="">Select</option>
+                <option>Mostly Male</option><option>Mostly Female</option><option>Mixed</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </>
+    );
+
+    if (step === 3) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">🤝</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Collaboration Prefs</div>
+            <div className="text-xs mt-0.5 text-base-content/40">What kind of deals do you want?</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 4 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Collab Type</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={inf.collabType} onChange={e=>setInf({...inf,collabType:e.target.value})}>
+                <option value="">Select</option>
+                <option>Paid Partnership</option>
+                <option>Barter / Free Product</option>
+                <option>Affiliate</option>
+                <option>Long-term Ambassador</option>
+                <option>Open to all</option>
+              </select>
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Rate per Post (₹)</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="e.g. 15000" value={inf.ratePerPost} onChange={e=>setInf({...inf,ratePerPost:e.target.value})} />
+            </label>
+          </div>
+          <label className="form-control w-full">
+            <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Past Collaborations</span></div>
+            <textarea className="textarea textarea-bordered min-h-[88px] resize-y bg-base-200" placeholder="Brands you've worked with before..." value={inf.pastCollaborations} onChange={e=>setInf({...inf,pastCollaborations:e.target.value})} />
+          </label>
+        </div>
+      </>
+    );
+  };
+
+  const renderBrandStep = () => {
+    if (step === 0) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">🏢</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Company Details</div>
+            <div className="text-xs mt-0.5 text-base-content/40">Who's behind this campaign?</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 1 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Company / Brand *</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="Acme Corp" value={brand.company} onChange={e=>setBrand({...brand,company:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Contact Person</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="Ananya Singh" value={brand.contact} onChange={e=>setBrand({...brand,contact:e.target.value})} />
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Business Email *</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" type="email" placeholder="marketing@co.com" value={brand.email} onChange={e=>setBrand({...brand,email:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Phone</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="+91 XXXXX XXXXX" value={brand.phone} onChange={e=>setBrand({...brand,phone:e.target.value})} />
+            </label>
+          </div>
+          <label className="form-control w-full">
+            <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Website</span></div>
+            <input className="input input-bordered input-sm w-full bg-base-200" placeholder="https://yourcompany.com" value={brand.website} onChange={e=>setBrand({...brand,website:e.target.value})} />
+          </label>
+        </div>
+      </>
+    );
+
+    if (step === 1) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">🎯</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Influencer Requirements</div>
+            <div className="text-xs mt-0.5 text-base-content/40">What kind of creator are you looking for?</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 2 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Influencer Niche</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={brand.niche} onChange={e=>setBrand({...brand,niche:e.target.value})}>
+                <option value="">Select niche</option>
+                {BRAND_NICHES.map(n=><option key={n}>{n}</option>)}
+              </select>
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Preferred Tier</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={brand.influencerTier} onChange={e=>setBrand({...brand,influencerTier:e.target.value})}>
+                <option value="">Select tier</option>
+                <option>Nano (1K–10K)</option>
+                <option>Micro (10K–100K)</option>
+                <option>Mid-Tier (100K–500K)</option>
+                <option>Macro (500K–1M)</option>
+                <option>Mega / Celebrity (1M+)</option>
+                <option>Open to all</option>
+              </select>
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Platform</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={brand.platformPref} onChange={e=>setBrand({...brand,platformPref:e.target.value})}>
+                <option value="">Any platform</option>
+                {PLATFORMS.map(p=><option key={p.id}>{p.label}</option>)}
+              </select>
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Audience Location</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="Pan India / Mumbai" value={brand.audienceLocation} onChange={e=>setBrand({...brand,audienceLocation:e.target.value})} />
+            </label>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Content Categories</span>
+            <div className="flex flex-wrap gap-2">
+              {BRAND_NICHES.map(n=>(
+                <button key={n}
+                  className={`btn btn-xs rounded-lg transition-all border ${brandNiches.includes(n) ? 'bg-[#3D7E8C] border-[#3D7E8C] text-white' : 'bg-transparent border-base-content/10 text-base-content/40'}`}
+                  onClick={()=>setBrandNiches(prev=>prev.includes(n)?prev.filter(x=>x!==n):[...prev,n])}>
+                  {n}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+
+    if (step === 2) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">💰</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Budget & Timeline</div>
+            <div className="text-xs mt-0.5 text-base-content/40">Define your campaign scope</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 3 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Campaign Budget (₹)</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="e.g. 50000" value={brand.budget} onChange={e=>setBrand({...brand,budget:e.target.value})} />
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Timeline</span></div>
+              <input className="input input-bordered input-sm w-full bg-base-200" placeholder="e.g. 2 weeks" value={brand.timeline} onChange={e=>setBrand({...brand,timeline:e.target.value})} />
+            </label>
+          </div>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Deliverables</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={brand.deliverables} onChange={e=>setBrand({...brand,deliverables:e.target.value})}>
+                <option value="">Select</option>
+                <option>Instagram Post + Story</option>
+                <option>YouTube Dedicated Video</option>
+                <option>YouTube Integration</option>
+                <option>TikTok Video</option>
+                <option>Reels Only</option>
+                <option>Custom Package</option>
+              </select>
+            </label>
+            <label className="form-control w-full">
+              <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Collaboration Type</span></div>
+              <select className="select select-bordered select-sm w-full bg-base-200" value={brand.collabType} onChange={e=>setBrand({...brand,collabType:e.target.value})}>
+                <option value="">Select</option>
+                <option>One-time Campaign</option>
+                <option>Long-term / Ambassador</option>
+                <option>Affiliate Marketing</option>
+                <option>Barter / Product Gifting</option>
+                <option>Event Coverage</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </>
+    );
+
+    if (step === 3) return (
+      <>
+        <div className="flex items-start gap-4 p-8 pb-0">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-[#3D7E8C]/10 border border-[#3D7E8C]/20">📋</div>
+          <div className="flex-1">
+            <div className="text-lg font-bold">Campaign Details</div>
+            <div className="text-xs mt-0.5 text-base-content/40">Describe what you're looking for</div>
+          </div>
+          <div className="text-xs font-semibold tracking-widest pt-1 text-[#3D7E8C]/60">Step 4 of 4</div>
+        </div>
+        <div className="p-8 pt-6 flex flex-col gap-4">
+          <label className="form-control w-full">
+            <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Campaign Description</span></div>
+            <textarea className="textarea textarea-bordered min-h-[88px] resize-y bg-base-200" placeholder="Describe your product and campaign goals..." value={brand.description} onChange={e=>setBrand({...brand,description:e.target.value})} />
+          </label>
+          <label className="form-control w-full">
+            <div className="label pb-1"><span className="label-text text-[0.7rem] font-semibold tracking-widest uppercase text-[#3D7E8C]/70">Special Notes</span></div>
+            <textarea className="textarea textarea-bordered min-h-[72px] resize-y bg-base-200" placeholder="Any do's, don'ts, or specific requirements for influencers..." value={brand.specialNotes} onChange={e=>setBrand({...brand,specialNotes:e.target.value})} />
+          </label>
+        </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center relative overflow-x-hidden font-serif text-base-content" data-theme="night" style={{background: "hsl(var(--b3, 222 47% 11%))"}}>
+
+      {/* ── AMBIENT ORBS ── */}
+      <div className="fixed pointer-events-none z-0" style={{top:"-120px",left:"-80px",width:"520px",height:"520px",borderRadius:"50%",background:"rgba(243,146,33,0.07)",filter:"blur(80px)"}} />
+      <div className="fixed pointer-events-none z-0" style={{bottom:"-80px",right:"-60px",width:"440px",height:"440px",borderRadius:"50%",background:"rgba(61,126,140,0.07)",filter:"blur(80px)"}} />
+
+      {/* ══════════════════════════════════════════
+          HERO SECTION
+      ══════════════════════════════════════════ */}
+      <section className="relative w-full flex flex-col items-center justify-center overflow-hidden min-h-screen">
+        {/* BG image */}
+        <div className="absolute inset-0 z-0 bg-neutral">
+          <img 
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80" 
+            alt="Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+        </div>
+        {/* dark + colour overlay */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[hsl(var(--b3,222_47%_11%))] via-[hsl(var(--b3,222_47%_11%))/80] to-[hsl(var(--b3,222_47%_11%))/40]" />
+        
+        <div className="relative z-10 flex flex-col items-center text-center px-6 animate-[fadeIn_0.9s_ease_both]">
+          {/* badge */}
+          <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[3px] uppercase mb-8 px-5 py-2 rounded-full text-[#F39221] border border-[#F39221]/30 bg-[#F39221]/10">
+            ✦ Influencer Platform ✦
+          </div>
+
+          {/* MAIN HEADING — default serif font as instructed */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-normal leading-tight mb-5 text-slate-100">
+            Connect.{" "}
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#F39221] to-[#F39221]">
+              Collaborate.
+            </span>{" "}
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-[#3D7E8C]">
+              Grow.
+            </span>
+          </h1>
+
+          <p className="text-sm font-light leading-relaxed max-w-lg mx-auto mb-10 text-slate-100">
+            The bridge between creators and brands — build real partnerships that move the needle across India's fastest-growing creator economy.
+          </p>
+
+          {/* CTA buttons */}
+          <div className="flex gap-4 flex-wrap justify-center">
+            <button
+              className="btn btn-md px-8 py-4 font-bold bg-[#F39221] border-none text-white rounded-full hover:bg-[#e0831c] transition-colors"
+              onClick={()=>{ const el=document.getElementById("get-started"); el&&el.scrollIntoView({behavior:"smooth"}); }}>
+              Get Started →
+            </button>
+            <button
+              className="btn btn-md px-8 py-4 font-bold bg-base-200 border border-[#3D7E8C]/50 text-[#3D7E8C] rounded-full hover:bg-base-300 transition-colors"
+              onClick={()=>{ const el=document.getElementById("how-it-works"); el&&el.scrollIntoView({behavior:"smooth"}); }}>
+              How It Works
+            </button>
+          </div>
         </div>
 
-        {/* Role selector */}
-        <div className="ip2-role-wrap">
-          {[
-            { id:"influencer", icon:"🎙️", label:"I'm a Creator",  desc:"Find brand deals & grow your income" },
-            { id:"brand",      icon:"🏢", label:"I'm a Brand",    desc:"Discover influencers for your campaign" },
-          ].map(r => (
-            <div key={r.id} className={`ip2-role-card ${role===r.id?"active":""}`} onClick={()=>pickRole(r.id)}>
-              <div className="ip2-role-icon">{r.icon}</div>
-              <div className="ip2-role-label">{r.label}</div>
-              <div className="ip2-role-desc">{r.desc}</div>
+        {/* scroll cue */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 animate-bounce text-base-content/50">
+          <span className="text-[10px] tracking-widest uppercase">Scroll</span>
+          <span className="text-lg">↓</span>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          STATS STRIP
+      ══════════════════════════════════════════ */}
+      <section className="w-full py-14 px-6 relative z-10 bg-base-100 border-y border-base-content/5">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+          {STATS.map(s => (
+            <div key={s.label} className="flex flex-col items-center text-center gap-1">
+              <span className="text-3xl font-bold text-[#F39221]">{s.value}</span>
+              <span className="text-xs tracking-widest uppercase text-base-content/70">{s.label}</span>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Wizard */}
-        {role && !done && (
-          <div className="ip2-wizard">
-            {/* Stepper */}
-            <div className="ip2-stepper">
-              {steps.map((s, i) => (
-                <div key={i} className={`ip2-step-item ${i < step ? "done" : i === step ? "active" : ""}`}
-                  onClick={()=>i<step&&setStep(i)}>
-                  <div className="ip2-step-dot">
-                    {i < step ? "✓" : i+1}
-                  </div>
-                  <div className="ip2-step-label">{s.label}</div>
+      {/* ══════════════════════════════════════════
+          HOW IT WORKS
+      ══════════════════════════════════════════ */}
+      <section id="how-it-works" className="w-full py-20 px-6 relative z-10 bg-base-200">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="inline-block text-[11px] font-semibold tracking-[3px] uppercase mb-4 px-4 py-1.5 rounded-full text-base-content border border-[#3D7E8C]/30 bg-[#3D7E8C]/10">
+              The Process
+            </div>
+           <h2 className="text-4xl md:text-5xl font-black text-base-content mb-6 tracking-tighter">
+              Four steps <span className="text-[#F39221]">for your</span> <span className="text-[#3D7E8C]">next deal.</span>
+            </h2>
+            <p className="text-base-content/80 text-sm max-w-[480px] mx-auto">Simple, fast, and built for India's creator economy.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {HOW_IT_WORKS.map((item, idx) => (
+              <div key={idx} className="rounded-3xl p-7 flex gap-5 items-start transition-all duration-300 hover:-translate-y-1 bg-base-100 border border-base-content/10 shadow-lg">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 bg-base-200">
+                  {item.icon}
                 </div>
-              ))}
+                <div>
+                  <div className="font-semibold mb-1.5 text-base-content font-serif">{item.title}</div>
+                  <div className="text-sm leading-relaxed text-base-content/70">{item.desc}</div>
+                </div>
+                <div className="ml-auto text-3xl font-bold shrink-0 text-base-content/10 font-serif">0{idx+1}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          GET STARTED — Role selector + Wizard
+      ══════════════════════════════════════════ */}
+      <section id="get-started" className="w-full py-20 px-4 relative z-10 bg-base-100">
+        <div className="max-w-[720px] mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block text-[11px] font-semibold tracking-[3px] uppercase mb-4 px-4 py-1.5 rounded-full text-[#F39221] border border-[#F39221]/30 bg-[#F39221]/10">
+              Join Now
             </div>
+            <h2 className="text-4xl md:text-5xl font-black text-base-content mb-6 tracking-tighter">
+              Who are <span className="text-[#F39221]">you?</span>
+            </h2>
+            <p className="text-base-content/80 text-sm">Choose your role to get started.</p>
+          </div>
 
-            {/* Progress */}
-            <div className="ip2-progress-bar">
-              <div className="ip2-progress-fill" style={{width:`${progress}%`}} />
-            </div>
+          {/* Role cards */}
+          <div className="flex gap-4 mb-12 max-sm:flex-col justify-center">
+            {[
+              { id:"influencer", icon:"🎙️", label:"I'm a Creator",  desc:"Find brand deals & grow your income" },
+              { id:"brand",      icon:"🏢", label:"I'm a Brand",    desc:"Discover influencers for your campaign" },
+            ].map(r => (
+              <div key={r.id}
+                className={`flex flex-col items-center gap-3 px-10 py-7 rounded-2xl cursor-pointer transition-all duration-300 min-w-[180px] border ${role === r.id ? 'border-2 border-[#F39221] bg-[#3D7E8C] shadow-[0_0_0_1px_rgba(243,146,33,0.2),0_8px_40px_rgba(243,146,33,0.15)]' : 'border border-base-content/5 bg-base-200 hover:bg-base-300'}`}
+                onClick={()=>pickRole(r.id)}>
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl" style={{background:role===r.id?"rgba(243,146,33,0.15)":"rgba(255,255,255,0.05)"}}>
+                  {r.icon}
+                </div>
+                <div className="text-sm font-semibold text-base-content font-serif">{r.label}</div>
+                <div className="text-xs text-center leading-snug text-base-content/60">{r.desc}</div>
+              </div>
+            ))}
+          </div>
 
-            {/* Panel */}
-            <div className="ip2-panel">
-              {role === "influencer" ? renderInfStep() : renderBrandStep()}
+          {/* Wizard */}
+          {role && !done && (
+            <div className="w-full">
+              {/* Stepper */}
+              <div className="flex items-center justify-center mb-10 px-2">
+                {steps.map((s, i) => (
+                  <div key={i} className="flex flex-col items-center flex-1 relative">
+                    {i < steps.length - 1 && (
+                      <div className="absolute top-[18px] left-[calc(50%+18px)] w-[calc(100%-36px)] h-[1.5px] z-0 transition-colors duration-300" style={{background: i < step ? "#F39221" : "rgba(255,255,255,0.1)"}} />
+                    )}
+                    <div
+                      className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold relative z-10 cursor-pointer transition-all duration-300 border ${i < step ? 'bg-[#3D7E8C] border-[#3D7E8C] text-white' : i === step ? 'bg-[#F39221] border-[#F39221] text-white shadow-[0_0_20px_rgba(243,146,33,0.35)]' : 'bg-transparent border-base-content/10 text-base-content/20'}`}
+                      onClick={()=>i<step&&setStep(i)}>
+                      {i < step ? "✓" : i+1}
+                    </div>
+                    <div className="text-[0.68rem] font-medium mt-2 text-center uppercase tracking-[0.5px] transition-colors duration-300" style={{color: i === step ? "#F39221" : i < step ? "#3D7E8C" : "rgba(255,255,255,0.2)"}}>
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-              <div className="ip2-nav">
-                <button className="ip2-btn-back" onClick={goBack} style={{visibility: step===0 ? "hidden" : "visible"}}>
-                  ← Back
-                </button>
-                <button
-                  className={`ip2-btn-next ${isLastStep ? "ip2-btn-submit" : ""}`}
-                  onClick={handleNext}
-                  disabled={loading}
-                >
-                  {loading ? "Saving…" : isLastStep ? "🚀 Submit Profile" : "Continue →"}
-                </button>
+              {/* Progress bar */}
+              <div className="h-[2px] rounded mb-8 overflow-hidden bg-base-content/10">
+                <div className="h-full rounded transition-all duration-500 bg-gradient-to-r from-[#F39221] to-[#3D7E8C]" style={{width:`${progress}%`}} />
+              </div>
+
+              {/* Panel */}
+              <div className="rounded-3xl overflow-hidden relative bg-base-200 border border-base-content/10 shadow-2xl">
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F39221] to-[#3D7E8C] opacity-60" />
+                {role === "influencer" ? renderInfStep() : renderBrandStep()}
+                {/* Nav */}
+                <div className="flex items-center justify-between px-8 py-5 border-t border-base-content/10">
+                  <button
+                    className="btn btn-sm gap-2 font-medium bg-transparent border border-base-content/20 text-base-content/50 hover:bg-base-content/5"
+                    style={{visibility: step===0 ? "hidden" : "visible"}}
+                    onClick={goBack}>
+                    ← Back
+                  </button>
+                  <button
+                    className={`btn btn-sm gap-2 font-bold text-white ${isLastStep ? 'bg-gradient-to-r from-[#F39221] to-[#3D7E8C] border-none shadow-[0_4px_24px_rgba(243,146,33,0.3)]' : 'bg-[#F39221] border-none shadow-[0_4px_20px_rgba(243,146,33,0.25)] hover:bg-[#e0831c]'}`}
+                    onClick={handleNext}
+                    disabled={loading}>
+                    {loading ? "Saving…" : isLastStep ? "🚀 Submit Profile" : "Continue →"}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Success */}
-        {role && done && (
-          <div className="ip2-wizard">
-            <div className="ip2-panel">
-              <div className="ip2-success">
-                <div className="ip2-success-icon">✓</div>
-                <h3>{role === "influencer" ? "Profile Live!" : "Campaign Posted!"}</h3>
-                <p>
+          {/* Success */}
+          {role && done && (
+            <div className="rounded-3xl overflow-hidden relative bg-base-200 border border-base-content/10 shadow-2xl">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F39221] to-[#3D7E8C] opacity-60" />
+              <div className="text-center py-16 px-10">
+                <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center text-3xl mx-auto mb-6 bg-[#3D7E8C]/10 border-2 border-[#3D7E8C] animate-[popIn_0.5s_cubic-bezier(0.175,0.885,0.32,1.275)_both]">
+                  ✓
+                </div>
+                <h3 className="text-2xl font-bold mb-2.5 font-serif text-base-content">
+                  {role === "influencer" ? "Profile Live!" : "Campaign Posted!"}
+                </h3>
+                <p className="text-sm leading-relaxed text-base-content/60">
                   {role === "influencer"
                     ? "Your influencer profile is now visible to brands. Scroll down to apply to open campaigns."
                     : "Your campaign is now live. Influencers can discover and apply to it below."}
                 </p>
-                <button className="ip2-btn-next" style={{margin:"24px auto 0",display:"inline-flex"}}
+                <button
+                  className="btn btn-sm mt-6 gap-2 bg-transparent border border-[#F39221]/40 text-[#F39221] hover:bg-[#F39221]/10"
                   onClick={()=>{setDone(false);setStep(0);}}>
                   ✏️ Edit Profile
                 </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Browse section */}
-        {role && (
-          <div className="ip2-browse-wrap">
-            <div className="ip2-browse-head">
-              <div className="ip2-browse-title">
-                {role === "influencer" ? "Open Brand Campaigns" : "Registered Influencers"}
+          {!role && (
+            <p className="text-sm text-center mt-2 text-base-content/20">↑ Choose your role above to get started</p>
+          )}
+
+          {/* Browse */}
+          {role && (
+            <div className="mt-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-[0.7rem] font-semibold tracking-[2px] uppercase flex items-center gap-2 text-base-content/35">
+                  <span className="block w-[20px] h-[1.5px] bg-[#F39221]" />
+                  {role === "influencer" ? "Open Brand Campaigns" : "Registered Influencers"}
+                </div>
               </div>
-            </div>
 
-            <div className="ip2-filter-row">
-              {browseFilters.map(f=>(
-                <div key={f} className={`ip2-filter-chip ${browseFilter===f?"on":""}`}
-                  onClick={()=>setBrowseFilter(f)}>{f}</div>
-              ))}
-            </div>
+              <div className="flex gap-2 flex-wrap mb-4">
+                {browseFilters.map(f=>(
+                  <button key={f}
+                    className={`btn btn-xs rounded-full transition-all border ${browseFilter===f ? 'bg-[#F39221] border-[#F39221] text-white' : 'bg-transparent border-base-content/10 text-base-content/40 hover:bg-base-content/5'}`}
+                    onClick={()=>setBrowseFilter(f)}>
+                    {f}
+                  </button>
+                ))}
+              </div>
 
-            {role === "influencer" && filteredCampaigns.length === 0 && (
-              <p style={{color:"var(--text-dim)",fontSize:"0.82rem",textAlign:"center",padding:"24px 0"}}>No campaigns yet</p>
-            )}
-            {role === "brand" && filteredInfluencers.length === 0 && (
-              <p style={{color:"var(--text-dim)",fontSize:"0.82rem",textAlign:"center",padding:"24px 0"}}>No influencers registered yet</p>
-            )}
+              {role === "influencer" && filteredCampaigns.length === 0 && (
+                <p className="text-xs text-center py-6 text-base-content/20">No campaigns yet</p>
+              )}
+              {role === "brand" && filteredInfluencers.length === 0 && (
+                <p className="text-xs text-center py-6 text-base-content/20">No influencers registered yet</p>
+              )}
 
-            <div className="ip2-cards-grid">
-              {role === "influencer" && filteredCampaigns.map(b=>(
-                <div key={b._id} className="ip2-mini-card" onClick={()=>setApplyModal(b)}>
-                  <div className="ip2-mini-top">
-                    <div className="ip2-avatar">🏢</div>
-                    <div>
-                      <div className="ip2-mini-name">{b.company}</div>
-                      <div className="ip2-mini-sub">{b.niche || b.niches?.[0] || "Brand Campaign"}</div>
+              <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+                {role === "influencer" && filteredCampaigns.map(b=>(
+                  <div key={b._id}
+                    className="rounded-2xl p-[18px] cursor-pointer transition-all duration-200 hover:-translate-y-0.5 bg-base-200 border border-base-content/10"
+                    onClick={()=>setApplyModal(b)}>
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 bg-[#F39221]/10">🏢</div>
+                      <div>
+                        <div className="text-sm font-semibold text-base-content font-serif">{b.company}</div>
+                        <div className="text-[0.7rem] mt-0.5 text-base-content/40">{b.niche || b.niches?.[0] || "Brand Campaign"}</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3.5 flex-wrap">
+                      <div className="text-[0.73rem] text-base-content/40"><strong className="block text-[0.83rem] font-bold text-base-content">{b.budget?`₹${b.budget}`:"—"}</strong>Budget</div>
+                      <div className="text-[0.73rem] text-base-content/40"><strong className="block text-[0.83rem] font-bold text-base-content">{b.timeline||"—"}</strong>Timeline</div>
+                    </div>
+                    <div className="mt-2.5 text-[0.7rem] font-semibold text-[#F39221]">Tap to apply →</div>
+                  </div>
+                ))}
+
+                {role === "brand" && filteredInfluencers.map(i=>(
+                  <div key={i._id} className="rounded-2xl p-[18px] cursor-pointer transition-all duration-200 hover:-translate-y-0.5 bg-base-200 border border-base-content/10">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0 bg-[#3D7E8C]/10">🎙️</div>
+                      <div>
+                        <div className="text-sm font-semibold text-base-content font-serif">{i.name}</div>
+                        <div className="text-[0.7rem] mt-0.5 text-base-content/40">@{i.handle} · {i.platforms?.[0]||"Creator"}</div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3.5 flex-wrap">
+                      <div className="text-[0.73rem] text-base-content/40"><strong className="block text-[0.83rem] font-bold text-base-content">{formatRange(i.followers)}</strong>Followers</div>
+                      <div className="text-[0.73rem] text-base-content/40"><strong className="block text-[0.83rem] font-bold text-base-content">{formatRange(i.avgViews)}</strong>Avg Views</div>
+                      {i.ratePerPost && <div className="text-[0.73rem] text-base-content/40"><strong className="block text-[0.83rem] font-bold text-base-content">₹{i.ratePerPost}</strong>Per Post</div>}
                     </div>
                   </div>
-                  <div className="ip2-mini-stats">
-                    <div className="ip2-mini-stat"><strong>{b.budget?`₹${b.budget}`:"—"}</strong>Budget</div>
-                    <div className="ip2-mini-stat"><strong>{b.timeline||"—"}</strong>Timeline</div>
-                  </div>
-                  <div className="ip2-apply-hint">Tap to apply →</div>
-                </div>
-              ))}
-
-              {role === "brand" && filteredInfluencers.map(i=>(
-                <div key={i._id} className="ip2-mini-card">
-                  <div className="ip2-mini-top">
-                    <div className="ip2-avatar">🎙️</div>
-                    <div>
-                      <div className="ip2-mini-name">{i.name}</div>
-                      <div className="ip2-mini-sub">@{i.handle} · {i.platforms?.[0]||"Creator"}</div>
-                    </div>
-                  </div>
-                  <div className="ip2-mini-stats">
-                    <div className="ip2-mini-stat"><strong>{formatRange(i.followers)}</strong>Followers</div>
-                    <div className="ip2-mini-stat"><strong>{formatRange(i.avgViews)}</strong>Avg Views</div>
-                    {i.ratePerPost && <div className="ip2-mini-stat"><strong>₹{i.ratePerPost}</strong>Per Post</div>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {!role && (
-          <p style={{color:"var(--text-dim)",fontSize:"0.85rem",marginTop:8}}>↑ Choose your role above to get started</p>
-        )}
-
-        {/* Apply Modal */}
-        {applyModal && (
-          <div className="ip2-modal-backdrop" onClick={()=>{setApplyModal(null);setApplyMsg("");}}>
-            <div className="ip2-modal" onClick={e=>e.stopPropagation()}>
-              <h3>Apply to {applyModal.company}</h3>
-              <p>{applyModal.description || "No description provided."}</p>
-              <textarea
-                className="ip2-textarea"
-                style={{width:"100%"}}
-                placeholder="Introduce yourself and why you're a great fit…"
-                value={applyMsg}
-                onChange={e=>setApplyMsg(e.target.value)}
-              />
-              <div className="ip2-modal-actions">
-                <button className="ip2-btn-cancel" onClick={()=>{setApplyModal(null);setApplyMsg("");}}>Cancel</button>
-                <button className="ip2-btn-confirm" onClick={handleApply}>🚀 Send Application</button>
+                ))}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+      </section>
 
-        {toast && <div className="ip2-toast">{toast}</div>}
-      </div>
-    </>
+      {/* ══════════════════════════════════════════
+          TESTIMONIALS
+      ══════════════════════════════════════════ */}
+      <section className="w-full py-20 px-6 relative z-10 bg-[#3D7E8C]/5 border-y border-base-content/5">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-14">
+            <div className="inline-block text-[11px] font-semibold tracking-[3px] uppercase mb-4 px-4 py-1.5 rounded-full text-[#3D7E8C] border border-[#3D7E8C]/30 bg-[#3D7E8C]/10">
+              Creators Love Us
+            </div>
+            <h2 className="text-2xl md:text-4xl font-normal font-serif text-slate-100">
+              Real stories, real results
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {TESTIMONIALS.map((t, idx) => (
+              <div key={idx} className="rounded-2xl p-7 flex flex-col gap-5 bg-base-100 border border-base-content/10 shadow-lg">
+                <div className="text-[0.85rem] leading-relaxed italic text-base-content/60 font-serif">
+                  "{t.text}"
+                </div>
+                <div className="flex items-center gap-3 mt-auto">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold bg-gradient-to-br from-[#F39221] to-[#3D7E8C] text-white">
+                    {t.avatar}
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-base-content font-serif">{t.name}</div>
+                    <div className="text-[0.7rem] text-base-content/40">{t.handle} · {t.followers} followers</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+   
+
+      {/* ── Apply Modal ── */}
+      {applyModal && (
+        <div className="modal modal-open" onClick={()=>{setApplyModal(null);setApplyMsg("");}}>
+          <div className="modal-box rounded-2xl bg-base-200 border border-[#F39221]/30" onClick={e=>e.stopPropagation()}>
+            <h3 className="text-lg font-bold mb-1.5 font-serif text-base-content">Apply to {applyModal.company}</h3>
+            <p className="text-[0.82rem] mb-4 leading-relaxed text-base-content/60">{applyModal.description || "No description provided."}</p>
+            <textarea
+              className="textarea textarea-bordered w-full bg-base-100 border-[#3D7E8C]/30 text-base-content"
+              placeholder="Introduce yourself and why you're a great fit…"
+              value={applyMsg}
+              onChange={e=>setApplyMsg(e.target.value)}
+            />
+            <div className="modal-action gap-2 mt-4">
+              <button className="btn btn-sm flex-1 bg-transparent border border-base-content/10 text-base-content/50" onClick={()=>{setApplyModal(null);setApplyMsg("");}}>Cancel</button>
+              <button className="btn btn-sm flex-[2] font-bold bg-[#F39221] border-none text-white shadow-[0_4px_16px_rgba(243,146,33,0.3)] hover:bg-[#e0831c]" onClick={handleApply}>🚀 Send Application</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <div className="toast toast-bottom toast-center z-[9999]">
+          <div className="alert text-sm font-medium bg-base-200 border border-[#F39221]/30 text-base-content shadow-xl">
+            <span>{toast}</span>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes popIn {
+          from { transform: scale(0.5); opacity: 0; }
+          to   { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(22px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
   );
 }
