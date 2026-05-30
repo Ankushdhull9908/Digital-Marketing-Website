@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Link} from "react-router-dom";
 import "./JobPortal.css";
 
 var API = "https://digital-marketing-temp.onrender.com/api"
@@ -241,12 +242,25 @@ export default function JobPortal() {
       {/* Fixed Top */}
       <div className="jp-fixed-top">
         <nav className="jp-navbar">
-          <div className="jp-nav-content">
-            <h1 className="jp-logo">Job<span>Hub</span></h1>
-            <button className="jp-add-btn" onClick={() => setShowPostModal(true)}>
-              + Post a Job
-            </button>
-          </div>
+         <div className="jp-nav-content">
+  <Link to="/Hrportal">
+    <button 
+      className="btn  p-4 btn-outline border-base-300  hover:bg-base-content hover:text-base-100 rounded-xl font-medium text-sm transition-all duration-200 shadow-sm normal-case" 
+      onClick={() => setShowPostModal(true)}
+    >
+    <h1 className="text-xl font-bold ">Hr<span>Portal</span></h1>
+    </button>
+  </Link>
+  
+  <h1 className="jp-logo">Job<span>Hub</span></h1>
+  
+  <button 
+    className="btn btn-primary bg-primary p-4 text-primary-content hover:opacity-90 border-none rounded-xl font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 normal-case" 
+    onClick={() => setShowPostModal(true)}
+  >
+    + Post a Job
+  </button>
+</div>
         </nav>
         <header className="jp-hero">
           <h1>Find Your Next Role</h1>
