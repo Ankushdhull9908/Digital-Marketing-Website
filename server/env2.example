@@ -1,0 +1,11 @@
+# ─── Cloudinary ──────────────────────────────────────────────────────────────
+# Copy this file to .env and fill in your values from:
+# https://console.cloudinary.com/settings/api-keys
+#
+
+
+# ─── MongoDB ──────────────────────────────────────────────────────────────────
+MONGO_URI=your_mongodb_connection_string
+
+# ─── Auth ─────────────────────────────────────────────────────────────────────
+JWT_SECRET=your_jwt_secret

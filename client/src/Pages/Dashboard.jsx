@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   LayoutDashboard, FileText, BarChart3, LogOut, Plus, HelpCircle,
   Users, Package, Mail, Edit3, Trash2, Eye, X, Check, Star, Quote, Briefcase,
   ChevronDown, ChevronUp, Image,
-  Monitor, ImagePlay, FolderKanban, Video, ToggleRight,
+  Monitor, ImagePlay, FolderKanban, Video, Upload, Loader2,
 } from "lucide-react";
 
 var API = "https://digital-marketing-temp.onrender.com/api"
@@ -16,6 +16,126 @@ const post  = (url, body) => fetch(API + url, { method:"POST",   headers:{"Conte
 const put   = (url, body) => fetch(API + url, { method:"PUT",    headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) }).then(r => r.json());
 const del   = (url)       => fetch(API + url, { method:"DELETE" }).then(r => r.json());
 const patch = (url, body) => fetch(API + url, { method:"PATCH",  headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) }).then(r => r.json());
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ██  IMAGE UPLOAD COMPONENT
+//     Replaces every "image URL" text input in the dashboard.
+//     • User clicks → picks a file from device
+//     • File is read as base64 and POST-ed to /api/upload
+//     • On success the returned Cloudinary URL is stored in state via onChange(url)
+//     • Existing URL (value prop) shows a preview; user can replace it
+// ─────────────────────────────────────────────────────────────────────────────
+function ImageUpload({ value, onChange, label: labelText = "Image", accept = "image/*", folder }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError]         = useState("");
+  const inputRef                  = useRef(null);
+
+  const handleFile = async (file) => {
+    if (!file) return;
+    setError("");
+    setUploading(true);
+    try {
+      // Read as base64 data-URI
+      const dataUri = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const res  = await fetch(`${API}/upload`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ data: dataUri, folder: folder || "webtech" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Upload failed");
+      onChange(data.url);
+    } catch (err) {
+      setError(err.message || "Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
+
+  const handleDragOver = (e) => e.preventDefault();
+
+  return (
+    <div className="space-y-2">
+      {labelText && <label className="block text-xs font-semibold text-slate-500 mb-1">{labelText}</label>}
+
+      {/* Drop zone / click area */}
+      <div
+        className={`relative rounded-xl border-2 border-dashed transition-colors cursor-pointer
+          ${uploading ? "border-indigo-300 bg-indigo-50/40" : "border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/20 bg-slate-50"}`}
+        onClick={() => !uploading && inputRef.current?.click()}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
+        {value ? (
+          /* Preview with overlay to re-upload */
+          <div className="relative w-full h-36 group">
+            <img
+              src={value}
+              alt="preview"
+              className="w-full h-36 object-cover rounded-xl"
+              onError={e => { e.target.style.opacity = 0.3; }}
+            />
+            <div className="absolute inset-0 rounded-xl bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
+              <span className="hidden group-hover:flex items-center gap-1.5 bg-white text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg shadow">
+                <Upload size={13} /> Replace
+              </span>
+            </div>
+          </div>
+        ) : (
+          /* Empty state */
+          <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+            {uploading ? (
+              <>
+                <Loader2 size={28} className="text-indigo-400 animate-spin mb-2" />
+                <p className="text-xs text-indigo-500 font-medium">Uploading to Cloudinary…</p>
+              </>
+            ) : (
+              <>
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center mb-2">
+                  <Upload size={18} className="text-indigo-500" />
+                </div>
+                <p className="text-sm font-semibold text-slate-600">Click or drag & drop</p>
+                <p className="text-xs text-slate-400 mt-0.5">PNG, JPG, WebP, GIF up to 10 MB</p>
+              </>
+            )}
+          </div>
+        )}
+
+        {/* Uploading spinner overlay on top of preview */}
+        {uploading && value && (
+          <div className="absolute inset-0 rounded-xl bg-white/70 flex items-center justify-center">
+            <Loader2 size={28} className="text-indigo-500 animate-spin" />
+          </div>
+        )}
+      </div>
+
+      {/* Error message */}
+      {error && (
+        <p className="text-xs text-red-500 flex items-center gap-1"><X size={11}/> {error}</p>
+      )}
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept={accept}
+        className="hidden"
+        onChange={e => handleFile(e.target.files[0])}
+      />
+    </div>
+  );
+}
 
 // ─── shared badge ─────────────────────────────────────────────────────────────
 function Badge({ text, color }) {
@@ -55,7 +175,7 @@ function Modal({ title, onClose, onSave, children, wide }) {
   );
 }
 
-const inp = "w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-indigo-400 bg-slate-50";
+const inp   = "w-full px-3 py-2 rounded-xl border border-slate-200 text-sm text-slate-800 focus:outline-none focus:border-indigo-400 bg-slate-50";
 const label = "block text-xs font-semibold text-slate-500 mb-1";
 
 function ActionBtn({ icon, onClick, danger }) {
@@ -252,6 +372,7 @@ function InfluencerHubPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function TestimonialsPanel() {
   const [items, setItems]   = useState([]);
   const [modal, setModal]   = useState(null);
@@ -310,7 +431,15 @@ function TestimonialsPanel() {
             <div><label className={label}>Company</label><input className={inp} value={form.company} onChange={f("company")} placeholder="Acme Corp"/></div>
           </div>
           <div><label className={label}>Testimonial Text *</label><textarea className={inp} rows={4} value={form.text} onChange={f("text")}/></div>
-          <div><label className={label}>Avatar URL</label><input className={inp} value={form.avatarUrl} onChange={f("avatarUrl")} placeholder="https://…"/></div>
+
+          {/* ── Avatar upload (replaces URL input) ── */}
+          <ImageUpload
+            label="Avatar Photo"
+            value={form.avatarUrl}
+            onChange={url => setForm(p => ({ ...p, avatarUrl: url }))}
+            folder="webtech/testimonials"
+          />
+
           <div className="grid grid-cols-2 gap-3">
             <div><label className={label}>Rating</label><select className={inp} value={form.rating} onChange={f("rating")}>{[5,4,3,2,1].map(n=><option key={n} value={n}>{"★".repeat(n)} ({n})</option>)}</select></div>
             <div><label className={label}>Display Order</label><input type="number" className={inp} value={form.order} onChange={f("order")} min={0}/></div>
@@ -322,6 +451,7 @@ function TestimonialsPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function FAQPanel() {
   const [faqs, setFaqs]     = useState([]);
   const [modal, setModal]   = useState(null);
@@ -374,6 +504,7 @@ function FAQPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function ClientsPanel() {
   const [clients, setClients] = useState([]);
   const [modal, setModal]     = useState(null);
@@ -404,7 +535,9 @@ function ClientsPanel() {
               <tr key={c._id} className="hover:bg-slate-50">
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">{c.name.slice(0,2).toUpperCase()}</div>
+                    {c.logoUrl
+                      ? <img src={c.logoUrl} alt={c.name} className="w-10 h-10 rounded-xl object-contain bg-slate-100 p-1"/>
+                      : <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">{c.name.slice(0,2).toUpperCase()}</div>}
                     <span className="font-semibold text-slate-700">{c.name}</span>
                   </div>
                 </td>
@@ -419,7 +552,15 @@ function ClientsPanel() {
       {modal && (
         <Modal title={modal==="edit"?"Edit Client":"Add Client"} onClose={() => setModal(null)} onSave={save}>
           <div><label className={label}>Client Name</label><input className={inp} value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Company Name"/></div>
-          <div><label className={label}>Logo URL</label><input className={inp} value={form.logoUrl} onChange={e=>setForm({...form,logoUrl:e.target.value})} placeholder="https://…"/></div>
+
+          {/* ── Logo upload (replaces URL input) ── */}
+          <ImageUpload
+            label="Client Logo"
+            value={form.logoUrl}
+            onChange={url => setForm(p => ({ ...p, logoUrl: url }))}
+            folder="webtech/clients"
+          />
+
           <div><label className={label}>Website URL</label><input className={inp} value={form.websiteUrl} onChange={e=>setForm({...form,websiteUrl:e.target.value})} placeholder="https://…"/></div>
         </Modal>
       )}
@@ -427,6 +568,7 @@ function ClientsPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 export function MyApplicationsPanel() {
   const [apps, setApps]       = useState([]);
   const [loading, setLoading] = useState(true);
@@ -466,6 +608,7 @@ export function MyApplicationsPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 export function RecruiterJobsPanel() {
   const [jobs, setJobs]               = useState([]);
   const [loading, setLoading]         = useState(true);
@@ -589,6 +732,7 @@ export function RecruiterJobsPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function PackagesPanel() {
   const [pkgs, setPkgs]   = useState([]);
   const [modal, setModal] = useState(null);
@@ -646,13 +790,14 @@ function PackagesPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function ContactsPanel() {
   const [contacts, setContacts] = useState([]);
   const [viewing, setViewing]   = useState(null);
 
   const load = () => get("/contact").then(setContacts);
   useEffect(() => { load(); }, []);
-  const remove       = async id         => { await del(`/contact/${id}`); load(); };
+  const remove       = async id           => { await del(`/contact/${id}`); load(); };
   const updateStatus = async (id, status) => { await patch(`/contact/${id}/status`, { status }); load(); };
 
   return (
@@ -695,6 +840,7 @@ function ContactsPanel() {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
 function StatCard({ label, value, sub, icon, color }) {
   const colors = { indigo:"text-indigo-600", blue:"text-blue-600", purple:"text-purple-600", green:"text-green-600" };
   return (
@@ -736,9 +882,9 @@ function HomepagePanel() {
   );
 
   const sections = [
-    { key: "slider",       label: "Hero Slider",        icon: <ImagePlay size={16} />,    color: "blue"   },
-    { key: "ourProjects",  label: "Our Projects",        icon: <FolderKanban size={16} />, color: "teal"   },
-    { key: "clientVideos", label: "Client Testimonial Videos", icon: <Video size={16} />, color: "purple" },
+    { key: "slider",       label: "Hero Slider",             icon: <ImagePlay size={16} />,    color: "blue"   },
+    { key: "ourProjects",  label: "Our Projects",            icon: <FolderKanban size={16} />, color: "teal"   },
+    { key: "clientVideos", label: "Client Testimonial Videos", icon: <Video size={16} />,      color: "purple" },
   ];
 
   const colorMap = {
@@ -749,14 +895,12 @@ function HomepagePanel() {
 
   return (
     <div className="space-y-6">
-      {/* Toast */}
       {toast && (
         <div className={`fixed top-5 right-5 z-50 px-5 py-3 rounded-2xl shadow-xl text-sm font-semibold transition-all ${toast.ok ? "bg-green-600 text-white" : "bg-red-500 text-white"}`}>
           {toast.msg}
         </div>
       )}
 
-      {/* Section tabs */}
       <div className="flex flex-wrap gap-3">
         {sections.map(s => (
           <button key={s.key} onClick={() => setActiveSection(s.key)}
@@ -770,27 +914,16 @@ function HomepagePanel() {
         ))}
       </div>
 
-      {/* ── SLIDER ── */}
-      {activeSection === "slider" && (
-        <SliderSectionEditor data={data} reload={reload} showToast={showToast} />
-      )}
-
-      {/* ── OUR PROJECTS ── */}
-      {activeSection === "ourProjects" && (
-        <ProjectsSectionEditor data={data} reload={reload} showToast={showToast} />
-      )}
-
-      {/* ── CLIENT VIDEOS ── */}
-      {activeSection === "clientVideos" && (
-        <ClientVideosSectionEditor data={data} reload={reload} showToast={showToast} />
-      )}
+      {activeSection === "slider"       && <SliderSectionEditor       data={data} reload={reload} showToast={showToast} />}
+      {activeSection === "ourProjects"  && <ProjectsSectionEditor     data={data} reload={reload} showToast={showToast} />}
+      {activeSection === "clientVideos" && <ClientVideosSectionEditor data={data} reload={reload} showToast={showToast} />}
     </div>
   );
 }
 
 // ── Slider Section Editor ─────────────────────────────────────────────────────
 function SliderSectionEditor({ data, reload, showToast }) {
-  const [modal, setModal] = useState(null); // "add" | { img }
+  const [modal, setModal] = useState(null);
   const [form, setForm]   = useState({ imageUrl: "", altText: "", order: 0 });
 
   const openAdd  = () => { setForm({ imageUrl: "", altText: "", order: (data?.slider?.images?.length || 0) }); setModal("add"); };
@@ -807,16 +940,14 @@ function SliderSectionEditor({ data, reload, showToast }) {
         });
         showToast("Slide updated!");
       }
-      setModal(null);
-      reload();
+      setModal(null); reload();
     } catch { showToast("Error saving", false); }
   };
 
   const remove = async (id) => {
     if (!window.confirm("Remove this slide?")) return;
     await del(`/homepage/slider/images/${id}`);
-    showToast("Slide removed!");
-    reload();
+    showToast("Slide removed!"); reload();
   };
 
   const toggle = async (imgId, current) => {
@@ -872,11 +1003,13 @@ function SliderSectionEditor({ data, reload, showToast }) {
 
       {modal && (
         <Modal title={modal === "add" ? "Add Slide" : "Edit Slide"} onClose={() => setModal(null)} onSave={save}>
-          <div>
-            <label className={label}>Image URL *</label>
-            <input className={inp} value={form.imageUrl} onChange={e => setForm(p => ({ ...p, imageUrl: e.target.value }))} placeholder="https://images.unsplash.com/…" />
-            {form.imageUrl && <img src={form.imageUrl} alt="" className="mt-2 w-full h-32 object-cover rounded-xl" onError={e => e.target.style.display = "none"} />}
-          </div>
+          {/* ── Image upload (replaces URL input) ── */}
+          <ImageUpload
+            label="Slide Image *"
+            value={form.imageUrl}
+            onChange={url => setForm(p => ({ ...p, imageUrl: url }))}
+            folder="webtech/slider"
+          />
           <div><label className={label}>Alt Text</label><input className={inp} value={form.altText} onChange={e => setForm(p => ({ ...p, altText: e.target.value }))} placeholder="Describe the image" /></div>
           <div><label className={label}>Display Order</label><input type="number" className={inp} value={form.order} onChange={e => setForm(p => ({ ...p, order: Number(e.target.value) }))} min={0} /></div>
         </Modal>
@@ -927,14 +1060,13 @@ function ProjectsSectionEditor({ data, reload, showToast }) {
         <div className="p-5 border-b border-slate-100 flex justify-between items-center">
           <div>
             <h3 className="font-bold text-slate-800">Our Projects Gallery</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Projects shown in the dark asymmetric grid on the homepage. Top row = 4 images, bottom row = 2 images.</p>
+            <p className="text-xs text-slate-400 mt-0.5">Top row = 4 images, bottom row = 2 images.</p>
           </div>
           <button onClick={openAdd} className="flex items-center gap-1.5 bg-teal-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-teal-700">
             <Plus size={15} /> Add Project
           </button>
         </div>
 
-        {/* Row grouping */}
         {["top", "bottom"].map(row => {
           const rowProjects = [...projects].filter(p => p.row === row).sort((a, b) => a.order - b.order);
           return (
@@ -976,11 +1108,15 @@ function ProjectsSectionEditor({ data, reload, showToast }) {
       {modal && (
         <Modal title={modal === "add" ? "Add Project" : "Edit Project"} onClose={() => setModal(null)} onSave={save}>
           <div><label className={label}>Project Title *</label><input className={inp} value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} placeholder="Sarovar Hotels & Resorts" /></div>
-          <div>
-            <label className={label}>Project Image URL *</label>
-            <input className={inp} value={form.imageUrl} onChange={e => setForm(p => ({ ...p, imageUrl: e.target.value }))} placeholder="https://images.unsplash.com/…" />
-            {form.imageUrl && <img src={form.imageUrl} alt="" className="mt-2 w-full h-28 object-cover rounded-xl" onError={e => e.target.style.display = "none"} />}
-          </div>
+
+          {/* ── Project image upload (replaces URL input) ── */}
+          <ImageUpload
+            label="Project Image *"
+            value={form.imageUrl}
+            onChange={url => setForm(p => ({ ...p, imageUrl: url }))}
+            folder="webtech/projects"
+          />
+
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={label}>Industry (links to /industries#id)</label>
@@ -1049,7 +1185,6 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
 
   return (
     <>
-      {/* Section settings */}
       <div className="bg-purple-50 border border-purple-100 rounded-2xl p-5 flex flex-wrap gap-4 items-end">
         <div className="flex-1 min-w-48">
           <label className={label}>Section Title</label>
@@ -1069,7 +1204,7 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
         <div className="p-5 border-b border-slate-100 flex justify-between items-center">
           <div>
             <h3 className="font-bold text-slate-800">Client Testimonial Videos</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Paste YouTube embed URLs or direct video links.</p>
+            <p className="text-xs text-slate-400 mt-0.5">Upload a thumbnail image, or paste a YouTube embed URL for the video itself.</p>
           </div>
           <button onClick={openAdd} className="flex items-center gap-1.5 bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-purple-700">
             <Plus size={15} /> Add Video
@@ -1077,7 +1212,7 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
         </div>
 
         {videos.length === 0 ? (
-          <div className="p-10 text-center text-slate-400 text-sm">No client videos yet. Add your first testimonial video.</div>
+          <div className="p-10 text-center text-slate-400 text-sm">No client videos yet.</div>
         ) : (
           <div className="divide-y divide-slate-100">
             {[...videos].sort((a, b) => a.order - b.order).map(v => (
@@ -1114,15 +1249,22 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
             <div><label className={label}>Role</label><input className={inp} value={form.clientRole} onChange={e => setForm(p => ({ ...p, clientRole: e.target.value }))} placeholder="CEO" /></div>
             <div><label className={label}>Company</label><input className={inp} value={form.company} onChange={e => setForm(p => ({ ...p, company: e.target.value }))} placeholder="Acme Ltd." /></div>
           </div>
+
+          {/* ── Video: keep as text input (YouTube embed URLs aren't files) ── */}
           <div>
             <label className={label}>Video URL * (YouTube embed or direct MP4)</label>
             <input className={inp} value={form.videoUrl} onChange={e => setForm(p => ({ ...p, videoUrl: e.target.value }))} placeholder="https://www.youtube.com/embed/…" />
+            <p className="text-xs text-slate-400 mt-1">Tip: use a YouTube embed URL (<span className="font-mono">youtube.com/embed/ID</span>) or a direct .mp4 link.</p>
           </div>
-          <div>
-            <label className={label}>Thumbnail Image URL (optional)</label>
-            <input className={inp} value={form.thumbnail} onChange={e => setForm(p => ({ ...p, thumbnail: e.target.value }))} placeholder="https://img.youtube.com/vi/ID/hqdefault.jpg" />
-            {form.thumbnail && <img src={form.thumbnail} alt="" className="mt-2 w-full h-24 object-cover rounded-xl" onError={e => e.target.style.display = "none"} />}
-          </div>
+
+          {/* ── Thumbnail upload (replaces URL input) ── */}
+          <ImageUpload
+            label="Thumbnail Image (optional)"
+            value={form.thumbnail}
+            onChange={url => setForm(p => ({ ...p, thumbnail: url }))}
+            folder="webtech/video-thumbnails"
+          />
+
           <div><label className={label}>Display Order</label><input type="number" className={inp} value={form.order} onChange={e => setForm(p => ({ ...p, order: Number(e.target.value) }))} min={0} /></div>
           <div className="flex items-center gap-3">
             <input id="vid-active" type="checkbox" className="w-4 h-4 accent-purple-600" checked={form.isActive} onChange={e => setForm(p => ({ ...p, isActive: e.target.checked }))} />
@@ -1157,21 +1299,20 @@ function Dashboard() {
   ];
 
   const tabMeta = {
-    overview:     { title: "Overview",        sub: "Welcome back — here's what's happening." },
+    overview:     { title: "Overview",          sub: "Welcome back — here's what's happening." },
     homepage:     { title: "Homepage Sections", sub: "Manage slider images, project gallery, and client testimonial videos." },
-    faqs:         { title: "FAQs",            sub: "Manage homepage FAQ section." },
-    clients:      { title: "Clients",         sub: "Add and manage client logos on the homepage." },
-    packages:     { title: "Packages",        sub: "Control pricing plans shown on the homepage." },
-    testimonials: { title: "Testimonials",    sub: "Manage client testimonials shown on the homepage." },
-    contacts:     { title: "Contacts",        sub: "View and respond to messages from users." },
-    jobs:         { title: "Jobs",            sub: "Manage job postings and applications." },
-    influencer:   { title: "Influencer Hub",  sub: "Manage brand campaigns and influencer profiles." },
-    analytics:    { title: "Analytics",       sub: "Site performance overview." },
+    faqs:         { title: "FAQs",              sub: "Manage homepage FAQ section." },
+    clients:      { title: "Clients",           sub: "Add and manage client logos on the homepage." },
+    packages:     { title: "Packages",          sub: "Control pricing plans shown on the homepage." },
+    testimonials: { title: "Testimonials",      sub: "Manage client testimonials shown on the homepage." },
+    contacts:     { title: "Contacts",          sub: "View and respond to messages from users." },
+    jobs:         { title: "Jobs",              sub: "Manage job postings and applications." },
+    influencer:   { title: "Influencer Hub",    sub: "Manage brand campaigns and influencer profiles." },
+    analytics:    { title: "Analytics",         sub: "Site performance overview." },
   };
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans text-slate-900">
-
       {/* ── Sidebar ── */}
       <div className="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0">
         <div className="p-6 flex items-center gap-3 border-b border-slate-100">
@@ -1217,12 +1358,9 @@ function Dashboard() {
             <h2 className="text-xl font-bold text-slate-800">{tabMeta[tab]?.title || tab}</h2>
             <p className="text-xs text-slate-500 mt-0.5">{tabMeta[tab]?.sub || ""}</p>
           </div>
-        
         </header>
 
         <main className="p-8 overflow-y-auto flex-1">
-
-          {/* OVERVIEW */}
           {tab === "overview" && (
             <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -1232,7 +1370,6 @@ function Dashboard() {
                 <StatCard label="New Messages" value="2"     sub="Unread contact forms"  icon={<Mail size={48}/>}     color="green"/>
               </div>
 
-              {/* Quick access to Homepage Sections */}
               <div className="bg-gradient-to-br from-teal-50 to-blue-50 rounded-2xl border border-teal-100 p-6 mb-6 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Homepage Editor</p>
@@ -1246,13 +1383,10 @@ function Dashboard() {
                   <Monitor size={16} /> Open Editor
                 </button>
               </div>
-
             </>
           )}
 
-          {/* ── HOMEPAGE SECTIONS ── */}
-          {tab === "homepage" && <HomepagePanel />}
-
+          {tab === "homepage"     && <HomepagePanel />}
           {tab === "faqs"         && <FAQPanel />}
           {tab === "clients"      && <ClientsPanel />}
           {tab === "packages"     && <PackagesPanel />}
@@ -1267,7 +1401,6 @@ function Dashboard() {
               <p className="text-slate-500 font-medium">Analytics integration coming soon.</p>
             </div>
           )}
-
         </main>
       </div>
     </div>
