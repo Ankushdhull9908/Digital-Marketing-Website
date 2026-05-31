@@ -7,9 +7,10 @@ import {
   Monitor, ImagePlay, FolderKanban, Video, Upload, Loader2,
 } from "lucide-react";
 
-var API = "https://digital-marketing-temp.onrender.com/api"
-  ? "https://digital-marketing-temp.onrender.com/api"
-  : "http://localhost:5000/api";
+const API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://digital-marketing-temp.onrender.com/api";
 
 const get   = (url)       => fetch(API + url).then(r => r.json());
 const post  = (url, body) => fetch(API + url, { method:"POST",   headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) }).then(r => r.json());

@@ -1,16 +1,3 @@
-// routes/upload.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Single endpoint:  POST /api/upload
-//
-// Accepts either:
-//   • multipart/form-data  with field "file"   (via multer, no disk storage)
-//   • application/json     with field "data"   (base64 data-URI string)
-//
-// Returns:  { url, publicId }
-//
-// Install dependencies (if not already present):
-//   npm install cloudinary multer
-// ─────────────────────────────────────────────────────────────────────────────
 
 import express        from "express";
 import multer         from "multer";
