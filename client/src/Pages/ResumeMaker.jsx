@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft, ChevronRight, Download, Plus, Trash2,
   User, Briefcase, Code, Mail, Star, Check, Palette,
   GraduationCap, Phone, MapPin, Globe,
-  Eye, EyeOff, Layers, Zap, Feather, Box
+  Eye, EyeOff, Layers, Zap, Feather, Box,
+  Save, Cloud, CloudOff, Loader2,
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════════
@@ -12,487 +13,74 @@ import {
    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
 ═══════════════════════════════════════════════════════ */
 
+/* ── API base ─────────────────────────────────────────── */
+const API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://digital-marketing-temp.onrender.com/api";
+
+/* ── Session ID (persisted in localStorage) ──────────────*/
+function getSessionId() {
+  let id = localStorage.getItem("resume_session_id");
+  if (!id) {
+    id = "rsm_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("resume_session_id", id);
+  }
+  return id;
+}
+const SESSION_ID = getSessionId();
+
 /* ── Default Data ─────────────────────────────────────── */
 const DEFAULT_DATA = {
-  name: "Alex Morgan",
-  title: "Senior Product Designer",
-  tagline: "I design digital experiences that people love to use.",
-  email: "alex@morgan.design",
-  phone: "+91 98765 43210",
-  location: "Mumbai, India",
-  website: "morgan.design",
-  github: "alexmorgan",
-  linkedin: "alexmorgan",
-  about: "I'm a product designer with 5+ years of experience crafting intuitive interfaces for startups and Fortune 500s. I believe great design solves real problems beautifully.",
-  skills: ["Figma", "React", "UX Research", "Prototyping", "Tailwind CSS", "Motion Design"],
+  templateId:  "executive",
+  name:        "Alex Morgan",
+  title:       "Senior Product Designer",
+  tagline:     "I design digital experiences that people love to use.",
+  email:       "alex@morgan.design",
+  phone:       "+91 98765 43210",
+  location:    "Mumbai, India",
+  website:     "morgan.design",
+  github:      "alexmorgan",
+  linkedin:    "alexmorgan",
+  about:       "I'm a product designer with 5+ years of experience crafting intuitive interfaces for startups and Fortune 500s. I believe great design solves real problems beautifully.",
+  skills:      ["Figma", "React", "UX Research", "Prototyping", "Tailwind CSS", "Motion Design"],
   experience: [
-    { company: "Stripe", role: "Senior Designer", period: "2022 – Present", desc: "Led redesign of core payment flows, improving conversion by 23%." },
-    { company: "Razorpay", role: "Product Designer", period: "2020 – 2022", desc: "Designed merchant dashboard used by 500k+ businesses." },
+    { company: "Stripe",    role: "Senior Designer",   period: "2022 – Present", desc: "Led redesign of core payment flows, improving conversion by 23%." },
+    { company: "Razorpay",  role: "Product Designer",  period: "2020 – 2022",    desc: "Designed merchant dashboard used by 500k+ businesses." },
   ],
   education: [
     { school: "NID Ahmedabad", degree: "B.Des Interaction Design", year: "2020" },
   ],
   projects: [
-    { title: "FinanceOS", desc: "A personal finance dashboard with AI insights.", tags: ["React", "D3.js", "OpenAI"], link: "#" },
-    { title: "Bloom Health", desc: "Mental wellness app for Gen-Z. 50k+ downloads.", tags: ["Figma", "Flutter", "Firebase"], link: "#" },
-    { title: "Typeset", desc: "Browser extension for typography nerds.", tags: ["Chrome API", "CSS", "JS"], link: "#" },
+    { title: "FinanceOS",  desc: "A personal finance dashboard with AI insights.",  tags: ["React", "D3.js", "OpenAI"],               link: "#" },
+    { title: "Bloom Health",desc: "Mental wellness app for Gen-Z. 50k+ downloads.", tags: ["Figma", "Flutter", "Firebase"],            link: "#" },
+    { title: "Typeset",    desc: "Browser extension for typography nerds.",          tags: ["Chrome API", "CSS", "JS"],                link: "#" },
   ],
   achievements: ["Forbes 30 Under 30 nominee 2024", "Google UX Design Certified", "Dribbble Top Shot × 3"],
-  accentColor: "#2E9E6E",
+  accentColor:  "#2E9E6E",
 };
 
 /* ── 4 Templates ──────────────────────────────────────── */
 const TEMPLATES = [
-  {
-    id: "executive",
-    name: "Executive",
-    desc: "Clean, bold. For senior roles & leadership.",
-    icon: <Box size={20} />,
-    preview: { bg: "#0A0F0D", accent: "#2E9E6E", text: "#FFFFFF" },
-  },
-  {
-    id: "editorial",
-    name: "Editorial",
-    desc: "Magazine-style. For creatives & designers.",
-    icon: <Feather size={20} />,
-    preview: { bg: "#FAFAF7", accent: "#E85D3A", text: "#1A1A1A" },
-  },
-  {
-    id: "minimal",
-    name: "Minimal",
-    desc: "Pure white space. For developers & engineers.",
-    icon: <Layers size={20} />,
-    preview: { bg: "#FFFFFF", accent: "#3B5BDB", text: "#111111" },
-  },
-  {
-    id: "brutalist",
-    name: "Brutalist",
-    desc: "Bold & raw. Unforgettable first impressions.",
-    icon: <Zap size={20} />,
-    preview: { bg: "#F5F0E8", accent: "#D4A017", text: "#0D0D0D" },
-  },
+  { id: "executive", name: "Executive", desc: "Clean, bold. For senior roles & leadership.",      icon: <Box size={20} />,    preview: { bg: "#0A0F0D", accent: "#2E9E6E", text: "#FFFFFF" } },
+  { id: "editorial", name: "Editorial", desc: "Magazine-style. For creatives & designers.",       icon: <Feather size={20} />,preview: { bg: "#FAFAF7", accent: "#E85D3A", text: "#1A1A1A" } },
+  { id: "minimal",   name: "Minimal",   desc: "Pure white space. For developers & engineers.",    icon: <Layers size={20} />, preview: { bg: "#FFFFFF", accent: "#3B5BDB", text: "#111111" } },
+  { id: "brutalist", name: "Brutalist", desc: "Bold & raw. Unforgettable first impressions.",     icon: <Zap size={20} />,    preview: { bg: "#F5F0E8", accent: "#D4A017", text: "#0D0D0D" } },
 ];
 
 /* ── Form Steps ───────────────────────────────────────── */
 const STEPS = [
-  { id: "basic", label: "Basics", icon: <User size={16} /> },
-  { id: "skills", label: "Skills", icon: <Star size={16} /> },
+  { id: "basic",      label: "Basics",     icon: <User size={16} /> },
+  { id: "skills",     label: "Skills",     icon: <Star size={16} /> },
   { id: "experience", label: "Experience", icon: <Briefcase size={16} /> },
-  { id: "projects", label: "Projects", icon: <Code size={16} /> },
-  { id: "education", label: "Education", icon: <GraduationCap size={16} /> },
+  { id: "projects",   label: "Projects",   icon: <Code size={16} /> },
+  { id: "education",  label: "Education",  icon: <GraduationCap size={16} /> },
 ];
 
 /* ════════════════════════════════════════════════════════
-   TEMPLATE RENDERERS
+   TEMPLATE RENDERERS  (unchanged from original)
 ════════════════════════════════════════════════════════ */
 
-/* ── Template 1: Executive (Dark) ──────────────────────── */
-function ExecutiveTemplate({ d, accent }) {
-  const a = accent || "#2E9E6E";
-  return (
-    <div style={{ fontFamily: "'Montserrat', sans-serif", background: "#0A0F0D", color: "#fff", minHeight: "100%" }}>
-      {/* Header */}
-      <div style={{ padding: "56px 56px 40px", borderBottom: `1px solid #ffffff12` }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <div>
-            <div style={{ width: 40, height: 3, background: a, marginBottom: 20 }} />
-            <h1 style={{ fontSize: 52, fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.05, margin: 0 }}>{d.name}</h1>
-            <p style={{ fontSize: 13, letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.5, marginTop: 10 }}>{d.title}</p>
-          </div>
-          <div style={{ textAlign: "right", fontSize: 12, opacity: 0.5, lineHeight: 2.2 }}>
-            <div>{d.email}</div>
-            <div>{d.phone}</div>
-            <div>{d.location}</div>
-            {d.website && <div>{d.website}</div>}
-          </div>
-        </div>
-        <p style={{ fontSize: 18, opacity: 0.65, marginTop: 28, maxWidth: 500, lineHeight: 1.6 }}>{d.tagline}</p>
-      </div>
-
-      {/* Body: two columns */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 0 }}>
-        {/* LEFT */}
-        <div style={{ padding: "40px 56px", borderRight: `1px solid #ffffff12` }}>
-          {/* About */}
-          <Section label="About" accent={a}>
-            <p style={{ fontSize: 14, lineHeight: 1.8, opacity: 0.7 }}>{d.about}</p>
-          </Section>
-
-          {/* Experience */}
-          {d.experience.length > 0 && (
-            <Section label="Experience" accent={a}>
-              {d.experience.map((e, i) => (
-                <div key={i} style={{ marginBottom: 28 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                    <span style={{ fontWeight: 700, fontSize: 15 }}>{e.company}</span>
-                    <span style={{ fontSize: 11, opacity: 0.4 }}>{e.period}</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: a, marginTop: 2, marginBottom: 6 }}>{e.role}</div>
-                  <p style={{ fontSize: 13, opacity: 0.6, lineHeight: 1.7 }}>{e.desc}</p>
-                </div>
-              ))}
-            </Section>
-          )}
-
-          {/* Projects */}
-          {d.projects.length > 0 && (
-            <Section label="Selected Work" accent={a}>
-              {d.projects.map((p, i) => (
-                <div key={i} style={{ marginBottom: 24, paddingLeft: 16, borderLeft: `2px solid ${a}30` }}>
-                  <div style={{ fontWeight: 700, fontSize: 15 }}>{p.title}</div>
-                  <p style={{ fontSize: 13, opacity: 0.6, margin: "4px 0 8px", lineHeight: 1.6 }}>{p.desc}</p>
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 999, border: `1px solid ${a}50`, color: a }}>{t}</span>)}
-                  </div>
-                </div>
-              ))}
-            </Section>
-          )}
-        </div>
-
-        {/* RIGHT SIDEBAR */}
-        <div style={{ padding: "40px 40px", background: "#060D08" }}>
-          <Section label="Skills" accent={a}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {d.skills.map((s, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: a, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13, opacity: 0.75 }}>{s}</span>
-                </div>
-              ))}
-            </div>
-          </Section>
-
-          {d.education.length > 0 && (
-            <Section label="Education" accent={a}>
-              {d.education.map((e, i) => (
-                <div key={i} style={{ marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, fontSize: 13 }}>{e.school}</div>
-                  <div style={{ fontSize: 12, opacity: 0.5, marginTop: 2 }}>{e.degree}</div>
-                  <div style={{ fontSize: 11, color: a, marginTop: 2 }}>{e.year}</div>
-                </div>
-              ))}
-            </Section>
-          )}
-
-          {d.achievements.length > 0 && (
-            <Section label="Achievements" accent={a}>
-              {d.achievements.map((ach, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10, alignItems: "flex-start" }}>
-                  <span style={{ color: a, fontSize: 10, marginTop: 3, flexShrink: 0 }}>✦</span>
-                  <span style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.5 }}>{ach}</span>
-                </div>
-              ))}
-            </Section>
-          )}
-
-          {(d.github || d.linkedin) && (
-            <Section label="Links" accent={a}>
-              {d.github && <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 6 }}>⟡ github.com/{d.github}</div>}
-              {d.linkedin && <div style={{ fontSize: 12, opacity: 0.6 }}>⟡ linkedin.com/in/{d.linkedin}</div>}
-            </Section>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Template 2: Editorial ──────────────────────────────── */
-function EditorialTemplate({ d, accent }) {
-  const a = accent || "#E85D3A";
-  return (
-    <div style={{ fontFamily: "'Cormorant Garamond', serif", background: "#FAFAF7", color: "#1A1A1A", minHeight: "100%" }}>
-      {/* Big Hero */}
-      <div style={{ padding: "64px 64px 48px", position: "relative" }}>
-        <div style={{ position: "absolute", top: 0, right: 0, width: 200, height: 200, background: a, opacity: 0.06 }} />
-        <div style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 16 }}>Resume — {new Date().getFullYear()}</div>
-        <h1 style={{ fontSize: 72, fontWeight: 900, lineHeight: 1, margin: 0, letterSpacing: "-3px" }}>{d.name}</h1>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12 }}>
-          <div style={{ height: 2, width: 48, background: a }} />
-          <p style={{ fontSize: 20, fontStyle: "italic", opacity: 0.7, margin: 0 }}>{d.title}</p>
-        </div>
-        <p style={{ fontSize: 22, lineHeight: 1.5, maxWidth: 520, marginTop: 24, fontStyle: "italic", opacity: 0.75 }}>{d.tagline}</p>
-
-        <div style={{ display: "flex", gap: 32, marginTop: 32, fontSize: 13, fontFamily: "'Montserrat',sans-serif", opacity: 0.5 }}>
-          {[d.email, d.location, d.phone].filter(Boolean).map((v, i) => <span key={i}>{v}</span>)}
-        </div>
-      </div>
-
-      {/* Rule */}
-      <div style={{ margin: "0 64px", height: 1, background: "#1A1A1A15" }} />
-
-      {/* 3-col body */}
-      <div style={{ padding: "48px 64px", display: "grid", gridTemplateColumns: "1fr 1fr 280px", gap: 48 }}>
-        {/* COL 1 */}
-        <div>
-          <EditSection label="About" accent={a}>
-            <p style={{ fontSize: 15, lineHeight: 1.8, opacity: 0.75 }}>{d.about}</p>
-          </EditSection>
-          {d.education.length > 0 && (
-            <EditSection label="Education" accent={a}>
-              {d.education.map((e, i) => (
-                <div key={i} style={{ marginBottom: 16 }}>
-                  <div style={{ fontWeight: 700, fontSize: 16 }}>{e.school}</div>
-                  <div style={{ fontSize: 14, fontStyle: "italic", opacity: 0.6 }}>{e.degree} · {e.year}</div>
-                </div>
-              ))}
-            </EditSection>
-          )}
-        </div>
-
-        {/* COL 2 */}
-        <div>
-          {d.experience.length > 0 && (
-            <EditSection label="Experience" accent={a}>
-              {d.experience.map((e, i) => (
-                <div key={i} style={{ marginBottom: 28 }}>
-                  <div style={{ fontWeight: 700, fontSize: 16 }}>{e.role}</div>
-                  <div style={{ fontSize: 13, color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 6 }}>{e.company} · {e.period}</div>
-                  <p style={{ fontSize: 14, opacity: 0.65, lineHeight: 1.7 }}>{e.desc}</p>
-                </div>
-              ))}
-            </EditSection>
-          )}
-
-          {d.projects.length > 0 && (
-            <EditSection label="Projects" accent={a}>
-              {d.projects.map((p, i) => (
-                <div key={i} style={{ marginBottom: 22 }}>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                    <span style={{ fontSize: 13, fontFamily: "'Montserrat',sans-serif", color: a }}>0{i+1}</span>
-                    <span style={{ fontWeight: 700, fontSize: 16 }}>{p.title}</span>
-                  </div>
-                  <p style={{ fontSize: 13, opacity: 0.65, lineHeight: 1.6, marginTop: 4 }}>{p.desc}</p>
-                  <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
-                    {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, fontFamily: "'Montserrat',sans-serif", opacity: 0.5, borderBottom: `1px solid #1A1A1A30` }}>{t}</span>)}
-                  </div>
-                </div>
-              ))}
-            </EditSection>
-          )}
-        </div>
-
-        {/* COL 3 SIDEBAR */}
-        <div style={{ borderLeft: `1px solid #1A1A1A12`, paddingLeft: 32 }}>
-          <EditSection label="Skills" accent={a}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {d.skills.map((s, i) => (
-                <span key={i} style={{ fontSize: 12, fontFamily: "'Montserrat',sans-serif", padding: "4px 10px", border: `1px solid ${a}`, borderRadius: 2, color: a }}>{s}</span>
-              ))}
-            </div>
-          </EditSection>
-
-          {d.achievements.length > 0 && (
-            <EditSection label="Recognition" accent={a}>
-              {d.achievements.map((ach, i) => (
-                <div key={i} style={{ fontSize: 13, opacity: 0.7, marginBottom: 10, paddingLeft: 12, borderLeft: `2px solid ${a}` }}>{ach}</div>
-              ))}
-            </EditSection>
-          )}
-
-          <EditSection label="Contact" accent={a}>
-            <div style={{ fontSize: 12, fontFamily: "'Montserrat',sans-serif", lineHeight: 2.2, opacity: 0.6 }}>
-              {d.email && <div>{d.email}</div>}
-              {d.phone && <div>{d.phone}</div>}
-              {d.github && <div>github/{d.github}</div>}
-              {d.linkedin && <div>linkedin/{d.linkedin}</div>}
-            </div>
-          </EditSection>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ── Template 3: Minimal ────────────────────────────────── */
-function MinimalTemplate({ d, accent }) {
-  const a = accent || "#3B5BDB";
-  return (
-    <div style={{ fontFamily: "'DM Mono', monospace", background: "#FFFFFF", color: "#111", minHeight: "100%", padding: "64px" }}>
-      {/* Top: name left, contact right */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 48 }}>
-        <div>
-          <h1 style={{ fontSize: 44, fontWeight: 500, letterSpacing: "-1.5px", margin: 0, lineHeight: 1 }}>{d.name}</h1>
-          <p style={{ fontSize: 13, opacity: 0.45, marginTop: 6, letterSpacing: "0.05em" }}>{d.title}</p>
-        </div>
-        <div style={{ textAlign: "right", fontSize: 11, opacity: 0.4, lineHeight: 2 }}>
-          {[d.email, d.phone, d.location, d.website].filter(Boolean).map((v, i) => <div key={i}>{v}</div>)}
-        </div>
-      </div>
-
-      <div style={{ height: 1, background: "#11111110", marginBottom: 40 }} />
-
-      {/* Tagline */}
-      <p style={{ fontSize: 18, lineHeight: 1.7, maxWidth: 540, marginBottom: 48, opacity: 0.65, fontFamily: "Georgia, serif", fontStyle: "italic" }}>{d.tagline}</p>
-
-      {/* About */}
-      <MinRow label="// about" accent={a}>
-        <p style={{ fontSize: 13, lineHeight: 1.8, opacity: 0.65 }}>{d.about}</p>
-      </MinRow>
-
-      {/* Skills */}
-      <MinRow label="// skills" accent={a}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px" }}>
-          {d.skills.map((s, i) => <span key={i} style={{ fontSize: 12, opacity: 0.6 }}>→ {s}</span>)}
-        </div>
-      </MinRow>
-
-      {/* Experience */}
-      {d.experience.length > 0 && (
-        <MinRow label="// experience" accent={a}>
-          {d.experience.map((e, i) => (
-            <div key={i} style={{ marginBottom: 20 }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ fontWeight: 500, fontSize: 13 }}>{e.company} · {e.role}</span>
-                <span style={{ fontSize: 11, opacity: 0.35 }}>{e.period}</span>
-              </div>
-              <p style={{ fontSize: 12, opacity: 0.55, marginTop: 4, lineHeight: 1.7 }}>{e.desc}</p>
-            </div>
-          ))}
-        </MinRow>
-      )}
-
-      {/* Projects */}
-      {d.projects.length > 0 && (
-        <MinRow label="// projects" accent={a}>
-          {d.projects.map((p, i) => (
-            <div key={i} style={{ marginBottom: 20 }}>
-              <span style={{ fontWeight: 500, fontSize: 13 }}>{p.title}</span>
-              <p style={{ fontSize: 12, opacity: 0.55, marginTop: 3, lineHeight: 1.7 }}>{p.desc}</p>
-              <div style={{ display: "flex", gap: 8, marginTop: 5, flexWrap: "wrap" }}>
-                {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, color: a, opacity: 0.8 }}>[{t}]</span>)}
-              </div>
-            </div>
-          ))}
-        </MinRow>
-      )}
-
-      {/* Education */}
-      {d.education.length > 0 && (
-        <MinRow label="// education" accent={a}>
-          {d.education.map((e, i) => (
-            <div key={i} style={{ fontSize: 13, marginBottom: 8 }}>
-              <span style={{ opacity: 0.65 }}>{e.school}</span>
-              <span style={{ opacity: 0.35 }}> · {e.degree} · {e.year}</span>
-            </div>
-          ))}
-        </MinRow>
-      )}
-
-      {/* Footer */}
-      <div style={{ marginTop: 48, paddingTop: 24, borderTop: "1px solid #11111110", display: "flex", justifyContent: "space-between", fontSize: 11, opacity: 0.35 }}>
-        <span>{d.name}</span>
-        {(d.github || d.linkedin) && (
-          <span>{d.github && `gh/${d.github}`}{d.github && d.linkedin && " · "}{d.linkedin && `li/${d.linkedin}`}</span>
-        )}
-        <span>{new Date().getFullYear()}</span>
-      </div>
-    </div>
-  );
-}
-
-/* ── Template 4: Brutalist ──────────────────────────────── */
-function BrutalistTemplate({ d, accent }) {
-  const a = accent || "#D4A017";
-  return (
-    <div style={{ fontFamily: "'Montserrat', sans-serif", background: "#F5F0E8", color: "#0D0D0D", minHeight: "100%" }}>
-      {/* Massive header */}
-      <div style={{ padding: "56px 56px 40px", borderBottom: "4px solid #0D0D0D" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div>
-            <h1 style={{ fontSize: 68, fontWeight: 900, letterSpacing: "-3px", lineHeight: 1, margin: 0, textTransform: "uppercase" }}>{d.name}</h1>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 10 }}>
-              <div style={{ height: 4, width: 32, background: a }} />
-              <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" }}>{d.title}</span>
-            </div>
-          </div>
-          <div style={{ background: a, padding: "16px 20px", fontWeight: 700, fontSize: 12, lineHeight: 2.2 }}>
-            {[d.email, d.phone, d.location].filter(Boolean).map((v, i) => <div key={i}>{v}</div>)}
-          </div>
-        </div>
-        <p style={{ fontSize: 20, fontWeight: 700, marginTop: 28, maxWidth: 600, lineHeight: 1.4 }}>{d.tagline}</p>
-      </div>
-
-      {/* Grid body */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderBottom: "4px solid #0D0D0D" }}>
-        {/* About */}
-        <BrutBox label="About" accent={a} border="right">
-          <p style={{ fontSize: 14, lineHeight: 1.8, opacity: 0.8 }}>{d.about}</p>
-        </BrutBox>
-
-        {/* Skills */}
-        <BrutBox label="Skills" accent={a}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {d.skills.map((s, i) => (
-              <span key={i} style={{ padding: "4px 12px", background: "#0D0D0D", color: "#F5F0E8", fontSize: 12, fontWeight: 700 }}>{s}</span>
-            ))}
-          </div>
-        </BrutBox>
-      </div>
-
-      {/* Experience */}
-      {d.experience.length > 0 && (
-        <div style={{ borderBottom: "4px solid #0D0D0D" }}>
-          <BrutBox label="Experience" accent={a}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-              {d.experience.map((e, i) => (
-                <div key={i}>
-                  <div style={{ fontWeight: 800, fontSize: 16, textTransform: "uppercase" }}>{e.company}</div>
-                  <div style={{ fontWeight: 600, color: a, fontSize: 13, margin: "4px 0 8px" }}>{e.role} · {e.period}</div>
-                  <p style={{ fontSize: 13, opacity: 0.7, lineHeight: 1.7 }}>{e.desc}</p>
-                </div>
-              ))}
-            </div>
-          </BrutBox>
-        </div>
-      )}
-
-      {/* Projects */}
-      {d.projects.length > 0 && (
-        <div style={{ borderBottom: "4px solid #0D0D0D" }}>
-          <BrutBox label="Projects" accent={a}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
-              {d.projects.map((p, i) => (
-                <div key={i} style={{ border: "2px solid #0D0D0D", padding: 16 }}>
-                  <div style={{ fontWeight: 800, fontSize: 14, textTransform: "uppercase", marginBottom: 8 }}>{p.title}</div>
-                  <p style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.6, marginBottom: 10 }}>{p.desc}</p>
-                  {p.tags.map((t, j) => <span key={j} style={{ display: "inline-block", fontSize: 10, background: a, padding: "1px 6px", marginRight: 4, marginBottom: 4, fontWeight: 700 }}>{t}</span>)}
-                </div>
-              ))}
-            </div>
-          </BrutBox>
-        </div>
-      )}
-
-      {/* Education + Achievements */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-        {d.education.length > 0 && (
-          <BrutBox label="Education" accent={a} border="right">
-            {d.education.map((e, i) => (
-              <div key={i} style={{ marginBottom: 12 }}>
-                <div style={{ fontWeight: 800, fontSize: 14 }}>{e.school}</div>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>{e.degree} · {e.year}</div>
-              </div>
-            ))}
-          </BrutBox>
-        )}
-        {d.achievements.length > 0 && (
-          <BrutBox label="Achievements" accent={a}>
-            {d.achievements.map((ach, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-                <span style={{ color: a, fontWeight: 900 }}>★</span>
-                <span style={{ fontSize: 13, opacity: 0.75 }}>{ach}</span>
-              </div>
-            ))}
-          </BrutBox>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ── Shared sub-components ───────────────────────────────── */
 function Section({ label, accent, children }) {
   return (
     <div style={{ marginBottom: 32 }}>
@@ -529,6 +117,339 @@ function BrutBox({ label, accent, border, children }) {
   );
 }
 
+function ExecutiveTemplate({ d, accent }) {
+  const a = accent || "#2E9E6E";
+  return (
+    <div style={{ fontFamily: "'Montserrat', sans-serif", background: "#0A0F0D", color: "#fff", minHeight: "100%" }}>
+      <div style={{ padding: "56px 56px 40px", borderBottom: `1px solid #ffffff12` }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div>
+            <div style={{ width: 40, height: 3, background: a, marginBottom: 20 }} />
+            <h1 style={{ fontSize: 52, fontWeight: 900, letterSpacing: "-2px", lineHeight: 1.05, margin: 0 }}>{d.name}</h1>
+            <p style={{ fontSize: 13, letterSpacing: "0.25em", textTransform: "uppercase", opacity: 0.5, marginTop: 10 }}>{d.title}</p>
+          </div>
+          <div style={{ textAlign: "right", fontSize: 12, opacity: 0.5, lineHeight: 2.2 }}>
+            <div>{d.email}</div><div>{d.phone}</div><div>{d.location}</div>{d.website && <div>{d.website}</div>}
+          </div>
+        </div>
+        <p style={{ fontSize: 18, opacity: 0.65, marginTop: 28, maxWidth: 500, lineHeight: 1.6 }}>{d.tagline}</p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 0 }}>
+        <div style={{ padding: "40px 56px", borderRight: `1px solid #ffffff12` }}>
+          <Section label="About" accent={a}><p style={{ fontSize: 14, lineHeight: 1.8, opacity: 0.7 }}>{d.about}</p></Section>
+          {d.experience.length > 0 && (
+            <Section label="Experience" accent={a}>
+              {d.experience.map((e, i) => (
+                <div key={i} style={{ marginBottom: 28 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <span style={{ fontWeight: 700, fontSize: 15 }}>{e.company}</span>
+                    <span style={{ fontSize: 11, opacity: 0.4 }}>{e.period}</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: a, marginTop: 2, marginBottom: 6 }}>{e.role}</div>
+                  <p style={{ fontSize: 13, opacity: 0.6, lineHeight: 1.7 }}>{e.desc}</p>
+                </div>
+              ))}
+            </Section>
+          )}
+          {d.projects.length > 0 && (
+            <Section label="Selected Work" accent={a}>
+              {d.projects.map((p, i) => (
+                <div key={i} style={{ marginBottom: 24, paddingLeft: 16, borderLeft: `2px solid ${a}30` }}>
+                  <div style={{ fontWeight: 700, fontSize: 15 }}>{p.title}</div>
+                  <p style={{ fontSize: 13, opacity: 0.6, margin: "4px 0 8px", lineHeight: 1.6 }}>{p.desc}</p>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                    {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 999, border: `1px solid ${a}50`, color: a }}>{t}</span>)}
+                  </div>
+                </div>
+              ))}
+            </Section>
+          )}
+        </div>
+        <div style={{ padding: "40px 40px", background: "#060D08" }}>
+          <Section label="Skills" accent={a}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {d.skills.map((s, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: a, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, opacity: 0.75 }}>{s}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+          {d.education.length > 0 && (
+            <Section label="Education" accent={a}>
+              {d.education.map((e, i) => (
+                <div key={i} style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 700, fontSize: 13 }}>{e.school}</div>
+                  <div style={{ fontSize: 12, opacity: 0.5, marginTop: 2 }}>{e.degree}</div>
+                  <div style={{ fontSize: 11, color: a, marginTop: 2 }}>{e.year}</div>
+                </div>
+              ))}
+            </Section>
+          )}
+          {d.achievements.length > 0 && (
+            <Section label="Achievements" accent={a}>
+              {d.achievements.map((ach, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10, alignItems: "flex-start" }}>
+                  <span style={{ color: a, fontSize: 10, marginTop: 3, flexShrink: 0 }}>✦</span>
+                  <span style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.5 }}>{ach}</span>
+                </div>
+              ))}
+            </Section>
+          )}
+          {(d.github || d.linkedin) && (
+            <Section label="Links" accent={a}>
+              {d.github   && <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 6 }}>⟡ github.com/{d.github}</div>}
+              {d.linkedin && <div style={{ fontSize: 12, opacity: 0.6 }}>⟡ linkedin.com/in/{d.linkedin}</div>}
+            </Section>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EditorialTemplate({ d, accent }) {
+  const a = accent || "#E85D3A";
+  return (
+    <div style={{ fontFamily: "'Cormorant Garamond', serif", background: "#FAFAF7", color: "#1A1A1A", minHeight: "100%" }}>
+      <div style={{ padding: "64px 64px 48px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 0, right: 0, width: 200, height: 200, background: a, opacity: 0.06 }} />
+        <div style={{ fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 16 }}>Resume — {new Date().getFullYear()}</div>
+        <h1 style={{ fontSize: 72, fontWeight: 900, lineHeight: 1, margin: 0, letterSpacing: "-3px" }}>{d.name}</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 12 }}>
+          <div style={{ height: 2, width: 48, background: a }} />
+          <p style={{ fontSize: 20, fontStyle: "italic", opacity: 0.7, margin: 0 }}>{d.title}</p>
+        </div>
+        <p style={{ fontSize: 22, lineHeight: 1.5, maxWidth: 520, marginTop: 24, fontStyle: "italic", opacity: 0.75 }}>{d.tagline}</p>
+        <div style={{ display: "flex", gap: 32, marginTop: 32, fontSize: 13, fontFamily: "'Montserrat',sans-serif", opacity: 0.5 }}>
+          {[d.email, d.location, d.phone].filter(Boolean).map((v, i) => <span key={i}>{v}</span>)}
+        </div>
+      </div>
+      <div style={{ margin: "0 64px", height: 1, background: "#1A1A1A15" }} />
+      <div style={{ padding: "48px 64px", display: "grid", gridTemplateColumns: "1fr 1fr 280px", gap: 48 }}>
+        <div>
+          <EditSection label="About" accent={a}><p style={{ fontSize: 15, lineHeight: 1.8, opacity: 0.75 }}>{d.about}</p></EditSection>
+          {d.education.length > 0 && (
+            <EditSection label="Education" accent={a}>
+              {d.education.map((e, i) => (
+                <div key={i} style={{ marginBottom: 16 }}>
+                  <div style={{ fontWeight: 700, fontSize: 16 }}>{e.school}</div>
+                  <div style={{ fontSize: 14, fontStyle: "italic", opacity: 0.6 }}>{e.degree} · {e.year}</div>
+                </div>
+              ))}
+            </EditSection>
+          )}
+        </div>
+        <div>
+          {d.experience.length > 0 && (
+            <EditSection label="Experience" accent={a}>
+              {d.experience.map((e, i) => (
+                <div key={i} style={{ marginBottom: 28 }}>
+                  <div style={{ fontWeight: 700, fontSize: 16 }}>{e.role}</div>
+                  <div style={{ fontSize: 13, color: a, fontFamily: "'Montserrat',sans-serif", marginBottom: 6 }}>{e.company} · {e.period}</div>
+                  <p style={{ fontSize: 14, opacity: 0.65, lineHeight: 1.7 }}>{e.desc}</p>
+                </div>
+              ))}
+            </EditSection>
+          )}
+          {d.projects.length > 0 && (
+            <EditSection label="Projects" accent={a}>
+              {d.projects.map((p, i) => (
+                <div key={i} style={{ marginBottom: 22 }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                    <span style={{ fontSize: 13, fontFamily: "'Montserrat',sans-serif", color: a }}>0{i+1}</span>
+                    <span style={{ fontWeight: 700, fontSize: 16 }}>{p.title}</span>
+                  </div>
+                  <p style={{ fontSize: 13, opacity: 0.65, lineHeight: 1.6, marginTop: 4 }}>{p.desc}</p>
+                  <div style={{ display: "flex", gap: 6, marginTop: 6, flexWrap: "wrap" }}>
+                    {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, fontFamily: "'Montserrat',sans-serif", opacity: 0.5, borderBottom: `1px solid #1A1A1A30` }}>{t}</span>)}
+                  </div>
+                </div>
+              ))}
+            </EditSection>
+          )}
+        </div>
+        <div style={{ borderLeft: `1px solid #1A1A1A12`, paddingLeft: 32 }}>
+          <EditSection label="Skills" accent={a}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {d.skills.map((s, i) => (
+                <span key={i} style={{ fontSize: 12, fontFamily: "'Montserrat',sans-serif", padding: "4px 10px", border: `1px solid ${a}`, borderRadius: 2, color: a }}>{s}</span>
+              ))}
+            </div>
+          </EditSection>
+          {d.achievements.length > 0 && (
+            <EditSection label="Recognition" accent={a}>
+              {d.achievements.map((ach, i) => (
+                <div key={i} style={{ fontSize: 13, opacity: 0.7, marginBottom: 10, paddingLeft: 12, borderLeft: `2px solid ${a}` }}>{ach}</div>
+              ))}
+            </EditSection>
+          )}
+          <EditSection label="Contact" accent={a}>
+            <div style={{ fontSize: 12, fontFamily: "'Montserrat',sans-serif", lineHeight: 2.2, opacity: 0.6 }}>
+              {d.email    && <div>{d.email}</div>}
+              {d.phone    && <div>{d.phone}</div>}
+              {d.github   && <div>github/{d.github}</div>}
+              {d.linkedin && <div>linkedin/{d.linkedin}</div>}
+            </div>
+          </EditSection>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MinimalTemplate({ d, accent }) {
+  const a = accent || "#3B5BDB";
+  return (
+    <div style={{ fontFamily: "'DM Mono', monospace", background: "#FFFFFF", color: "#111", minHeight: "100%", padding: "64px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 48 }}>
+        <div>
+          <h1 style={{ fontSize: 44, fontWeight: 500, letterSpacing: "-1.5px", margin: 0, lineHeight: 1 }}>{d.name}</h1>
+          <p style={{ fontSize: 13, opacity: 0.45, marginTop: 6, letterSpacing: "0.05em" }}>{d.title}</p>
+        </div>
+        <div style={{ textAlign: "right", fontSize: 11, opacity: 0.4, lineHeight: 2 }}>
+          {[d.email, d.phone, d.location, d.website].filter(Boolean).map((v, i) => <div key={i}>{v}</div>)}
+        </div>
+      </div>
+      <div style={{ height: 1, background: "#11111110", marginBottom: 40 }} />
+      <p style={{ fontSize: 18, lineHeight: 1.7, maxWidth: 540, marginBottom: 48, opacity: 0.65, fontFamily: "Georgia, serif", fontStyle: "italic" }}>{d.tagline}</p>
+      <MinRow label="// about" accent={a}><p style={{ fontSize: 13, lineHeight: 1.8, opacity: 0.65 }}>{d.about}</p></MinRow>
+      <MinRow label="// skills" accent={a}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px" }}>
+          {d.skills.map((s, i) => <span key={i} style={{ fontSize: 12, opacity: 0.6 }}>→ {s}</span>)}
+        </div>
+      </MinRow>
+      {d.experience.length > 0 && (
+        <MinRow label="// experience" accent={a}>
+          {d.experience.map((e, i) => (
+            <div key={i} style={{ marginBottom: 20 }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ fontWeight: 500, fontSize: 13 }}>{e.company} · {e.role}</span>
+                <span style={{ fontSize: 11, opacity: 0.35 }}>{e.period}</span>
+              </div>
+              <p style={{ fontSize: 12, opacity: 0.55, marginTop: 4, lineHeight: 1.7 }}>{e.desc}</p>
+            </div>
+          ))}
+        </MinRow>
+      )}
+      {d.projects.length > 0 && (
+        <MinRow label="// projects" accent={a}>
+          {d.projects.map((p, i) => (
+            <div key={i} style={{ marginBottom: 20 }}>
+              <span style={{ fontWeight: 500, fontSize: 13 }}>{p.title}</span>
+              <p style={{ fontSize: 12, opacity: 0.55, marginTop: 3, lineHeight: 1.7 }}>{p.desc}</p>
+              <div style={{ display: "flex", gap: 8, marginTop: 5, flexWrap: "wrap" }}>
+                {p.tags.map((t, j) => <span key={j} style={{ fontSize: 10, color: a, opacity: 0.8 }}>[{t}]</span>)}
+              </div>
+            </div>
+          ))}
+        </MinRow>
+      )}
+      {d.education.length > 0 && (
+        <MinRow label="// education" accent={a}>
+          {d.education.map((e, i) => (
+            <div key={i} style={{ fontSize: 13, marginBottom: 8 }}>
+              <span style={{ opacity: 0.65 }}>{e.school}</span>
+              <span style={{ opacity: 0.35 }}> · {e.degree} · {e.year}</span>
+            </div>
+          ))}
+        </MinRow>
+      )}
+      <div style={{ marginTop: 48, paddingTop: 24, borderTop: "1px solid #11111110", display: "flex", justifyContent: "space-between", fontSize: 11, opacity: 0.35 }}>
+        <span>{d.name}</span>
+        {(d.github || d.linkedin) && (
+          <span>{d.github && `gh/${d.github}`}{d.github && d.linkedin && " · "}{d.linkedin && `li/${d.linkedin}`}</span>
+        )}
+        <span>{new Date().getFullYear()}</span>
+      </div>
+    </div>
+  );
+}
+
+function BrutalistTemplate({ d, accent }) {
+  const a = accent || "#D4A017";
+  return (
+    <div style={{ fontFamily: "'Montserrat', sans-serif", background: "#F5F0E8", color: "#0D0D0D", minHeight: "100%" }}>
+      <div style={{ padding: "56px 56px 40px", borderBottom: "4px solid #0D0D0D" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h1 style={{ fontSize: 68, fontWeight: 900, letterSpacing: "-3px", lineHeight: 1, margin: 0, textTransform: "uppercase" }}>{d.name}</h1>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 10 }}>
+              <div style={{ height: 4, width: 32, background: a }} />
+              <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase" }}>{d.title}</span>
+            </div>
+          </div>
+          <div style={{ background: a, padding: "16px 20px", fontWeight: 700, fontSize: 12, lineHeight: 2.2 }}>
+            {[d.email, d.phone, d.location].filter(Boolean).map((v, i) => <div key={i}>{v}</div>)}
+          </div>
+        </div>
+        <p style={{ fontSize: 20, fontWeight: 700, marginTop: 28, maxWidth: 600, lineHeight: 1.4 }}>{d.tagline}</p>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderBottom: "4px solid #0D0D0D" }}>
+        <BrutBox label="About" accent={a} border="right"><p style={{ fontSize: 14, lineHeight: 1.8, opacity: 0.8 }}>{d.about}</p></BrutBox>
+        <BrutBox label="Skills" accent={a}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {d.skills.map((s, i) => <span key={i} style={{ padding: "4px 12px", background: "#0D0D0D", color: "#F5F0E8", fontSize: 12, fontWeight: 700 }}>{s}</span>)}
+          </div>
+        </BrutBox>
+      </div>
+      {d.experience.length > 0 && (
+        <div style={{ borderBottom: "4px solid #0D0D0D" }}>
+          <BrutBox label="Experience" accent={a}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+              {d.experience.map((e, i) => (
+                <div key={i}>
+                  <div style={{ fontWeight: 800, fontSize: 16, textTransform: "uppercase" }}>{e.company}</div>
+                  <div style={{ fontWeight: 600, color: a, fontSize: 13, margin: "4px 0 8px" }}>{e.role} · {e.period}</div>
+                  <p style={{ fontSize: 13, opacity: 0.7, lineHeight: 1.7 }}>{e.desc}</p>
+                </div>
+              ))}
+            </div>
+          </BrutBox>
+        </div>
+      )}
+      {d.projects.length > 0 && (
+        <div style={{ borderBottom: "4px solid #0D0D0D" }}>
+          <BrutBox label="Projects" accent={a}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
+              {d.projects.map((p, i) => (
+                <div key={i} style={{ border: "2px solid #0D0D0D", padding: 16 }}>
+                  <div style={{ fontWeight: 800, fontSize: 14, textTransform: "uppercase", marginBottom: 8 }}>{p.title}</div>
+                  <p style={{ fontSize: 12, opacity: 0.7, lineHeight: 1.6, marginBottom: 10 }}>{p.desc}</p>
+                  {p.tags.map((t, j) => <span key={j} style={{ display: "inline-block", fontSize: 10, background: a, padding: "1px 6px", marginRight: 4, marginBottom: 4, fontWeight: 700 }}>{t}</span>)}
+                </div>
+              ))}
+            </div>
+          </BrutBox>
+        </div>
+      )}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+        {d.education.length > 0 && (
+          <BrutBox label="Education" accent={a} border="right">
+            {d.education.map((e, i) => (
+              <div key={i} style={{ marginBottom: 12 }}>
+                <div style={{ fontWeight: 800, fontSize: 14 }}>{e.school}</div>
+                <div style={{ fontSize: 12, opacity: 0.6 }}>{e.degree} · {e.year}</div>
+              </div>
+            ))}
+          </BrutBox>
+        )}
+        {d.achievements.length > 0 && (
+          <BrutBox label="Achievements" accent={a}>
+            {d.achievements.map((ach, i) => (
+              <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+                <span style={{ color: a, fontWeight: 900 }}>★</span>
+                <span style={{ fontSize: 13, opacity: 0.75 }}>{ach}</span>
+              </div>
+            ))}
+          </BrutBox>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ════════════════════════════════════════════════════════
    FORM FIELDS
 ════════════════════════════════════════════════════════ */
@@ -560,21 +481,21 @@ function StepBasics({ data, setData }) {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Full Name" value={data.name} onChange={set("name")} />
-        <Field label="Job Title" value={data.title} onChange={set("title")} />
+        <Field label="Full Name"  value={data.name}  onChange={set("name")} />
+        <Field label="Job Title"  value={data.title} onChange={set("title")} />
       </div>
       <TextAreaField label="Tagline / Headline" value={data.tagline} onChange={set("tagline")} rows={2} />
-      <TextAreaField label="About Me" value={data.about} onChange={set("about")} rows={4} />
+      <TextAreaField label="About Me"           value={data.about}   onChange={set("about")}   rows={4} />
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Email" value={data.email} onChange={set("email")} type="email" />
-        <Field label="Phone" value={data.phone} onChange={set("phone")} />
+        <Field label="Email"    value={data.email}    onChange={set("email")}    type="email" />
+        <Field label="Phone"    value={data.phone}    onChange={set("phone")} />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Location" value={data.location} onChange={set("location")} />
-        <Field label="Website" value={data.website} onChange={set("website")} />
+        <Field label="Website"  value={data.website}  onChange={set("website")} />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="GitHub Username" value={data.github} onChange={set("github")} />
+        <Field label="GitHub Username"   value={data.github}   onChange={set("github")} />
         <Field label="LinkedIn Username" value={data.linkedin} onChange={set("linkedin")} />
       </div>
       <div>
@@ -592,10 +513,7 @@ function StepBasics({ data, setData }) {
 function StepSkills({ data, setData }) {
   const [newSkill, setNewSkill] = useState("");
   const add = () => {
-    if (newSkill.trim()) {
-      setData(d => ({ ...d, skills: [...d.skills, newSkill.trim()] }));
-      setNewSkill("");
-    }
+    if (newSkill.trim()) { setData(d => ({ ...d, skills: [...d.skills, newSkill.trim()] })); setNewSkill(""); }
   };
   const remove = (i) => setData(d => ({ ...d, skills: d.skills.filter((_, idx) => idx !== i) }));
   return (
@@ -613,9 +531,7 @@ function StepSkills({ data, setData }) {
         <div className="flex gap-2">
           <input className={inputCls} value={newSkill} onChange={e => setNewSkill(e.target.value)}
             onKeyDown={e => e.key === "Enter" && add()} placeholder="Type a skill and press Enter" />
-          <button onClick={add} className="px-4 py-2 bg-emerald-500 text-white rounded-lg text-sm font-semibold hover:bg-emerald-600 transition-colors">
-            <Plus size={16} />
-          </button>
+          <button onClick={add} className="px-4 py-2 bg-emerald-500 text-white rounded-lg text-sm font-semibold hover:bg-emerald-600 transition-colors"><Plus size={16} /></button>
         </div>
       </div>
       <div>
@@ -640,11 +556,8 @@ function StepSkills({ data, setData }) {
 }
 
 function StepExperience({ data, setData }) {
-  const update = (i, k, v) => {
-    const exp = [...data.experience]; exp[i] = { ...exp[i], [k]: v };
-    setData(d => ({ ...d, experience: exp }));
-  };
-  const add = () => setData(d => ({ ...d, experience: [...d.experience, { company: "", role: "", period: "", desc: "" }] }));
+  const update = (i, k, v) => { const exp = [...data.experience]; exp[i] = { ...exp[i], [k]: v }; setData(d => ({ ...d, experience: exp })); };
+  const add    = () => setData(d => ({ ...d, experience: [...d.experience, { company: "", role: "", period: "", desc: "" }] }));
   const remove = (i) => setData(d => ({ ...d, experience: d.experience.filter((_, idx) => idx !== i) }));
   return (
     <div className="space-y-5">
@@ -655,8 +568,8 @@ function StepExperience({ data, setData }) {
             <button onClick={() => remove(i)} className="text-slate-300 hover:text-red-400"><Trash2 size={14} /></button>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Company" value={e.company} onChange={v => update(i, "company", v)} />
-            <Field label="Role / Title" value={e.role} onChange={v => update(i, "role", v)} />
+            <Field label="Company"    value={e.company} onChange={v => update(i, "company", v)} />
+            <Field label="Role / Title" value={e.role}  onChange={v => update(i, "role",    v)} />
           </div>
           <Field label="Period (e.g. 2021 – Present)" value={e.period} onChange={v => update(i, "period", v)} />
           <TextAreaField label="Description" value={e.desc} onChange={v => update(i, "desc", v)} rows={2} />
@@ -670,23 +583,11 @@ function StepExperience({ data, setData }) {
 }
 
 function StepProjects({ data, setData }) {
-  const update = (i, k, v) => {
-    const p = [...data.projects]; p[i] = { ...p[i], [k]: v };
-    setData(d => ({ ...d, projects: p }));
-  };
-  const updateTag = (pi, ti, v) => {
-    const p = [...data.projects]; p[pi].tags[ti] = v;
-    setData(d => ({ ...d, projects: p }));
-  };
-  const addTag = (pi) => {
-    const p = [...data.projects]; p[pi].tags = [...p[pi].tags, ""];
-    setData(d => ({ ...d, projects: p }));
-  };
-  const removeTag = (pi, ti) => {
-    const p = [...data.projects]; p[pi].tags = p[pi].tags.filter((_, i) => i !== ti);
-    setData(d => ({ ...d, projects: p }));
-  };
-  const add = () => setData(d => ({ ...d, projects: [...d.projects, { title: "", desc: "", tags: [], link: "" }] }));
+  const update    = (i, k, v)    => { const p = [...data.projects]; p[i] = { ...p[i], [k]: v }; setData(d => ({ ...d, projects: p })); };
+  const updateTag = (pi, ti, v)  => { const p = [...data.projects]; p[pi].tags[ti] = v; setData(d => ({ ...d, projects: p })); };
+  const addTag    = (pi)         => { const p = [...data.projects]; p[pi].tags = [...p[pi].tags, ""]; setData(d => ({ ...d, projects: p })); };
+  const removeTag = (pi, ti)     => { const p = [...data.projects]; p[pi].tags = p[pi].tags.filter((_, i) => i !== ti); setData(d => ({ ...d, projects: p })); };
+  const add    = () => setData(d => ({ ...d, projects: [...d.projects, { title: "", desc: "", tags: [], link: "" }] }));
   const remove = (i) => setData(d => ({ ...d, projects: d.projects.filter((_, idx) => idx !== i) }));
   return (
     <div className="space-y-5">
@@ -698,7 +599,7 @@ function StepProjects({ data, setData }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Project Title" value={p.title} onChange={v => update(i, "title", v)} />
-            <Field label="Live Link" value={p.link} onChange={v => update(i, "link", v)} />
+            <Field label="Live Link"     value={p.link}  onChange={v => update(i, "link",  v)} />
           </div>
           <TextAreaField label="Description" value={p.desc} onChange={v => update(i, "desc", v)} rows={2} />
           <div>
@@ -723,11 +624,8 @@ function StepProjects({ data, setData }) {
 }
 
 function StepEducation({ data, setData }) {
-  const update = (i, k, v) => {
-    const e = [...data.education]; e[i] = { ...e[i], [k]: v };
-    setData(d => ({ ...d, education: e }));
-  };
-  const add = () => setData(d => ({ ...d, education: [...d.education, { school: "", degree: "", year: "" }] }));
+  const update = (i, k, v) => { const e = [...data.education]; e[i] = { ...e[i], [k]: v }; setData(d => ({ ...d, education: e })); };
+  const add    = () => setData(d => ({ ...d, education: [...d.education, { school: "", degree: "", year: "" }] }));
   const remove = (i) => setData(d => ({ ...d, education: d.education.filter((_, idx) => idx !== i) }));
   return (
     <div className="space-y-5">
@@ -740,7 +638,7 @@ function StepEducation({ data, setData }) {
           <Field label="School / University" value={e.school} onChange={v => update(i, "school", v)} />
           <div className="grid grid-cols-2 gap-3">
             <Field label="Degree / Program" value={e.degree} onChange={v => update(i, "degree", v)} />
-            <Field label="Year" value={e.year} onChange={v => update(i, "year", v)} />
+            <Field label="Year"             value={e.year}   onChange={v => update(i, "year",   v)} />
           </div>
         </div>
       ))}
@@ -752,26 +650,24 @@ function StepEducation({ data, setData }) {
 }
 
 /* ════════════════════════════════════════════════════════
-   TEMPLATE PICKER SCREEN
+   TEMPLATE PICKER
 ════════════════════════════════════════════════════════ */
 function TemplatePicker({ onSelect }) {
   const [hovered, setHovered] = useState(null);
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16"
       style={{ background: "linear-gradient(135deg, #0A0F0D 0%, #0d2720 100%)", fontFamily: "'Montserrat', sans-serif" }}>
-      {/* Header */}
       <div className="text-center mb-14">
         <div className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6"
           style={{ background: "#2E9E6E20", color: "#2E9E6E", border: "1px solid #2E9E6E40" }}>
           Resume Builder
         </div>
         <h1 className="text-5xl md:text-6xl font-black text-white leading-tight mb-4" style={{ letterSpacing: "-2px" }}>
-          Choose Your<br /><span style={{ background: "linear-gradient(90deg,#2E9E6E,#F5A623)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Template</span>
+          Choose Your<br />
+          <span style={{ background: "linear-gradient(90deg,#2E9E6E,#F5A623)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Template</span>
         </h1>
         <p className="text-base" style={{ color: "#7ab8a8" }}>Pick a style that represents you. You can customize everything next.</p>
       </div>
-
-      {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full">
         {TEMPLATES.map((t) => (
           <motion.div key={t.id}
@@ -781,9 +677,7 @@ function TemplatePicker({ onSelect }) {
             onClick={() => onSelect(t.id)}
             className="cursor-pointer rounded-2xl overflow-hidden border transition-all duration-300"
             style={{ border: hovered === t.id ? `2px solid ${t.preview.accent}` : "2px solid #ffffff10", background: "#111a16" }}>
-            {/* Preview swatch */}
             <div className="h-36 relative overflow-hidden" style={{ background: t.preview.bg }}>
-              {/* Mini layout mockup */}
               <div style={{ padding: 16 }}>
                 <div style={{ width: 40, height: 4, background: t.preview.accent, borderRadius: 2, marginBottom: 8 }} />
                 <div style={{ width: "70%", height: 10, background: t.preview.text, opacity: 0.6, borderRadius: 2, marginBottom: 6 }} />
@@ -801,7 +695,6 @@ function TemplatePicker({ onSelect }) {
                 </div>
               )}
             </div>
-            {/* Info */}
             <div className="p-4">
               <div className="flex items-center gap-2 mb-1">
                 <span style={{ color: t.preview.accent }}>{t.icon}</span>
@@ -817,16 +710,86 @@ function TemplatePicker({ onSelect }) {
 }
 
 /* ════════════════════════════════════════════════════════
+   SAVE STATUS BADGE
+════════════════════════════════════════════════════════ */
+function SaveStatus({ status }) {
+  // status: "idle" | "saving" | "saved" | "error"
+  const map = {
+    idle:   { icon: <Cloud size={13} />,          text: "Auto-save on",  cls: "text-slate-400" },
+    saving: { icon: <Loader2 size={13} className="animate-spin" />, text: "Saving…", cls: "text-emerald-500" },
+    saved:  { icon: <Check size={13} />,           text: "Saved",        cls: "text-emerald-500" },
+    error:  { icon: <CloudOff size={13} />,        text: "Save failed",  cls: "text-red-400" },
+  };
+  const { icon, text, cls } = map[status] || map.idle;
+  return (
+    <div className={`flex items-center gap-1.5 text-xs font-semibold ${cls}`}>
+      {icon} {text}
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════════════
    MAIN EDITOR
 ════════════════════════════════════════════════════════ */
 function Editor({ templateId, onBack }) {
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState({ ...DEFAULT_DATA });
+  const [step,        setStep]        = useState(0);
+  const [data,        setData]        = useState({ ...DEFAULT_DATA, templateId });
   const [showPreview, setShowPreview] = useState(true);
-  const printRef = useRef(null);
+  const [saveStatus,  setSaveStatus]  = useState("idle"); // idle | saving | saved | error
+  const [loading,     setLoading]     = useState(true);
+  const printRef   = useRef(null);
+  const saveTimer  = useRef(null);
 
   const template = TEMPLATES.find(t => t.id === templateId);
 
+  /* ── Load existing resume from backend on mount ── */
+  useEffect(() => {
+    fetch(`${API}/resumes/session/${SESSION_ID}`)
+      .then(r => r.json())
+      .then(saved => {
+        if (saved && saved._id) {
+          // Merge saved data, keep the templateId chosen on this visit
+          setData(prev => ({ ...prev, ...saved, templateId }));
+        }
+      })
+      .catch(() => {/* use default data if offline */})
+      .finally(() => setLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ── Auto-save: debounce 1.5 s after any data change ── */
+  const saveToBackend = useCallback(async (payload) => {
+    setSaveStatus("saving");
+    try {
+      const res = await fetch(`${API}/resumes/session/${SESSION_ID}`, {
+        method:  "PUT",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Save failed");
+      setSaveStatus("saved");
+      // Reset to idle after 2 s
+      setTimeout(() => setSaveStatus("idle"), 2000);
+    } catch {
+      setSaveStatus("error");
+      setTimeout(() => setSaveStatus("idle"), 3000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loading) return; // don't auto-save on first load
+    clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => saveToBackend(data), 1500);
+    return () => clearTimeout(saveTimer.current);
+  }, [data, loading, saveToBackend]);
+
+  /* ── Manual save ── */
+  const handleManualSave = () => {
+    clearTimeout(saveTimer.current);
+    saveToBackend(data);
+  };
+
+  /* ── PDF export ── */
   const handlePrint = () => {
     const printContent = printRef.current?.innerHTML;
     if (!printContent) return;
@@ -852,19 +815,30 @@ function Editor({ templateId, onBack }) {
     switch (templateId) {
       case "executive": return <ExecutiveTemplate {...props} />;
       case "editorial": return <EditorialTemplate {...props} />;
-      case "minimal": return <MinimalTemplate {...props} />;
+      case "minimal":   return <MinimalTemplate   {...props} />;
       case "brutalist": return <BrutalistTemplate {...props} />;
-      default: return <ExecutiveTemplate {...props} />;
+      default:          return <ExecutiveTemplate {...props} />;
     }
   };
 
   const stepComponents = [
-    <StepBasics data={data} setData={setData} />,
-    <StepSkills data={data} setData={setData} />,
+    <StepBasics     data={data} setData={setData} />,
+    <StepSkills     data={data} setData={setData} />,
     <StepExperience data={data} setData={setData} />,
-    <StepProjects data={data} setData={setData} />,
-    <StepEducation data={data} setData={setData} />,
+    <StepProjects   data={data} setData={setData} />,
+    <StepEducation  data={data} setData={setData} />,
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#F1F4F2" }}>
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 size={32} className="animate-spin text-emerald-500" />
+          <p className="text-sm text-slate-400 font-medium">Loading your resume…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col overflow-hidden" style={{ background: "#F1F4F2", fontFamily: "'Montserrat', sans-serif" }}>
@@ -881,7 +855,12 @@ function Editor({ templateId, onBack }) {
             <span className="text-sm font-bold text-slate-700">{template?.name} Template</span>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <SaveStatus status={saveStatus} />
+          <button onClick={handleManualSave}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-500 hover:text-emerald-700 hover:border-emerald-300 transition-colors">
+            <Save size={13} /> Save Now
+          </button>
           <button onClick={() => setShowPreview(v => !v)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors">
             {showPreview ? <EyeOff size={13} /> : <Eye size={13} />}
@@ -958,8 +937,7 @@ function Editor({ templateId, onBack }) {
                 <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
                 <span className="text-xs text-slate-400 ml-2 font-medium">Live Preview — updates as you type</span>
               </div>
-              <div
-                ref={printRef}
+              <div ref={printRef}
                 className="w-full max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden print:shadow-none print:rounded-none print:max-w-none"
                 style={{ minHeight: 800 }}>
                 {renderTemplate()}
@@ -977,7 +955,6 @@ function Editor({ templateId, onBack }) {
 ════════════════════════════════════════════════════════ */
 export default function ResumeMaker() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
-
   return (
     <AnimatePresence mode="wait">
       {!selectedTemplate ? (

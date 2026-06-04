@@ -7,9 +7,17 @@ const packageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    // Single price for simple use (kept for backward compat)
     price: {
       type: Number,
-      required: true,
+      default: 0,
+    },
+    // Multi-cycle prices matching the UI tabs
+    prices: {
+      Monthly:    { type: Number, default: 0 },
+      Quarterly:  { type: Number, default: 0 },
+      HalfYearly: { type: Number, default: 0 },
+      Yearly:     { type: Number, default: 0 },
     },
     currency: {
       type: String,
@@ -20,7 +28,6 @@ const packageSchema = new mongoose.Schema(
       enum: ["monthly", "yearly", "one-time"],
       default: "monthly",
     },
-    // Displayed after price, e.g. "/ month" or "/- " (leave empty for one-time)
     suffix: {
       type: String,
       default: "",
@@ -30,17 +37,11 @@ const packageSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    features: [
-      {
-        type: String,
-      },
-    ],
-    // Marks this card as "Popular" — renders the orange featured badge
+    features: [{ type: String }],
     featured: {
       type: Boolean,
       default: false,
     },
-    // Optional short badge label e.g. "HOT", "Best Value" (separate from featured)
     badge: {
       type: String,
       default: null,

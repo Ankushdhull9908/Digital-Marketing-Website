@@ -1,4 +1,20 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+
+/* ─── API BASE ────────────────────────────────────────────── */
+const API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://digital-marketing-temp.onrender.com/api";
+
+/* ─── SESSION ID (persisted in localStorage) ─────────────── */
+function getSessionId() {
+  let id = localStorage.getItem("portfolio_session_id");
+  if (!id) {
+    id = "sess_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem("portfolio_session_id", id);
+  }
+  return id;
+}
 
 /* ─── THEMES ─────────────────────────────────────────────── */
 const THEMES = {
@@ -121,7 +137,13 @@ function ImgSlot({ src, set, style = {}, ph = "Upload Image", phIcon = "🖼️"
           <span style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>Change Photo</span>
         </div>
       )}
-      <input ref={r} type="file" accept="image/*" style={{ display: "none" }} onChange={e => { if (e.target.files[0]) set(URL.createObjectURL(e.target.files[0])); }} />
+      <input ref={r} type="file" accept="image/*" style={{ display: "none" }} onChange={e => {
+        if (e.target.files[0]) {
+          const reader = new FileReader();
+          reader.onload = ev => set(ev.target.result); // store as base64
+          reader.readAsDataURL(e.target.files[0]);
+        }
+      }} />
     </div>
   );
 }
@@ -364,13 +386,13 @@ function Thumb({ sk, data, theme, active, onClick }) {
 
 /* ─── SECTIONS CONFIG ─────────────────────────────────────── */
 const SECS = [
-  { key: "home", label: "Home", Comp: HomeSlide },
-  { key: "about", label: "About Me", Comp: AboutSlide },
+  { key: "home",     label: "Home",     Comp: HomeSlide },
+  { key: "about",    label: "About Me", Comp: AboutSlide },
   { key: "projects", label: "Projects", Comp: ProjectsSlide },
-  { key: "contact", label: "Contact", Comp: ContactSlide },
+  { key: "contact",  label: "Contact",  Comp: ContactSlide },
 ];
 
-/* ─── HTML EXPORT ─────────────────────────────────────────── */
+/* ─── HTML EXPORT (unchanged) ─────────────────────────────── */
 function generateHTML(d) {
   const t = THEMES[d.theme] || THEMES.dark;
   const skills = d.about.skills.map(sk => `
@@ -503,25 +525,110 @@ footer{text-align:center;padding:24px;font-size:12px;color:${t.text3};border-top
 </html>`;
 }
 
+/* ─── SAVE STATUS INDICATOR ───────────────────────────────── */
+function SaveStatus({ status }) {
+  const map = {
+    idle:    { label: "",             color: "transparent" },
+    saving:  { label: "⏳ Saving…",   color: "#f59e0b" },
+    saved:   { label: "✅ Saved",     color: "#22c55e" },
+    error:   { label: "❌ Save failed", color: "#ef4444" },
+  };
+  const { label, color } = map[status] || map.idle;
+  return (
+    <div style={{ fontSize: 11, fontWeight: 600, color, transition: "color .3s", minWidth: 90, textAlign: "right" }}>
+      {label}
+    </div>
+  );
+}
+
 /* ─── MAIN APP ────────────────────────────────────────────── */
 export default function PortfolioMaker() {
-  const [data, setData] = useState(DEF);
-  const [active, setActive] = useState(0);
-  const [preview, setPreview] = useState(false);
-  const [pvIdx, setPvIdx] = useState(0);
-  const [dlModal, setDlModal] = useState(false);
-  const t = THEMES[data.theme] || THEMES.dark;
+  const sessionId = getSessionId();
+
+  const [data, setData]         = useState(DEF);
+  const [active, setActive]     = useState(0);
+  const [preview, setPreview]   = useState(false);
+  const [pvIdx, setPvIdx]       = useState(0);
+  const [dlModal, setDlModal]   = useState(false);
+  const [saveStatus, setSaveStatus] = useState("idle"); // idle | saving | saved | error
+  const [loading, setLoading]   = useState(true);
+
+  const saveTimer = useRef(null);
+
+  // ── Load resume from backend on mount ─────────────────────
+  useEffect(() => {
+    fetch(`${API}/resumes/session/${sessionId}`)
+      .then(r => r.json())
+      .then(resume => {
+        if (resume && resume.theme) {
+          setData({
+            theme:    resume.theme,
+            home:     resume.home,
+            about:    resume.about,
+            projects: resume.projects,
+            contact:  resume.contact,
+          });
+        }
+      })
+      .catch(() => {/* use default */})
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ── Auto-save: debounced 1.5 s after every data change ────
+  const autoSave = useCallback((newData) => {
+    clearTimeout(saveTimer.current);
+    setSaveStatus("saving");
+    saveTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`${API}/resumes/session/${sessionId}`, {
+          method:  "PUT",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({
+            theme:    newData.theme,
+            home:     newData.home,
+            about:    newData.about,
+            projects: newData.projects,
+            contact:  newData.contact,
+            userName: newData.home?.name || "",
+          }),
+        });
+        if (!res.ok) throw new Error("Save failed");
+        setSaveStatus("saved");
+        setTimeout(() => setSaveStatus("idle"), 2000);
+      } catch {
+        setSaveStatus("error");
+        setTimeout(() => setSaveStatus("idle"), 3000);
+      }
+    }, 1500);
+  }, [sessionId]);
+
+  const handleChange = (newData) => {
+    setData(newData);
+    autoSave(newData);
+  };
+
+  const t   = THEMES[data.theme] || THEMES.dark;
   const cur = SECS[active];
 
   const download = () => {
     setDlModal(false);
     const html = generateHTML(data);
     const blob = new Blob([html], { type: "text/html" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = URL.createObjectURL(blob);
     a.download = `${data.home.name.replace(/\s+/g, "-").toLowerCase()}-portfolio.html`;
     a.click();
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0a0a0f", color: "#94a3b8", fontFamily: "'DM Sans',sans-serif", gap: 12, fontSize: 15 }}>
+        <div style={{ width: 20, height: 20, border: "2px solid #6366f1", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        Loading your portfolio…
+        <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: "flex", height: "100vh", overflow: "hidden", fontFamily: "'DM Sans',sans-serif" }}>
@@ -562,19 +669,19 @@ export default function PortfolioMaker() {
           <div style={{ background: "#12121a", border: "1px solid #1e1e2e", borderRadius: 12, padding: "10px 14px", marginBottom: 18, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <span style={{ fontSize: 10, fontWeight: 700, color: "#4b5563", textTransform: "uppercase", letterSpacing: "1px", marginRight: 4 }}>Theme</span>
             {Object.entries(THEMES).map(([k, th]) => (
-              <button key={k} onClick={() => setData(p => ({ ...p, theme: k }))}
+              <button key={k} onClick={() => handleChange({ ...data, theme: k })}
                 style={{ padding: "5px 11px", background: data.theme === k ? th.accent : "#1c1c2d", border: `1px solid ${data.theme === k ? th.accent : "#2d2d44"}`, borderRadius: 6, color: data.theme === k ? "#fff" : th.text2, fontSize: 11, fontWeight: 600, cursor: "pointer", textTransform: "capitalize", transition: "all .15s" }}>
                 {th.name}
               </button>
             ))}
             <div style={{ flex: 1 }} />
-            <span style={{ fontSize: 10, color: "#4b5563", fontStyle: "italic" }}>✏️ Click text to edit &nbsp;·&nbsp; 🖼️ Click image to upload &nbsp;·&nbsp; 📊 Click bars to set %</span>
+            <SaveStatus status={saveStatus} />
           </div>
 
           {/* SLIDE */}
           <div style={{ background: "#12121a", border: "1px solid #1e1e2e", borderRadius: 14, overflow: "hidden", boxShadow: "0 8px 40px rgba(0,0,0,.5)" }}>
             <div style={{ width: "100%", aspectRatio: "16/9", position: "relative", overflow: "hidden", background: t.bg }}>
-              <cur.Comp data={data} onChange={setData} theme={data.theme} />
+              <cur.Comp data={data} onChange={handleChange} theme={data.theme} />
             </div>
             <div style={{ padding: "10px 16px", background: "#1a1a26", borderTop: "1px solid #1e1e2e", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", textTransform: "uppercase", letterSpacing: ".5px" }}>
@@ -593,10 +700,10 @@ export default function PortfolioMaker() {
           <div style={{ marginTop: 12, padding: "10px 14px", background: "#12121a", border: "1px solid #1e1e2e", borderRadius: 10, display: "flex", gap: 20, flexWrap: "wrap" }}>
             {[
               ["✏️", "Click any text to edit inline"],
-              ["🖼️", "Click image boxes to upload your own photos"],
-              ["📊", "Click skill bars to drag & set percentage"],
-              ["🏷️", "Click tags to rename, + to add new ones"],
-              ["⬇️", "Download exports a complete HTML website"],
+              ["🖼️", "Click image boxes to upload photos"],
+              ["📊", "Click skill bars to set percentage"],
+              ["🏷️", "Click tags to rename, + to add"],
+              ["☁️", "Auto-saves to the cloud every 1.5 s"],
             ].map(([ic, tip], i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, color: "#4b5563" }}>
                 <span>{ic}</span><span>{tip}</span>
@@ -624,7 +731,7 @@ export default function PortfolioMaker() {
           </div>
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, overflow: "hidden" }}>
             <div style={{ width: "100%", maxWidth: 960, aspectRatio: "16/9", borderRadius: 12, overflow: "hidden", boxShadow: "0 0 80px rgba(0,0,0,.8)" }}>
-              {(() => { const S = SECS[pvIdx].Comp; return <S data={data} onChange={setData} theme={data.theme} />; })()}
+              {(() => { const S = SECS[pvIdx].Comp; return <S data={data} onChange={handleChange} theme={data.theme} />; })()}
             </div>
           </div>
         </div>

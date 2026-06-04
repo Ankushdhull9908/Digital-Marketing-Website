@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
 const ResultHero = () => {
-  const { faqs } = useAuth(); 
+  const { faqs, packages } = useAuth(); 
   const [activeTab, setActiveTab] = useState('Monthly');
 
   const allClients = [ 
@@ -53,36 +53,15 @@ const ResultHero = () => {
     { id: 'Yearly', label: 'Yearly', sub: '(12 months)' },
   ];
 
-  const packageData = [
-    {
-      title: "Basic",
-      desc: "Perfect for personal branding.",
-      prices: { Monthly: "4,999", Quarterly: "13,499", HalfYearly: "24,999", Yearly: "45,999" },
-      features: ["5 Social Media Posts", "Basic SEO", "Email Support", "1 Revision"],
-      featured: false
-    },
-    {
-      title: "Standard",
-      desc: "Ideal for growing startups.",
-      prices: { Monthly: "9,999", Quarterly: "26,999", HalfYearly: "49,999", Yearly: "89,999" },
-      features: ["15 Social Media Posts", "Advanced SEO", "WhatsApp Support", "3 Revisions"],
-      featured: true
-    },
-    {
-      title: "Premium",
-      desc: "Full digital transformation.",
-      prices: { Monthly: "19,999", Quarterly: "53,999", HalfYearly: "99,999", Yearly: "1,79,999" },
-      features: ["30 Social Media Posts", "Technical SEO", "Priority Support", "Unlimited Revisions"],
-      featured: false
-    },
-    {
-      title: "Enterprise",
-      desc: "Tailored for large corporations.",
-      prices: { Monthly: "39,999", Quarterly: "1,07,999", HalfYearly: "1,99,999", Yearly: "3,59,999" },
-      features: ["Custom Strategy", "Ad Campaign Mgmt", "Dedicated Manager", "Full Tech Support"],
-      featured: false
-    }
-  ];
+  const activePackages = packages
+  .filter(p => p.isActive)
+  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+// Helper: format price number with commas (Indian style)
+const formatPrice = (num) => {
+  if (!num && num !== 0) return "0";
+  return Number(num).toLocaleString("en-IN");
+};
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState("");
 const handleOpenModal = (packageTitle) => {
@@ -266,60 +245,66 @@ const handleOpenModal = (packageTitle) => {
 
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-  {packageData.map((pkg, i) => (
-    <motion.div
-      key={i}
-      whileHover={{ y: -10 }}
-      className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden text-white ${
-        pkg.featured
-          ? "bg-[#16676e] border-[#F39221] shadow-2xl scale-105 z-10"
-          : "bg-[#27717e] border-white/5"
-      }`}
-    >
-      {pkg.featured && (
-        <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
-          Most Popular
-        </div>
-      )}
-
-      <div className="relative z-10">
-        <h3 className="text-2xl font-black mb-3 tracking-tight">
-          {pkg.title}
-        </h3>
-        <p className="text-white text-sm font-medium mb-8 leading-relaxed h-12">
-          {pkg.desc}
-        </p>
-      </div>
-
-      <div className="mb-10 relative z-10">
-        <div className="flex items-baseline gap-1">
-          <span className="text-4xl font-black">
-            ₹{pkg.prices[activeTab]}
-          </span>
-          <span className="text-white text-lg font-bold">/-</span>
-        </div>
-      </div>
-
-      <div className="space-y-5 flex-grow mb-12 relative z-10">
-        {pkg.features.map((f, idx) => (
-          <div
-            key={idx}
-            className="flex items-start gap-4 text-xs font-bold text-white"
-          >
-            <CheckCircle size={14} className="text-[#F39221] mt-0.5" />
-            <span>{f}</span>
-          </div>
-        ))}
-      </div>
-
-      <button
-        onClick={() => handleOpenModal(pkg.title)}
-        className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#F39221] text-black hover:bg-[#ED9A3B]"
+  {activePackages.length === 0 ? (
+    <div className="col-span-4 text-center text-slate-400 py-16">
+      No packages available.
+    </div>
+  ) : (
+    activePackages.map((pkg, i) => (
+      <motion.div
+        key={pkg._id}
+        whileHover={{ y: -10 }}
+        className={`relative p-10 rounded-[3rem] border-2 flex flex-col transition-all duration-500 overflow-hidden text-white ${
+          pkg.featured
+            ? "bg-[#16676e] border-[#F39221] shadow-2xl scale-105 z-10"
+            : "bg-[#27717e] border-white/5"
+        }`}
       >
-        Get Started Now
-      </button>
-    </motion.div>
-  ))}
+        {pkg.featured && (
+          <div className="absolute top-6 right-8 bg-[#F39221] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">
+            Most Popular
+          </div>
+        )}
+        {pkg.badge && !pkg.featured && (
+          <div className="absolute top-6 right-8 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
+            {pkg.badge}
+          </div>
+        )}
+
+        <div className="relative z-10">
+          <h3 className="text-2xl font-black mb-3 tracking-tight">{pkg.title}</h3>
+          <p className="text-white text-sm font-medium mb-8 leading-relaxed h-12">
+            {pkg.description}
+          </p>
+        </div>
+
+        <div className="mb-10 relative z-10">
+          <div className="flex items-baseline gap-1">
+            <span className="text-4xl font-black">
+              ₹{formatPrice(pkg.prices?.[activeTab] ?? pkg.price ?? 0)}
+            </span>
+            <span className="text-white text-lg font-bold">/-</span>
+          </div>
+        </div>
+
+        <div className="space-y-5 flex-grow mb-12 relative z-10">
+          {(pkg.features || []).map((f, idx) => (
+            <div key={idx} className="flex items-start gap-4 text-xs font-bold text-white">
+              <CheckCircle size={14} className="text-[#F39221] mt-0.5 flex-shrink-0" />
+              <span>{f}</span>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={() => handleOpenModal(pkg.title)}
+          className="relative z-10 w-full py-5 rounded-2xl text-sm font-black uppercase tracking-widest transition-all bg-[#F39221] text-black hover:bg-[#ED9A3B]"
+        >
+          Get Started Now
+        </button>
+      </motion.div>
+    ))
+  )}
 </div>
 
       {/* Centered Modal Pop-up Form */}

@@ -4,9 +4,11 @@ import {
   CheckCircle2, TrendingUp, Users, Target, BarChart3, 
   ShieldCheck, ArrowRight, Lightbulb, Search, Rocket, 
   Settings2, LineChart, GraduationCap, Utensils, 
-  ShoppingCart, Building2, Briefcase 
+  ShoppingCart, Building2, Briefcase,
+  Star, Quote, Check, Zap
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/Context'; // ← adjust path if needed
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 30 },
@@ -18,9 +20,25 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+// ── Star rating helper ────────────────────────────────────────────────────────
+function StarRow({ rating = 5 }) {
+  return (
+    <div className="flex gap-0.5">
+      {[1,2,3,4,5].map(s => (
+        <Star
+          key={s}
+          size={14}
+          className={s <= rating ? "text-[#F39221] fill-[#F39221]" : "text-slate-300 fill-slate-200"}
+        />
+      ))}
+    </div>
+  );
+}
+
 const Webthech = () => {
   const navigate = useNavigate();
-  //Brand Colors: Teal: #3D7E8C | Orange: #F39221
+  const { packages, Testimonials, loading, homepage } = useAuth();
+
   const handleClick = (id) => {
     navigate(`/industries#${id}`);
   };
@@ -64,25 +82,32 @@ const Webthech = () => {
     { name: "Service Businesses",  icon: <Briefcase    size={20} />, id: "services"    },
   ];
 
-  // Separated to build your exact layout structure
-  const topRowProjects = [
-    { image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600", title: "Sarovar Hotels & Resorts", id: "services" },
-    { image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600", title: "E-Learning Platform", id: "education" },
-    { image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=600", title: "Potenza Wellness", id: "services" },
-    { image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=600", title: "Kai Razor Campaign", id: "ecommerce" },
-  ];
+  // ── use backend data; fall back to empty arrays while loading ────────────
+  const activePackages     = (packages     || []).filter(p => p.isActive);
+  const activeTestimonials = (Testimonials || []).filter(t => t.isActive);
 
-  const bottomRowProjects = [
-    { image: "https://images.unsplash.com/photo-1541462608141-ad4979e408c9?q=80&w=600", title: "Rebel Tattoo Branding", id: "services" },
-    { image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600", title: "Restaurant Interface", id: "restaurants" },
-  ];
+  // ── Projects: pulled from homepage context (kept as static fallback) ──────
+  const allProjects = (homepage?.ourProjects?.projects || [])
+  .filter(p => p.isActive)
+  .sort((a, b) => a.order - b.order);
+
+const topRowProjects = allProjects
+  .filter(p => p.row === "top")
+  .map(p => ({ image: p.imageUrl, title: p.title, id: p.industryId }));
+
+const bottomRowProjects = allProjects
+  .filter(p => p.row === "bottom")
+  .map(p => ({ image: p.imageUrl, title: p.title, id: p.industryId }));
+
 
   return (
     <div className="font-montserrat">
       <section className="py-24 px-6 bg-base-100 overflow-hidden">
         <div className="max-w-7xl mx-auto ">
           
-          {/* --- SECTION 1: WHY CHOOSE US --- */}
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 1: WHY CHOOSE US
+          ───────────────────────────────────────────────────────────────── */}
           <div className="mb-24">
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
@@ -137,7 +162,9 @@ const Webthech = () => {
             </div>
           </div>
 
-          {/* --- SECTION 2: GROW YOUR BUSINESS --- */}
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 2: GROW YOUR BUSINESS
+          ───────────────────────────────────────────────────────────────── */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -146,10 +173,7 @@ const Webthech = () => {
             className="relative rounded-[3rem] bg-base-200 p-8 md:p-16 overflow-hidden mb-24"
           >
             <motion.div 
-              animate={{ 
-                x: [0, 20, 0], 
-                y: [0, -20, 0] 
-              }}
+              animate={{ x: [0, 20, 0], y: [0, -20, 0] }}
               transition={{ duration: 5, repeat: Infinity }}
               className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#F39221]/10 blur-3xl rounded-full"
             ></motion.div>
@@ -184,7 +208,9 @@ const Webthech = () => {
             </div>
           </motion.div>
 
-          {/* --- SECTION 3: OUR PROCESS --- */}
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 3: OUR PROCESS
+          ───────────────────────────────────────────────────────────────── */}
           <div className="mb-24">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -192,9 +218,7 @@ const Webthech = () => {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-5xl font-black text-base-content mb-4">
-                 Our Success Process
-              </h2>
+              <h2 className="text-3xl md:text-5xl font-black text-base-content mb-4">Our Success Process</h2>
               <p className="text-base-content font-medium">From blueprint to big-scale growth.</p>
             </motion.div>
             
@@ -230,7 +254,9 @@ const Webthech = () => {
             </div>
           </div>
 
-          {/* --- SECTION 4: INDUSTRIES --- */}
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 4: INDUSTRIES
+          ───────────────────────────────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -238,7 +264,6 @@ const Webthech = () => {
             className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden mb-24"
           >
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#3D7E8C]/20 to-transparent" />
-       
             <div className="relative z-10">
               <motion.h2
                 variants={fadeInUp}
@@ -249,7 +274,6 @@ const Webthech = () => {
               >
                 Industries We Work With
               </motion.h2>
-       
               <motion.div
                 variants={staggerContainer}
                 initial="hidden"
@@ -263,17 +287,13 @@ const Webthech = () => {
                     variants={fadeInUp}
                     whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
                     onClick={() => handleClick(ind.id)}
-                    className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10
-                               hover:border-[#F39221]/50 transition-all group cursor-pointer select-none"
+                    className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:border-[#F39221]/50 transition-all group cursor-pointer select-none"
                   >
-                    <span className="text-[#F39221] group-hover:rotate-12 transition-transform">
-                      {ind.icon}
-                    </span>
+                    <span className="text-[#F39221] group-hover:rotate-12 transition-transform">{ind.icon}</span>
                     <span className="font-bold text-sm tracking-wide">{ind.name}</span>
                   </motion.div>
                 ))}
               </motion.div>
-       
               <motion.p
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -291,7 +311,9 @@ const Webthech = () => {
             </div>
           </motion.div>
 
-          {/* --- NEW SECTION 5: OUR PROJECTS (EXACT ASYMMETRIC REFERENCE LAYOUT) --- */}
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 5: OUR PROJECTS
+          ───────────────────────────────────────────────────────────────── */}
           <div className="mb-24 bg-slate-950 p-6 sm:p-10 rounded-[3rem] text-white">
             <motion.div 
               variants={staggerContainer}
@@ -300,7 +322,7 @@ const Webthech = () => {
               viewport={{ once: true }}
               className="flex flex-col gap-4"
             >
-              {/* Top row: Exactly 4 Images */}
+              {/* Top row: 4 images */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {topRowProjects.map((project, idx) => (
                   <motion.div
@@ -310,11 +332,7 @@ const Webthech = () => {
                     onClick={() => handleClick(project.id)}
                     className="group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 aspect-square cursor-pointer transition-all duration-300"
                   >
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                       <p className="text-[10px] font-black text-[#F39221] uppercase tracking-wider mb-0.5">Explore</p>
                       <h4 className="text-sm font-bold text-white tracking-wide">{project.title}</h4>
@@ -323,30 +341,22 @@ const Webthech = () => {
                 ))}
               </div>
 
-              {/* Bottom row: Heading/Text block taking up 2 columns (or 50% spacing width equivalence on desktop) + 2 Images to the right */}
+              {/* Bottom row: label + 2 images */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-                
-                {/* Asymmetric Branding / Section Headline Module matching "Projects" bubble positioning */}
-               <motion.div 
-  variants={fadeInUp} 
-  className="col-span-1 md:col-span-2 flex flex-col items-start gap-4 py-6 md:py-0 pl-2 w-full"
->
-  <div className="flex items-center gap-4">
-    <div className="px-8 py-4 bg-[#3D7E8C] rounded-full inline-flex items-center justify-center shadow-lg shadow-[#3D7E8C]/20">
-      <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-        Our Projects
-      </h2>
-    </div>
-    <div className="hidden sm:block h-1 w-16 bg-[#F39221] rounded-full"></div>
-  </div>
-  
-  <div className="pl-6 mt-10" >
-    <Link to="/industries" className="text-sm font-bold text-[#F39221] flex items-center gap-2 group-hover:gap-3 hover:text-green-500 transition-all">
-      View more <ArrowRight size={16} />
-    </Link>
-  </div>
-</motion.div>
-                {/* Remaining 2 images positioned tightly to the right */}
+                <motion.div variants={fadeInUp} className="col-span-1 md:col-span-2 flex flex-col items-start gap-4 py-6 md:py-0 pl-2 w-full">
+                  <div className="flex items-center gap-4">
+                    <div className="px-8 py-4 bg-[#3D7E8C] rounded-full inline-flex items-center justify-center shadow-lg shadow-[#3D7E8C]/20">
+                      <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">Our Projects</h2>
+                    </div>
+                    <div className="hidden sm:block h-1 w-16 bg-[#F39221] rounded-full"></div>
+                  </div>
+                  <div className="pl-6 mt-10">
+                    <Link to="/industries" className="text-sm font-bold text-[#F39221] flex items-center gap-2 hover:text-green-500 transition-all">
+                      View more <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </motion.div>
+
                 {bottomRowProjects.map((project, idx) => (
                   <motion.div
                     key={idx}
@@ -355,11 +365,7 @@ const Webthech = () => {
                     onClick={() => handleClick(project.id)}
                     className="group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 aspect-square cursor-pointer transition-all duration-300 col-span-1"
                   >
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                       <p className="text-[10px] font-black text-[#F39221] uppercase tracking-wider mb-0.5">Explore</p>
                       <h4 className="text-sm font-bold text-white tracking-wide">{project.title}</h4>
@@ -367,11 +373,13 @@ const Webthech = () => {
                   </motion.div>
                 ))}
               </div>
-
             </motion.div>
           </div>
-         
-          {/* --- SECTION 6: CLIENT LOGOS --- */}
+
+        
+          {/* ─────────────────────────────────────────────────────────────────
+              SECTION 8: CLIENT LOGOS MARQUEE
+          ───────────────────────────────────────────────────────────────── */}
           <section className="pt-20 pb-4 bg-base-100 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 mb-20 text-center">
               <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
@@ -399,23 +407,14 @@ const Webthech = () => {
                         onMouseLeave={() =>
                           controls.start({
                             x: "-50%",
-                            transition: { 
-                              duration: 120, 
-                              ease: "linear", 
-                              repeat: Infinity,
-                              repeatType: "loop"
-                            },
+                            transition: { duration: 120, ease: "linear", repeat: Infinity, repeatType: "loop" },
                           })
                         }
                       >
                         <motion.img
                           src={`/logos/${num}.png`}
                           alt="Client"
-                          whileHover={{ 
-                            y: -10, 
-                            scale: 1.1,
-                            filter: "drop-shadow(0px 10px 15px rgba(0,0,0,0.1))" 
-                          }}
+                          whileHover={{ y: -10, scale: 1.1, filter: "drop-shadow(0px 10px 15px rgba(0,0,0,0.1))" }}
                           className="h-16 md:h-24 w-auto object-contain cursor-pointer transition-all duration-300"
                           onError={(e) => { e.currentTarget.style.display = "none"; }}
                         />
@@ -426,6 +425,7 @@ const Webthech = () => {
               </motion.div>
             </div>
           </section>
+
         </div>
       </section>
     </div>

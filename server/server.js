@@ -1,4 +1,4 @@
-// server.js  (updated — only new/changed lines shown with ← NEW comments)
+// server.js
 import express from "express";
 import cors    from "cors";
 import connectDB from "./config/db.js";
@@ -11,13 +11,15 @@ import TestimonialRoutes from "./routes/Testimonials.js";
 import JobRoutes         from "./routes/Jobs.js";
 import influencerRoutes  from "./routes/influencer.js";
 import homepageRoutes    from "./routes/homepage.js";
-import uploadRoutes      from "./routes/upload.js"; // ← NEW
+import uploadRoutes      from "./routes/upload.js";
+import resumeRoutes      from "./routes/resume.js"; // ← NEW
+import blogRoutes from "./routes/blogs.js";
 
 const app = express();
 
 app.use(cors());
-app.use(express.json({ limit: "20mb" })); // ← increased limit for base64 payloads
-app.use(express.urlencoded({ extended: true, limit: "20mb" })); // ← NEW
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 
 connectDB();
 
@@ -30,7 +32,9 @@ app.use("/api/testimonials", TestimonialRoutes);
 app.use("/api/jobs",         JobRoutes);
 app.use("/api/influencer",   influencerRoutes);
 app.use("/api/homepage",     homepageRoutes);
-app.use("/api/upload",       uploadRoutes); // ← NEW
+app.use("/api/upload",       uploadRoutes);
+app.use("/api/resumes",      resumeRoutes); // ← NEW
+app.use("/api/blogs", blogRoutes);
 
 app.get("/", (req, res) => res.send("API running..."));
 

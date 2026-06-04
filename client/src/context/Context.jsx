@@ -17,6 +17,7 @@ export const ContextProvider = ({ children }) => {
   const [Testimonials,setTestimonials] = useState([])
   const [homepage, setHomepage] = useState(null);
 const [sliderImages, setSliderImages] = useState([]);
+const [blogs, setBlogs] = useState([]);
   // check token on reload
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,12 +30,13 @@ const [sliderImages, setSliderImages] = useState([]);
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [faqData, pkgData, clientData, test, homepageData] = await Promise.all([
+        const [faqData, pkgData, clientData, test, homepageData,blogData] = await Promise.all([
   get("/faqs"),
   get("/packages"),
   get("/clients"),
   get("/testimonials"),
-  get("/homepage")
+  get("/homepage"),
+  get("/blogs?limit=6"),
 ]);
         console.log('homepage',homepageData)
         setFaqs(Array.isArray(faqData)     ? faqData     : []);
@@ -42,6 +44,7 @@ const [sliderImages, setSliderImages] = useState([]);
         setClients(Array.isArray(clientData) ? clientData : []);
         setTestimonials(Array.isArray(test) ? test : [])
         setHomepage(homepageData);
+        setBlogs(Array.isArray(blogData) ? blogData : []);
 
 if (homepageData?.slider?.images) {
   setSliderImages(homepageData.slider.images);
@@ -83,7 +86,8 @@ if (homepageData?.slider?.images) {
   loading,
   Testimonials,
   homepage,
-  sliderImages
+  sliderImages,
+  blogs
 }}>
       {children}
     </Context.Provider>
