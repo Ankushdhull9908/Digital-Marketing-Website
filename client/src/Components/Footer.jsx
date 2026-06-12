@@ -32,7 +32,8 @@ const Footer = () => {
     ],
     contactInfo: {
       phone: '+91 85271 31997',
-      email: 'info@webtechieservice.com',
+      email: 'info@webtechieservice.com ',
+      email2: 'sales@webtechieservice.com',
       address: 'New Delhi, Delhi, India',
     }
   };
@@ -154,6 +155,7 @@ const Footer = () => {
                 <div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email Us</p>
                   <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.email}</p>
+                  <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.email2}</p>
                 </div>
               </div>
 

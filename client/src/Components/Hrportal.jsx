@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 const Hrportal = () => {
   const [billingCycle, setBillingCycle] = useState('monthly');
@@ -113,9 +114,9 @@ const Hrportal = () => {
               <p className="text-xs uppercase tracking-[0.2em] font-extrabold text-[#3D7E8C]/60">
                 HR management made simple, smart and efficient
               </p>
-              <button className="btn border-none bg-gradient-to-r from-[#F39221] to-[#e07f0d] text-white hover:opacity-95 shadow-xl shadow-[#F39221]/30 rounded-2xl px-10 py-4 h-auto text-base font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 normal-case">
+              <Link to="/contact" className="btn border-none bg-gradient-to-r from-[#F39221] to-[#e07f0d] text-white hover:opacity-95 shadow-xl shadow-[#F39221]/30 rounded-2xl px-10 py-4 h-auto text-base font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-95 normal-case">
                 Sign up for free
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -261,9 +262,9 @@ const Hrportal = () => {
             Have questions? Get in touch with our team. We provide round-the-clock implementation support.
           </p>
           <div className="pt-2">
-            <button className="btn bg-base-100 border-2 border-[#3D7E8C] text-[#3D7E8C] hover:bg-[#3D7E8C] hover:text-white hover:border-[#3D7E8C] rounded-2xl px-10 py-3 h-auto text-base font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5">
+            <Link to="/contact" className="btn bg-base-100 border-2 border-[#3D7E8C] text-[#3D7E8C] hover:bg-[#3D7E8C] hover:text-white hover:border-[#3D7E8C] rounded-2xl px-10 py-3 h-auto text-base font-bold shadow-md transition-all duration-200 hover:-translate-y-0.5">
               Drop a Message
-            </button>
+            </Link>
           </div>
         </div>
       </section>
