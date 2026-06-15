@@ -9,7 +9,7 @@ import {
   FaGithub,
   FaPinterestP,
   FaPhoneAlt,
-  FaEnvelope,
+  FaEnvelope, 
   FaMapMarkerAlt
 } from 'react-icons/fa';
 const Footer = () => {
