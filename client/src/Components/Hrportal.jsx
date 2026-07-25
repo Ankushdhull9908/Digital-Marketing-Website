@@ -7,7 +7,7 @@ const Hrportal = () => {
   const plans = [
     { 
       name: "Basic", 
-      price: billingCycle === 'monthly' ? "$10" : "$90", 
+      price: billingCycle === 'monthly' ? "$10" : "$90",  
       period: billingCycle === 'monthly' ? "/mo" : "/yr", 
       tag: "Startup",
       features: [
