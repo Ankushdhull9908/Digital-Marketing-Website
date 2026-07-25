@@ -31,7 +31,7 @@ const Footer = () => {
       { name: 'Why SEO', to: '/WhySEO' },
     ],
     contactInfo: {
-      phone: '+91 85271 31997',
+      phone: '+91 74289 32085',
       email: 'info@webtechieservice.com ',
       email2: 'sales@webtechieservice.com',
       address: 'New Delhi, Delhi, India',
