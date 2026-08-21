@@ -132,7 +132,7 @@ useEffect(() => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
-          className="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-gradient-to-r from-[#3D7E8C]/10 to-[#F39221]/10 blur-3xl rounded-full -z-10"
+          className="absolute top-20 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px]  rounded-full -z-10"
         />
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-6xl mx-auto text-center">
           <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-sm border border-slate-200 mb-8">
