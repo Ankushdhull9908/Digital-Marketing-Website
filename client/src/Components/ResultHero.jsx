@@ -5,7 +5,11 @@ import {
   ChevronDown, Play ,Clock, User,X,Quote,
 } from 'lucide-react';
 import { useAuth } from "../context/Context";
+
+
+
 const ResultHero = () => {
+  const { Testimonials } = useAuth();
   const { faqs, packages } = useAuth(); 
   const [activeTab, setActiveTab] = useState('Monthly');
 
@@ -100,35 +104,49 @@ const handleOpenModal = (packageTitle) => {
       
          {/* --- SECTION 2: TESTIMONIALS --- */}
       <section className="py-24 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-4 mb-12 justify-center">
-            <h2 className="text-3xl md:text-5xl font-black text-center tracking-tight">
-              <span className="text-[#3D7E8C]">🔷</span> Client Testimonials
-            </h2>
-          </div>
+  <div className="max-w-5xl mx-auto">
+    <div className="flex items-center gap-4 mb-12 justify-center">
+      <h2 className="text-3xl md:text-5xl font-black text-center tracking-tight">
+        <span className="text-[#3D7E8C]">🔷</span> Client Testimonials
+      </h2>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              "Webtech Services helped us grow our business online and generate quality leads.",
-              "Highly professional team with great digital marketing strategies."
-            ].map((text, i) => (
-              <div key={i} className="relative p-10 rounded-[2rem] bg-[#F8FAFB] border border-slate-100">
-                <Quote className="absolute top-6 left-6 text-[#F39221]/20" size={40} fill="currentColor" />
-                <p className="italic text-lg text-slate-600 mb-6 relative z-10 leading-relaxed">"{text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#3D7E8C] flex items-center justify-center text-white font-bold">
-                    {i === 0 ? "B" : "M"}
-                  </div>
-                  <div>
-                    <p className="font-black text-sm text-slate-900 leading-none">{i === 0 ? "Business Owner" : "Marketing Director"}</p>
-                    <p className="text-xs text-slate-400 mt-1">Verified Client</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {Testimonials.map((testimonial, i) => (
+        <div
+          key={testimonial._id || i}
+          className="relative p-10 rounded-[2rem] bg-[#F8FAFB] border border-slate-100"
+        >
+          <Quote
+            className="absolute top-6 left-6 text-[#F39221]/20"
+            size={40}
+            fill="currentColor"
+          />
+
+          <p className="italic text-lg text-slate-600 mb-6 relative z-10 leading-relaxed">
+            "{testimonial.text}"
+          </p>
+
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#3D7E8C] flex items-center justify-center text-white font-bold">
+              {testimonial.name?.charAt(0)}
+            </div>
+
+            <div>
+              <p className="font-black text-sm text-slate-900 leading-none">
+                {testimonial.name}
+              </p>
+
+              <p className="text-xs text-slate-400 mt-1">
+                {testimonial.role}
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* --- SECTION 2: VIDEO MARQUEE (FIXED: TRUE EDGE-TO-EDGE RECTANGLE) --- */}
       <style dangerouslySetInnerHTML={{ __html: `

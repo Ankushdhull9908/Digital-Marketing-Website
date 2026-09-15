@@ -27,13 +27,12 @@ import {
   Video,
   Upload,
   Loader2,
-  // ── new for Resumes panel ──
   FileUser,
   Layers,
   Box,
   Feather,
   Zap,
-  ExternalLink,
+
 } from "lucide-react";
 
 const API =

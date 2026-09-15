@@ -26,7 +26,20 @@ import BlogList from './Pages/BlogList'
 import Hrportal from './Components/Hrportal'
 import TermsAndConditions from './Pages/TermsCondition'
 import PrivacyPolicy from './Pages/PrivacyPolicy'
-
+import HomepageAdmin from './Pages/admin/HomepageAdmin'
+import AdminLayout from "./Pages/admin/AdminLayout";
+import OverviewPage from "./Pages/admin/OverviewPage";
+import ResumesAdmin from "./Pages/admin/ResumesAdmin";
+import FAQAdmin from "./Pages/admin/FAQAdmin";
+import ClientsAdmin from "./Pages/admin/ClientsAdmin";
+import PackagesAdmin from "./Pages/admin/PackagesAdmin";
+import TestimonialsAdmin from "./Pages/admin/TestimonialsAdmin";
+import ContactsAdmin from "./Pages/admin/ContactsAdmin";
+import JobsAdmin from "./Pages/admin/JobsAdmin";
+import InfluencerAdmin from "./Pages/admin/InfluencerAdmin";
+import BlogsAdmin from "./Pages/admin/BlogsAdmin";
+import AnalyticsAdmin from "./Pages/admin/AnalyticsAdmin";
+import IndustriesAdmin from './Pages/admin/IndustriesAdmin'
 
 function App() {
   //
@@ -39,7 +52,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} /> 
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        
         <Route path='/resume-builder' element={<ResumeMaker/>}></Route>
         <Route path='/TemplateSelect' element={<TemplateSelect/>}></Route>
         <Route path='/PortfolioTemplates' element={<ResumeBuilder/>}></Route>
@@ -60,6 +73,21 @@ function App() {
         <Route path='/Hrportal' element={<Hrportal/>}/>
         <Route path='/terms-and-conditions' element={<TermsAndConditions/>}/>
         <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+        <Route path="/dashboard" element={<AdminLayout />}>
+  <Route index element={<OverviewPage />} />
+  <Route path="homepage" element={<HomepageAdmin />} />
+  <Route path="resumes" element={<ResumesAdmin />} />
+  <Route path="faqs" element={<FAQAdmin />} />
+  <Route path="clients" element={<ClientsAdmin />} />
+  <Route path="packages" element={<PackagesAdmin />} />
+  <Route path="testimonials" element={<TestimonialsAdmin />} />
+  <Route path="contacts" element={<ContactsAdmin />} />
+  <Route path="jobs" element={<JobsAdmin />} />
+  <Route path="influencer" element={<InfluencerAdmin />} />
+  <Route path="blogs" element={<BlogsAdmin />} />
+  <Route path="analytics" element={<AnalyticsAdmin />} />
+  <Route path="industries" element={<IndustriesAdmin />} />
+</Route>
       </Routes>
       <Footer/>
     </>
