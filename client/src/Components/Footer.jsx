@@ -31,9 +31,10 @@ const Footer = () => {
       { name: 'Why SEO', to: '/WhySEO' },
     ],
     contactInfo: {
-      phone: '+91 74289 32085',
-      email: 'info@webtechieservice.com ',
-      email2: 'sales@webtechieservice.com',
+      phone: '+91 85271 31997',
+      phone1: '+91 89207 27716',
+      email: 'info@webtechiesolutions.com ',
+      email2: 'sales@webtechiesolutions.com',
       address: 'New Delhi, Delhi, India',
     }
   };
@@ -44,7 +45,7 @@ const Footer = () => {
     { icon: <FaLinkedinIn />, href: 'https://linkedin.com' },
     { icon: <FaInstagram />, href: 'https://instagram.com' },
     { icon: <FaGithub />, href: 'https://github.com' },
-    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/webtechieservice/?invite_code=9b9ebf3b0f9d4275acbfc0a9fb060e9b&sender=1092615697005505038' },
+    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/webtechiesolutions/?invite_code=9b9ebf3b0f9d4275acbfc0a9fb060e9b&sender=1092615697005505038' },
   ];
 
   return (
@@ -145,6 +146,7 @@ const Footer = () => {
                 <div>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Call Us</p>
                   <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.phone}</p>
+                  <p className="text-sm font-bold text-base-content">{footerLinks.contactInfo.phone1}</p>
                 </div>
               </div>
 
