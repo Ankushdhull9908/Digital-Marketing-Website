@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion,AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Briefcase, 
@@ -13,11 +13,38 @@ import {
   X
 } from "lucide-react";
 
+const API =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api"
+    : "https://digital-marketing-temp.onrender.com/api";
+
 const Career = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("All");
   const [activeJobModal, setActiveJobModal] = useState(null);
 
-  const departments = ["All", "Engineering", "Design", "Marketing"];
+  const [openPositions, setOpenPositions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadOpenings = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(`${API}/career`);
+        if (!res.ok) throw new Error("Failed to load openings");
+        const data = await res.json();
+        setOpenPositions(Array.isArray(data) ? data : []);
+      } catch (err) {
+        setError("Couldn't load openings right now. Please try again shortly.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadOpenings();
+  }, []);
+
+  const departments = ["All", ...Array.from(new Set(openPositions.map((j) => j.department)))];
 
   const benefits = [
     { title: "Cutting-Edge Tech Stack", desc: "Work closely with React 18, Tailwind, and canvas engines on production frameworks.", icon: Terminal, color: "text-[#3D7E8C]" },
@@ -26,42 +53,11 @@ const Career = () => {
     { title: "Continuous Learning", desc: "Stipends for developer bootcamps, tech documentation access, and engineering resources.", icon: Zap, color: "text-amber-400" },
   ];
 
-  const openPositions = [
-    {
-      id: "JOB-01",
-      title: "Senior Front-End Engineer (React)",
-      dept: "Engineering",
-      type: "Full-Time",
-      location: "Remote (India)",
-      salary: "₹18L - ₹24L",
-      summary: "We are looking for an absolute UI expert skilled in building high-fidelity visual web interfaces with pixel-perfect responsive execution.",
-      requirements: ["3+ years production React experience", "Expert knowledge of Tailwind CSS and layout architectures", "Familiarity with Framer Motion, HTML5 Canvas, or complex animation structures"]
-    },
-    {
-      id: "JOB-02",
-      title: "UI/UX Product Designer",
-      dept: "Design",
-      type: "Full-Time",
-      location: "Hybrid (Delhi NCR)",
-      salary: "₹12L - ₹16L",
-      summary: "Shape the comprehensive branding, landing structures, and dashboard logic interfaces across our scaling web agency platform solutions.",
-      requirements: ["Strong portfolio highlighting web service interfaces", "Figma design system engineering fluency", "In-depth understanding of visual layouts and conversion aesthetics"]
-    },
-    {
-      id: "JOB-03",
-      title: "Growth Marketing Specialist",
-      dept: "Marketing",
-      type: "Contract / Remote",
-      location: "Remote",
-      salary: "₹8L - ₹12L",
-      summary: "Drive performance marketing campaigns, optimize structural SEO tracks, and manage core B2B client acquisition systems.",
-      requirements: ["Proven record scaling SaaS or digital service channels", "Deep knowledge of SEO frameworks and digital ad metrics", "Exceptional copy writing and interactive conversion optimization skills"]
-    }
-  ];
-
   const filteredPositions = selectedDepartment === "All" 
     ? openPositions 
-    : openPositions.filter(job => job.dept === selectedDepartment);
+    : openPositions.filter(job => job.department === selectedDepartment);
+
+  const jobCode = (job) => `JOB-${job._id.slice(-6).toUpperCase()}`;
 
   return (
     <div className="min-h-screen bg-base-100 text-slate-100 font-sans overflow-x-hidden">
@@ -130,55 +126,67 @@ const Career = () => {
             </div>
             
             {/* Filter Tabs */}
-            <div className="flex flex-wrap gap-2 p-1.5 bg-slate-950 border border-slate-800 rounded-xl">
-              {departments.map((dept) => (
-                <button
-                  key={dept}
-                  onClick={() => setSelectedDepartment(dept)}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    selectedDepartment === dept 
-                      ? "bg-[#F39221] text-black shadow-md" 
-                      : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  {dept}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Jobs Stack Array Wrapper */}
-          <div className="space-y-4">
-            {filteredPositions.map((job) => (
-              <motion.div
-                key={job.id}
-                layoutId={`job-card-${job.id}`}
-                onClick={() => setActiveJobModal(job)}
-                className="p-6 md:p-8 rounded-2xl bg-[#27717e] border border-slate-800/60 hover:border-[#3D7E8C]/60 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cursor-pointer group"
-              >
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs font-black px-2.5 py-1 rounded bg-[#3D7E8C]/10 text-gray-300 uppercase tracking-wider">{job.dept}</span>
-                    <span className="text-base-content font-mono text-xs">{job.id}</span>
-                  </div>
-                  <h3 className="text-xl font-black text-base-content   group-hover:text-[#F39221] transition-colors tracking-tight">{job.title}</h3>
-                  <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
-                    <span className="flex items-center gap-1"><MapPin size={14} className="text-gray-300" /> {job.location}</span>
-                    <span className="flex items-center gap-1"><Clock size={14} className="text-slate-500" /> {job.type}</span>
-                  </div>
-                </div>
-                <button className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 group-hover:bg-[#F39221] group-hover:text-black transition-all self-end md:self-auto">
-                  <ChevronRight size={18} />
-                </button>
-              </motion.div>
-            ))}
-
-            {filteredPositions.length === 0 && (
-              <div className="text-center py-12 border border-dashed border-slate-800 rounded-2xl text-slate-500 font-medium">
-                No active requirements in this department right now. Check back soon!
+            {openPositions.length > 0 && (
+              <div className="flex flex-wrap gap-2 p-1.5 bg-slate-950 border border-slate-800 rounded-xl">
+                {departments.map((dept) => (
+                  <button
+                    key={dept}
+                    onClick={() => setSelectedDepartment(dept)}
+                    className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      selectedDepartment === dept 
+                        ? "bg-[#F39221] text-black shadow-md" 
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    {dept}
+                  </button>
+                ))}
               </div>
             )}
           </div>
+
+          {/* Jobs Stack Array Wrapper */}
+          {loading ? (
+            <div className="text-center py-12 border border-dashed border-slate-800 rounded-2xl text-slate-500 font-medium">
+              Loading openings…
+            </div>
+          ) : error ? (
+            <div className="text-center py-12 border border-dashed border-red-800/40 rounded-2xl text-red-400 font-medium">
+              {error}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredPositions.map((job) => (
+                <motion.div
+                  key={job._id}
+                  layoutId={`job-card-${job._id}`}
+                  onClick={() => setActiveJobModal(job)}
+                  className="p-6 md:p-8 rounded-2xl bg-[#27717e] border border-slate-800/60 hover:border-[#3D7E8C]/60 transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-6 cursor-pointer group"
+                >
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-xs font-black px-2.5 py-1 rounded bg-[#3D7E8C]/10 text-gray-300 uppercase tracking-wider">{job.department}</span>
+                      <span className="text-base-content font-mono text-xs">{jobCode(job)}</span>
+                    </div>
+                    <h3 className="text-xl font-black text-base-content   group-hover:text-[#F39221] transition-colors tracking-tight">{job.title}</h3>
+                    <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
+                      <span className="flex items-center gap-1"><MapPin size={14} className="text-gray-300" /> {job.location}</span>
+                      <span className="flex items-center gap-1"><Clock size={14} className="text-slate-500" /> {job.type}</span>
+                    </div>
+                  </div>
+                  <button className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 group-hover:bg-[#F39221] group-hover:text-black transition-all self-end md:self-auto">
+                    <ChevronRight size={18} />
+                  </button>
+                </motion.div>
+              ))}
+
+              {filteredPositions.length === 0 && (
+                <div className="text-center py-12 border border-dashed border-slate-800 rounded-2xl text-slate-500 font-medium">
+                  No active requirements in this department right now. Check back soon!
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -195,7 +203,7 @@ const Career = () => {
             />
 
             <motion.div 
-              layoutId={`job-card-${activeJobModal.id}`}
+              layoutId={`job-card-${activeJobModal._id}`}
               className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl z-10 max-h-[85vh] overflow-y-auto text-slate-300"
             >
               <button 
@@ -205,13 +213,13 @@ const Career = () => {
                 <X size={24} />
               </button>
 
-              <span className="text-xs font-black px-3 py-1 rounded bg-[#3D7E8C]/10 text-[#3D7E8C] uppercase tracking-wider">{activeJobModal.dept}</span>
+              <span className="text-xs font-black px-3 py-1 rounded bg-[#3D7E8C]/10 text-[#3D7E8C] uppercase tracking-wider">{activeJobModal.department}</span>
               <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight mt-3 mb-2">{activeJobModal.title}</h3>
               
               <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-wider text-[#F39221] border-b border-slate-800 pb-6 mb-6">
                 <span>📍 {activeJobModal.location}</span>
                 <span>• 💼 {activeJobModal.type}</span>
-                <span>• 💰 {activeJobModal.salary}</span>
+                {activeJobModal.salary && <span>• 💰 {activeJobModal.salary}</span>}
               </div>
 
               <div className="space-y-6">
@@ -220,14 +228,16 @@ const Career = () => {
                   <p className="text-sm text-slate-400 leading-relaxed font-medium">{activeJobModal.summary}</p>
                 </div>
 
-                <div>
-                  <h4 className="text-xs font-black uppercase tracking-wider text-white mb-2">Core Requirements</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-sm text-slate-400 font-medium">
-                    {activeJobModal.requirements.map((req, idx) => (
-                      <li key={idx}>{req}</li>
-                    ))}
-                  </ul>
-                </div>
+                {activeJobModal.requirements?.length > 0 && (
+                  <div>
+                    <h4 className="text-xs font-black uppercase tracking-wider text-white mb-2">Core Requirements</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-sm text-slate-400 font-medium">
+                      {activeJobModal.requirements.map((req, idx) => (
+                        <li key={idx}>{req}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <div className="pt-4 border-t border-slate-800">
                   <h4 className="text-xs font-black uppercase tracking-wider text-white mb-4">Quick Application Intake</h4>
