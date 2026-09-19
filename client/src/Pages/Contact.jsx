@@ -128,7 +128,8 @@ const Contact= () => {
                   </div>
                   <div>
                     <h3 className="font-black text-lg">Phone</h3>
-                    <p className="text-slate-600 font-bold">+91 74289 32085</p>
+                    <p className="text-slate-600 font-bold">+91 85271 31997</p>
+                    <p className="text-slate-600 font-bold">+91 89207 27716</p>
                   </div>
                 </div>
 
@@ -139,8 +140,8 @@ const Contact= () => {
                   </div>
                   <div>
                     <h3 className="font-black text-lg">Email</h3>
-                    <p className="text-slate-600 font-medium">info@webtechieservice.com</p>
-                    <p className="text-slate-600 font-medium">sales@webtechieservice.com</p>
+                    <p className="text-slate-600 font-medium">info@webtechiesolutions.com</p>
+                    <p className="text-slate-600 font-medium">sales@webtechiesolutions.com</p>
                   </div>
                 </div>
 
@@ -151,7 +152,7 @@ const Contact= () => {
                   </div>
                   <div>
                     <h3 className="font-black text-lg">Address</h3>
-                    <p className="text-slate-600 font-medium">Delhi, India</p>
+                    <p className="text-slate-600 font-medium">C-7 east beldev park delhi -51 , India</p>
                   </div>
                 </div>
 

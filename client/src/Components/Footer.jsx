@@ -35,7 +35,7 @@ const Footer = () => {
       phone1: '+91 89207 27716',
       email: 'info@webtechiesolutions.com ',
       email2: 'sales@webtechiesolutions.com',
-      address: 'New Delhi, Delhi, India',
+      address: 'C-7 east beldev park delhi -51 , India',
     }
   };
 
@@ -69,7 +69,7 @@ const Footer = () => {
                 <img src='/logos/logo.png' alt="Logo" className="w-24 h-36 object-contain" />
               </div>
               <span className="ml-4 text-2xl font-black text-base-content tracking-tighter">
-                WEB<span className="text-[#3D7E8C]">Tech</span>
+              <span className="text-[#3D7E8C]">WEB</span>  <span className="text-[#F39221]">Tech</span>
               </span>
             </Link>
             <p className="text-slate-500 text-sm leading-relaxed font-medium">
