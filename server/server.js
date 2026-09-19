@@ -15,6 +15,7 @@ import uploadRoutes      from "./routes/upload.js";
 import resumeRoutes      from "./routes/resume.js"; // ← NEW
 import blogRoutes from "./routes/blogs.js";
 import industriesRoutes from './routes/industriesRoutes.js'
+import careerRoutes from "./routes/career.js";
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api/upload",       uploadRoutes);
 app.use("/api/resumes",      resumeRoutes); // ← NEW
 app.use("/api/blogs", blogRoutes);
 app.use("/api/industries", industriesRoutes);
+  app.use("/api/career", careerRoutes);
 
 app.get("/", (req, res) => res.send("API running..."));
 
