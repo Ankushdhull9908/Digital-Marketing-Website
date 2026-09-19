@@ -6,7 +6,7 @@ import {
   FaTwitter,  
   FaLinkedinIn,  
   FaInstagram, 
-  FaGithub,
+  
   FaPinterestP,
   FaPhoneAlt,
   FaEnvelope, 
@@ -44,7 +44,7 @@ const Footer = () => {
     { icon: <FaTwitter />, href: 'https://x.com/webtech83' },
     { icon: <FaLinkedinIn />, href: 'https://linkedin.com' },
     { icon: <FaInstagram />, href: 'https://instagram.com' },
-    { icon: <FaGithub />, href: 'https://github.com' },
+    
     { icon: <FaPinterestP />, href: 'https://in.pinterest.com/webtechiesolutions/?invite_code=9b9ebf3b0f9d4275acbfc0a9fb060e9b&sender=1092615697005505038' },
   ];
 
