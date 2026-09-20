@@ -133,7 +133,7 @@ const bottomRowProjects = allProjects
                   <motion.div 
                     key={index} 
                     variants={fadeInUp}
-                    whileHover={{ y: -5 }}
+                   
                     className="flex items-center gap-4 p-6 rounded-2xl bg-base-200 border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
                   >
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
@@ -183,7 +183,7 @@ const bottomRowProjects = allProjects
                 <div className="inline-block px-4 py-1 rounded-full bg-[#F39221]/10 text-[#F39221] text-xs font-black uppercase tracking-widest mb-6">Our Mission</div>
                 <h2 className="text-4xl md:text-5xl font-black text-base-content mb-6 leading-tight">Grow Your Business <br /><span className="text-[#3D7E8C]">With Our Expertise.</span></h2>
                 <p className="text-lg text-base-content font-medium leading-relaxed mb-8">At Webtech Services, we create customized marketing strategies based on your business goals and competition.</p>
-                <motion.button whileHover={{ x: 10 }} className="flex items-center gap-2 font-bold text-[#F39221] group">Get a Custom Strategy <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform"/></motion.button>
+                <Link to="/contact" className="flex items-center gap-2 font-bold text-[#F39221] group">Get a Custom Strategy <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform"/></Link>
               </motion.div>
 
               <motion.div 
@@ -218,7 +218,7 @@ const bottomRowProjects = allProjects
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl md:text-5xl font-black text-base-content mb-4">Our Success Process</h2>
+              <h2 className="text-3xl md:text-5xl font-black text-base-content mb-4">Our<span className='text-[#3D7E8C]'> Success </span><span className='text-[#F39221]'> Process </span></h2>
               <p className="text-base-content font-medium">From blueprint to big-scale growth.</p>
             </motion.div>
             

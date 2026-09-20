@@ -107,7 +107,7 @@ const handleOpenModal = (packageTitle) => {
   <div className="max-w-5xl mx-auto">
     <div className="flex items-center gap-4 mb-12 justify-center">
       <h2 className="text-3xl md:text-5xl font-black text-center tracking-tight">
-        <span className="text-[#3D7E8C]">🔷</span> Client Testimonials
+      Client  <span className="text-[#3D7E8C]">Testi</span><span className="text-[#F39221]">monials</span>
       </h2>
     </div>
 
@@ -167,7 +167,7 @@ const handleOpenModal = (packageTitle) => {
       <section className="py-24 bg-base-100 overflow-hidden w-full px-0"> {/* px-0 is critical here */}
         <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
           <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-            What our <span className="text-[#F39221]">Clients</span> say <span className="text-base-content">About us</span>
+            What our <span className="text-[#F39221]">Clients</span><span className="text-[#3D7E8C]"> Say</span> <span className="text-base-content">About us</span>
           </h2>
           <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-xs">
             Success Stories in Motion
@@ -249,12 +249,12 @@ const handleOpenModal = (packageTitle) => {
               onClick={() => setActiveTab(d.id)}
               className={`flex flex-col items-center justify-center flex-1 min-w-[180px] py-8 rounded-[2.5rem] transition-all duration-300 border-2 ${
                 activeTab === d.id 
-                ? 'bg-slate-900 border-slate-900 text-white shadow-2xl scale-105 z-10' 
+                ? 'bg-[#F39221] border-slate-900 text-slate-900 shadow-2xl scale-105 z-10' 
                 : 'bg-white border-slate-100 text-slate-400 hover:border-[#3D7E8C]/50'
               }`}
             >
               <span className="text-base font-black uppercase tracking-[0.2em]">{d.label}</span>
-              <span className={`text-[10px] font-bold mt-1 uppercase tracking-widest ${activeTab === d.id ? 'text-[#F39221]' : 'text-slate-400'}`}>
+              <span className={`text-[10px] font-bold mt-1 uppercase tracking-widest ${activeTab === d.id ? 'text-[#3D7E8C]' : 'text-slate-400'}`}>
                 {d.sub}
               </span>
               {activeTab === d.id && (
@@ -411,7 +411,7 @@ const handleOpenModal = (packageTitle) => {
       {/* --- SECTION 4: FAQ --- */}
       <section className="py-24 px-6 bg-base-200">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-black mb-12 text-center">FAQ Section</h2>
+          <h2 className="text-3xl md:text-5xl font-black mb-12 text-center"> <span className="text-[#3D7E8C]">FAQ </span><span className="text-[#F39221]">Section</span></h2>
           <div className="space-y-4">
             {faqs && faqs.map((faq, i) => (
               <details key={i} className="group p-6 rounded-2xl bg-base-100 shadow-sm cursor-pointer">

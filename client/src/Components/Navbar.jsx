@@ -61,11 +61,11 @@ const Navbar = () => {
       <style>{style}</style>
 
       {/* MARQUEE */}
-      <div className="overflow-hidden bg-slate-900 py-2.5 border-b border-white/5 select-none">
+      <div className="overflow-hidden bg-[#F39221] py-2.5 border-b border-white/5 select-none">
         <div className="marquee-container">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <div key={i} className="flex items-center mx-6 text-white/70 text-[10px] font-black uppercase tracking-[0.2em]">
-              <div className="w-1 h-1 bg-[#F39221] rounded-full mr-4 shadow-[0_0_8px_#F39221]" />
+            <div key={i} className="flex items-center mx-6 text-white text-[10px] font-black uppercase tracking-[0.2em]">
+              <div className="w-1 h-1 bg-slate-900 rounded-full mr-4 shadow-[0_0_8px_#F39221]" />
               {item}
             </div>
           ))}

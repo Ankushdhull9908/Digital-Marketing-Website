@@ -58,12 +58,12 @@ useEffect(() => {
   const nav = useNavigate();
 
   const services = [
-    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#3D7E8C]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
-    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#F39221]/10" ,link:"/OurServices#special-section" },  
-    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-blue-500",    bg: "bg-blue-50"       ,link:"/OurServices#special-section" },
-    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-purple-500",  bg: "bg-purple-50"     ,link:"/OurServices#special-section" },
-    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-red-500",     bg: "bg-red-50"        ,link:"/WhySEO" },
-    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-emerald-500", bg: "bg-emerald-50"    ,link:"/OurServices#special-section" },
+    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
+    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/OurServices#special-section" },  
+    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-[#F39221]",    bg: "bg-[#3D7E8C]/10"     ,link:"/OurServices#special-section" },
+    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-[#F39221]",  bg: "bg-[#3D7E8C]/10"     ,link:"/OurServices#special-section" },
+    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-[#F39221]",     bg: "bg-[#3D7E8C]/10"        ,link:"/WhySEO" },
+    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-[#F39221]", bg: "bg-[#3D7E8C]/10"    ,link:"/OurServices#special-section" },
   ];
 
   return (
@@ -300,7 +300,7 @@ useEffect(() => {
               </div>
 
               {/* Title */}
-              <h4 className="text-3xl font-black mb-6 tracking-tight">
+              <h4 className="text-3xl text-[#F39221] font-black mb-6 tracking-tight">
                 {tool.title}
               </h4>
 
@@ -379,15 +379,14 @@ useEffect(() => {
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              /* 1. Changed bg-slate-100 to bg-base-200 so the card background dynamically adapts.
-                    Changed border-slate-100 to border-base-300 for a crisp, responsive separation line. */
+             
               <motion.div key={index} variants={fadeInUp} whileHover={{ y: -10 }} className="group p-10 rounded-[2.5rem] bg-base-200 border border-base-300 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
                 <div className={`absolute top-0 right-0 w-24 h-24 ${service.bg} rounded-bl-full translate-x-10 -translate-y-10 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-500`}></div>
                 <div className={`w-14 h-14 rounded-2xl ${service.bg} ${service.color} flex items-center justify-center mb-8`}>
                   {React.cloneElement(service.icon, { size: 28, strokeWidth: 2.5 })}
                 </div>
                 <h4 className="text-2xl font-bold mb-4 text-base-content">{service.title}</h4>
-                {/* 2. Changed text-slate-500 to text-base-content/70 so the description is perfectly legible in light AND dark theme */}
+        
                 <p className="text-base-content/70 leading-relaxed font-medium mb-6">{service.desc}</p>
                 <Link to={service.link} className="text-sm font-bold text-[#3D7E8C] flex items-center gap-2 group-hover:gap-3 transition-all" >
                   Learn more <ArrowRight size={16} />

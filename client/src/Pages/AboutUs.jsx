@@ -138,12 +138,12 @@ const AboutUs = () => {
         {...fadeIn}
       >
         <div className="flex items-center justify-center gap-3 mb-2">
-          <div className="h-[1px] w-8 bg-[#F39221]" />
-          <span className="text-[#F39221] font-bold uppercase text-[10px] tracking-[0.3em]">Our Philosophy</span>
-          <div className="h-[1px] w-8 bg-[#F39221]" />
+          <div className="h-[1px] w-8 bg-[#3D7E8C]" />
+          <span className="text-[#3D7E8C] font-bold uppercase text-[10px] tracking-[0.3em]">Our Philosophy</span>
+          <div className="h-[1px] w-8 bg-[#3D7E8C]" />
         </div>
         
-        <h2 className="text-5xl md:text-7xl font-black text-base-content leading-[0.95] tracking-tighter">
+        <h2 className="text-5xl text-[#F39221] md:text-7xl font-black  leading-[0.95] tracking-tighter">
           Surgical Strategy. <br /> 
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3D7E8C] to-slate-700">
             Infinite Impact.
@@ -225,13 +225,13 @@ const AboutUs = () => {
           
           {/* Heading at Top */}
           <div className="text-center mb-16">
-            <span className="text-[#F39221] font-black uppercase text-[11px] tracking-widest mb-4 block">
+            <span className="text-[#3D7E8C] font-black uppercase text-[11px] tracking-widest mb-4 block">
               The Advantage
             </span>
             <h2 className="text-4xl md:text-6xl font-black text-base-content tracking-tighter mb-4">
-              Why <span className="text-[#3D7E8C]">Us.</span>
+              Why <span className="text-[#F39221]">Us.</span>
             </h2>
-            <div className="w-24 h-2 bg-[#F39221] mx-auto rounded-full"></div>
+            <div className="w-24 h-2 bg-[#3D7E8C] mx-auto rounded-full"></div>
           </div>
 
           {/* 4 Divs in 2-column Grid */}
@@ -245,7 +245,7 @@ const AboutUs = () => {
               <div className="w-14 h-14 bg-[#3D7E8C] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#3D7E8C]/20">
                 <Target size={28} />
               </div>
-              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Mission</h3>
+              <h3 className="text-2xl text-[#F39221] font-black mb-4 tracking-tight">Our Mission</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 To empower brands with lethal precision through smart, ROI-driven marketing solutions that turn browsers into loyal advocates.
               </p>
@@ -256,10 +256,10 @@ const AboutUs = () => {
               {...fadeIn}
               className="p-10 rounded-[3rem] bg-base-100 border border-base-300 flex flex-col group hover:bg-base-200 hover:shadow-2xl transition-all duration-500"
             >
-              <div className="w-14 h-14 bg-[#F39221] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#F39221]/20">
+              <div className="w-14 h-14 bg-[#3D7E8C] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-[#F39221]/20">
                 <Eye size={28} />
               </div>
-              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Vision</h3>
+              <h3 className="text-2xl text-[#F39221] font-black mb-4 tracking-tight">Our Vision</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 To become the global benchmark for digital innovation and strategic brand expansion in an ever-evolving digital landscape.
               </p>
@@ -270,10 +270,10 @@ const AboutUs = () => {
               {...fadeIn}
               className="p-10 rounded-[3rem] bg-base-100 border border-base-300 flex flex-col group hover:bg-base-200 hover:shadow-2xl transition-all duration-500"
             >
-              <div className="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20">
+              <div className="w-14 h-14 bg-[#3D7E8C] text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-slate-900/20">
                 <Rocket size={28} />
               </div>
-              <h3 className="text-2xl font-black text-base-content  mb-4 tracking-tight">Our Goals</h3>
+              <h3 className="text-2xl text-[#F39221] font-black mb-4 tracking-tight">Our Goals</h3>
               <p className="text-slate-500 font-medium leading-relaxed">
                 Deliver measurable 10x growth for our partners, pioneer new automation tech, and maintain 100% data transparency.
               </p>
@@ -302,8 +302,8 @@ const AboutUs = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
             <div className="text-left">
-              <span className="text-[#F39221] font-black uppercase text-[11px] tracking-widest mb-4 block">Core Capabilities</span>
-              <h2 className="text-4xl md:text-5xl font-black  tracking-tighter">What We Do.</h2>
+              <span className="text-[#3D7E8C] font-black uppercase text-[11px] tracking-widest mb-4 block">Core Capabilities</span>
+              <h2 className="text-4xl  md:text-5xl font-black  tracking-tighter"> What <span className="text-[#3D7E8C]">We</span> <span className="text-[#F39221]">Do.</span></h2>
             </div>
             <div className="w-full md:w-1/3 h-[2px] bg-base-300 mb-4 hidden md:block"></div>
           </div>
@@ -312,13 +312,13 @@ const AboutUs = () => {
             {services.map((service, index) => (
               <motion.div 
                 key={index}
-                whileHover={{ y: -10 }}
-                className="p-10 rounded-[2.5rem] bg-base-100 border border-base-300 hover:border-[#3D7E8C]/20 shadow-sm hover:shadow-2xl transition-all duration-500 group"
+              
+                className="p-10 rounded-[2.5rem] bg-base-100 border border-base-300 "
               >
-                <div className="w-14 h-14 bg-base-100 rounded-2xl flex items-center justify-center mb-10 group-hover:bg-[#F39221] transition-colors duration-500">
-                  {React.cloneElement(service.icon, { className: "text-[#3D7E8C] group-hover:text-white transition-colors" })}
+                <div className="w-14 h-14  rounded-2xl flex items-center justify-center mb-10 bg-[#3D7E8C] ">
+                  {React.cloneElement(service.icon, { className: "text-[#3D7E8C] text-white " })}
                 </div>
-                <h4 className="text-2xl font-black  leading-tight mb-4 tracking-tight">{service.name}</h4>
+                <h4 className="text-2xl text-[#F39221] font-black  leading-tight mb-4 tracking-tight">{service.name}</h4>
                 <p className="text-slate-500 text-sm font-medium">Precision engineering for high-stakes digital growth.</p>
               </motion.div>
             ))}
