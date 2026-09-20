@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import {  Trash2,Plus,FileText /* whatever icons that panel used */ } from "lucide-react";
+import {  Trash2,Plus,FileText} from "lucide-react";
 import { get, post, put, del,} from "./shared/adminApi";
-import { Modal, Badge, ActionBtn, inp, label } from "./shared/AdminUI";
+import { Modal, Badge, ActionBtn, inp, label,ImageUpload } from "./shared/AdminUI";
 
 
 function BlogsAdmin() {

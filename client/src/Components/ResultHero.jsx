@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { motion ,AnimatePresence} from 'framer-motion';
+import {get} from '../Pages/admin/shared/adminApi'
 import { 
   CheckCircle, HelpCircle,  
   ChevronDown, Play ,Clock, User,X,Quote,
@@ -12,37 +13,27 @@ const ResultHero = () => {
   const { Testimonials } = useAuth();
   const { faqs, packages } = useAuth(); 
   const [activeTab, setActiveTab] = useState('Monthly');
+  const [allClients, setAllClients] = useState([]);
 
-  const allClients = [ 
-    {
-      id: 1,
-      name: "Alex Rivera",
-      role: "Creative Director",
-      text: "The speed and precision of this platform changed our entire delivery pipeline. Truly elite.",
-      video: "https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-screen-close-up-1728-large.mp4"
-    },
-    {
-      id: 2,
-      name: "Sarah Chen",
-      role: "Startup Founder",
-      text: "I was able to launch my landing page in record time. The conversion rates are through the roof!",
-      video: "https://assets.mixkit.co/videos/preview/mixkit-young-woman-working-at-a-laptop-in-a-cafe-43152-large.mp4"
-    },
-    {
-      id: 3,
-      name: "Marcus Thorne",
-      role: "E-commerce Expert",
-      text: "Securing my domain and setting up the shop was seamless. Highly recommended for professionals.",
-      video: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-working-on-a-laptop-4422-large.mp4"
-    },
-    {
-      id: 4,
-      name: "Elena Rodriguez",
-      role: "Digital Nomad",
-      text: "The portfolio maker is cinematic. My clients are consistently impressed by the presentation.",
-      video: "https://assets.mixkit.co/videos/preview/mixkit-business-woman-using-a-laptop-at-her-office-desk-42503-large.mp4"
+  useEffect(() => {
+  const loadClients = async () => {
+    try {
+      const data = await get("/homepage");
+
+      const clients = data?.clientVideos?.videos || [];
+
+      setAllClients(
+        clients
+          .filter((client) => client.isActive)
+          .sort((a, b) => a.order - b.order)
+      );
+    } catch (error) {
+      console.error("Failed to load client testimonials:", error);
     }
-  ];
+  };
+
+  loadClients();
+}, []);
 
   const results = [
     "Higher Google Rankings", "More Website Traffic", 
@@ -174,62 +165,131 @@ const handleOpenModal = (packageTitle) => {
           </p>
         </div>
 
-        {/* Outer wrapper: no padding, no max-width */}
-        <div className="relative w-full bg-[#27717e] overflow-hidden">
-          
-          <div className="animate-marquee-infinite flex">
-            
-            {[...allClients, ...allClients].map((client, index) => (
-              <div
-                key={`${client.id}-${index}`}
-                className="w-[300px] md:w-[450px] bg-[#27717e] border-r border-slate-600 flex flex-col group transition-all duration-500 rounded-none"
-              >
-                
-                {/* Video - No rounded corners */}
-                <div className="relative aspect-video bg-[#27717e] overflow-hidden rounded-none">
-                  <video 
-                    src={client.video}
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline
-                    className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-700 rounded-none"
+  <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
+
+    <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+      What our <span className="text-[#F39221]">Clients</span> say{" "}
+      <span className="text-base-content">About us</span>
+    </h2>
+
+    <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-xs">
+      Success Stories in Motion
+    </p>
+
+  </div>
+
+  {/* Client Testimonials */}
+
+  <div className="relative w-full bg-[#27717e] overflow-hidden">
+
+    {allClients.length > 0 ? (
+
+      <div className="animate-marquee-infinite flex">
+
+        {[...allClients, ...allClients].map((client, index) => (
+
+          <div
+            key={`${client._id}-${index}`}
+            className="w-[300px] md:w-[450px] bg-[#27717e] border-r border-slate-600 flex flex-col group transition-all duration-500 rounded-none"
+          >
+
+            {/* Video */}
+
+            <div className="relative aspect-video bg-[#27717e] overflow-hidden rounded-none">
+
+              <video
+                src={client.videoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={client.thumbnail || undefined}
+                className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-700 rounded-none"
+              />
+
+              <div className="absolute top-4 right-4">
+
+                <div className="bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/20">
+
+                  <Play
+                    size={12}
+                    className="text-slate-300 fill-slate-300"
                   />
-                  <div className="absolute top-4 right-4">
-                    <div className="bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/20">
-                      <Play size={12} className="text-slate-300 fill-slate-300" />
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+
                 </div>
 
-                {/* Text Content */}
-                <div className="p-8 flex flex-col flex-grow rounded-none">
-                  
-                  <p className="text-slate-300 font-medium text-base italic mb-6 leading-relaxed flex-grow">
-                    "{client.text}"
-                  </p>
-                  
-                  <div className="flex items-center gap-4 pt-6 border-t border-white/5">
-                    <div className="w-10 h-10 rounded-md bg-gradient-to-br from-[#3D7E8C] to-[#F39221] flex items-center justify-center text-white text-base font-black">
-                      {client.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h4 className="font-black text-xs text-white tracking-tight">{client.name}</h4>
-                      <p className="text-[9px] text-[#F39221] font-black uppercase tracking-widest">{client.role}</p>
-                    </div>
-                  </div>
-                </div>
               </div>
-            ))}
+
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+
+            </div>
+
+
+            {/* Text Content */}
+
+            <div className="p-8 flex flex-col flex-grow rounded-none">
+
+              <p className="text-slate-300 font-medium text-base italic mb-6 leading-relaxed flex-grow">
+
+                "{client.company
+                  ? `${client.clientName} from ${client.company}`
+                  : client.clientName}
+
+                "
+
+              </p>
+
+
+              {/* Client Info */}
+
+              <div className="flex items-center gap-4 pt-6 border-t border-white/5">
+
+                <div className="w-10 h-10 rounded-md bg-gradient-to-br from-[#3D7E8C] to-[#F39221] flex items-center justify-center text-white text-base font-black">
+
+                  {client.clientName?.charAt(0)}
+
+                </div>
+
+                <div>
+
+                  <h4 className="font-black text-xs text-white tracking-tight">
+                    {client.clientName}
+                  </h4>
+
+                  <p className="text-[9px] text-[#F39221] font-black uppercase tracking-widest">
+                    {client.clientRole}
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
-          {/* Side Fades - Reduced for a cleaner edge-to-edge look */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-950/40 to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-950/40 to-transparent z-10" />
-        </div>
-      </section>
+        ))}
 
+      </div>
+
+    ) : (
+
+      <div className="py-20 text-center text-white">
+        No client testimonials available.
+      </div>
+
+    )}
+
+
+    {/* Side Fades */}
+
+    <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-950/40 to-transparent z-10" />
+
+    <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-950/40 to-transparent z-10" />
+
+  </div>
+
+</section>
       {/* --- SECTION 3: PRICING --- */}
     <section className="py-24 px-6 bg-base-200">
     <div className="max-w-7xl mx-auto">
