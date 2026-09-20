@@ -93,7 +93,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     to={link.to}
-                    className="text-slate-500 hover:text-[#3D7E8C] font-semibold text-sm transition-all duration-300 flex items-center group"
+                    className="text-slate-00 hover:text-[#3D7E8C] font-semibold text-sm transition-all duration-300 flex items-center group"
                   >
                     <span className="w-0 group-hover:w-4 h-[2px] bg-[#3D7E8C] mr-0 group-hover:mr-2 transition-all duration-300" />
                     {link.name}
@@ -118,7 +118,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     to={link.to}
-                    className="text-slate-500 hover:text-[#3D7E8C] font-semibold text-sm transition-all duration-300 flex items-center group"
+                    className="text-slate-900 hover:text-[#3D7E8C] font-semibold text-sm transition-all duration-300 flex items-center group"
                   >
                     <span className="w-0 group-hover:w-4 h-[2px] bg-[#3D7E8C] mr-0 group-hover:mr-2 transition-all duration-300" />
                     {link.name}
@@ -140,7 +140,7 @@ const Footer = () => {
             </h4>
             <div className="space-y-6">
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#3D7E8C] shadow-sm group-hover:bg-[#3D7E8C] group-hover:text-base-content transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#3D7E8C] shadow-sm group-hover:bg-[#F39221] group-hover:text-base-content transition-all duration-300">
                   <FaPhoneAlt size={14} />
                 </div>
                 <div>
@@ -151,7 +151,7 @@ const Footer = () => {
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#F39221] shadow-sm group-hover:bg-[#F39221] group-hover:text-base-content transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#3D7E8C]  shadow-sm group-hover:bg-[#F39221] group-hover:text-base-content transition-all duration-300">
                   <FaEnvelope size={14} />
                 </div>
                 <div>
@@ -162,7 +162,7 @@ const Footer = () => {
               </div>
 
               <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-base-content shadow-sm group-hover:bg-base-content group-hover:text-base-100 transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-base-100 border border-slate-100 flex items-center justify-center text-[#3D7E8C] shadow-sm group-hover:bg-[#F39221] group-hover:text-base-content transition-all duration-300">
                   <FaMapMarkerAlt size={14} />
                 </div>
                 <div>
@@ -177,7 +177,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-slate-200/60 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            © {currentYear} Webtech Services. <span className="hidden md:inline">Built with precision.</span>
+            © {currentYear} Webtech Solutions. <span className="hidden md:inline">Built with precision.</span>
           </p>
           
           <div className="flex gap-3">

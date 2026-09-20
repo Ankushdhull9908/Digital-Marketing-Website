@@ -156,14 +156,7 @@ const handleOpenModal = (packageTitle) => {
       `}} />
       
       <section className="py-24 bg-base-100 overflow-hidden w-full px-0"> {/* px-0 is critical here */}
-        <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-          <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-            What our <span className="text-[#F39221]">Clients</span><span className="text-[#3D7E8C]"> Say</span> <span className="text-base-content">About us</span>
-          </h2>
-          <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-xs">
-            Success Stories in Motion
-          </p>
-        </div>
+       
 
   <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
 

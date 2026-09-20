@@ -7,15 +7,15 @@ import {
 import { Link, useLocation } from "react-router-dom";
 const ServiceCard = ({ icon: Icon, title, description, features }) => (
   <motion.div 
-    whileHover={{ y: -10 }} 
-    className="card bg-base-100 border border-base-300 shadow-sm hover:shadow-2xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group h-full">
+    
+    className="card bg-base-100 border border-base-300 shadow-sm  h-full">
     <div className="card-body p-8">
       {/* Icon Container */}
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-6 ${features.includes("SEO") ? "bg-blue-50 text-blue-600" : "bg-base-100 text-base-content"}`}>
+      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500  bg-[#3D7E8C] text-slate-50`}>
         <Icon size={28} />
       </div>
       {/* Title & Description*/}
-      <h3 className="text-2xl font-black mb-3 group-hover:text-[#F39221] transition-colors tracking-tight text-base-content">
+      <h3 className="text-2xl font-black mb-3  text-[#F39221]">
         {title}
       </h3>
       <p className="text-sm text-base-content font-medium leading-relaxed mb-8">
@@ -203,7 +203,7 @@ const OurServices = () => {
     <section id="special-section" className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
   <div className="max-w-7xl mx-auto">
     <div className="flex items-center gap-4 mb-16">
-      <h2 className="text-[#F39221] text-3xl font-black">Digital Marketing</h2>
+      <h2 className=" text-3xl font-black"> <span className="text-[#3D7E8C]">Digital </span><span className="text-[#F39221]">Marketing</span></h2>
       <div className="h-px flex-1 bg-base-300" />
     </div>
 
@@ -237,7 +237,7 @@ const OurServices = () => {
       <section className="py-24 px-6 bg-base-100 text-base-content transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-4 mb-16">
-            <h2 className="text-[#F39221] text-3xl font-black">Development & Design</h2>
+            <h2 className=" text-3xl font-black"> <span className="text-[#3D7E8C]">Development </span>&  <span className="text-[#F39221]">Design</span></h2>
             <div className="h-px flex-1 bg-base-300" />
           </div>
           

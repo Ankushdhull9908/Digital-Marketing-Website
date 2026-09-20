@@ -47,10 +47,10 @@ const Career = () => {
   const departments = ["All", ...Array.from(new Set(openPositions.map((j) => j.department)))];
 
   const benefits = [
-    { title: "Cutting-Edge Tech Stack", desc: "Work closely with React 18, Tailwind, and canvas engines on production frameworks.", icon: Terminal, color: "text-[#3D7E8C]" },
-    { title: "Flexible Work Culture", desc: "We support output over clock-ins. Manage your sprint checkpoints autonomously.", icon: Compass, color: "text-[#F39221]" },
+    { title: "Cutting-Edge Tech Stack", desc: "Work closely with React 18, Tailwind, and canvas engines on production frameworks.", icon: Terminal, color: "text-emerald-400" },
+    { title: "Flexible Work Culture", desc: "We support output over clock-ins. Manage your sprint checkpoints autonomously.", icon: Compass, color: "text-emerald-400" },
     { title: "Health & Wellness", desc: "Complete medical coverage packages alongside flexible annual leaves and downtime credits.", icon: Heart, color: "text-emerald-400" },
-    { title: "Continuous Learning", desc: "Stipends for developer bootcamps, tech documentation access, and engineering resources.", icon: Zap, color: "text-amber-400" },
+    { title: "Continuous Learning", desc: "Stipends for developer bootcamps, tech documentation access, and engineering resources.", icon: Zap, color: "text-emerald-400" },
   ];
 
   const filteredPositions = selectedDepartment === "All" 
@@ -94,7 +94,7 @@ const Career = () => {
       <section className="py-24 px-6 max-w-7xl mx-auto ">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight  text-base-content">
-            Why You'll Love It <span className="text-[#3D7E8C]">Here</span>
+          <span className="text-[#3D7E8C]">Why You'll Love </span>   <span className="text-[#F39221]"> It Here</span>
           </h2>
           <div className="w-20 h-1.5 bg-[#F39221] mx-auto rounded-full mt-4" />
         </div>
@@ -103,12 +103,20 @@ const Career = () => {
           {benefits.map((b, i) => {
             const IconComponent = b.icon;
             return (
-              <div key={i} className="p-8 rounded-[2rem] bg-slate-900 border border-slate-800/60 flex flex-col gap-4 relative group">
+              <div key={i} className="p-8 rounded-[2rem] bg-[#3D7E8C] border  flex flex-col gap-4 relative group">
+                 <svg
+              className="absolute top-0 right-0 opacity-10 group-hover:scale-110 transition-transform"
+              width="150"
+              height="150"
+              viewBox="0 0 100 100"
+            >
+              <circle cx="100" cy="0" r="80" fill="white" />
+            </svg>
                 <div className={`p-3.5 rounded-xl bg-slate-950 border border-slate-800/40 w-fit ${b.color}`}>
                   <IconComponent size={22} />
                 </div>
-                <h3 className="text-lg font-black text-white mt-2 tracking-tight">{b.title}</h3>
-                <p className="text-slate-400 text-xs font-medium leading-relaxed">{b.desc}</p>
+                <h3 className="text-lg font-black text-[#F39221] mt-2 tracking-tight">{b.title}</h3>
+                <p className="text-slate-50 text-xs font-medium leading-relaxed">{b.desc}</p>
               </div>
             );
           })}
