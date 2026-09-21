@@ -40,12 +40,12 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: <FaFacebookF />, href: 'https://facebook.com' },
-    { icon: <FaTwitter />, href: 'https://x.com/webtech83' },
-    { icon: <FaLinkedinIn />, href: 'https://linkedin.com' },
-    { icon: <FaInstagram />, href: 'https://instagram.com' },
+    { icon: <FaFacebookF />, href: 'https://www.facebook.com/webtech077' },
+    { icon: <FaTwitter />, href: 'https://x.com/webtechsol1zrh' },
+    { icon: <FaLinkedinIn />, href: 'https://www.linkedin.com/company/webtech-service/' },
+    { icon: <FaInstagram />, href: 'https://www.instagram.com/webtech.service?utm_source=qr&stkn=MW03czZ3aDNpMGVqdQ==' },
     
-    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/webtechiesolutions/?invite_code=9b9ebf3b0f9d4275acbfc0a9fb060e9b&sender=1092615697005505038' },
+    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/solutionswebtech515' },
   ];
 
   return (

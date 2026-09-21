@@ -1,7 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 //const API = "http://localhost:5000/api";
-var API = "https://digital-marketing-temp.onrender.com/api" ? "https://digital-marketing-temp.onrender.com/api": "http://localhost:5000/api"
+
+var API = window.location.hostname==='localhost' ? "http://localhost:5000/api" : "https://digital-marketing-temp.onrender.com/api"
+
 const get  = (url) => fetch(API + url).then(r => r.json());
 
 const Context = createContext();

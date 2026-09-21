@@ -514,6 +514,41 @@ function ProjectsSectionEditor({ data, reload, showToast }) {
     </>
   );
 }
+function convertYouTubeToEmbed(url) {
+  if (!url) return "";
+
+  try {
+    const parsedUrl = new URL(url);
+
+    // Already an embed URL
+    if (parsedUrl.pathname.startsWith("/embed/")) {
+      return url;
+    }
+
+    let videoId = "";
+
+    // youtube.com/watch?v=VIDEO_ID
+    if (
+      parsedUrl.hostname.includes("youtube.com") &&
+      parsedUrl.pathname === "/watch"
+    ) {
+      videoId = parsedUrl.searchParams.get("v");
+    }
+
+    // youtu.be/VIDEO_ID
+    else if (parsedUrl.hostname === "youtu.be") {
+      videoId = parsedUrl.pathname.substring(1);
+    }
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+}
 
 function ClientVideosSectionEditor({ data, reload, showToast }) {
   const [modal, setModal] = useState(null);
@@ -553,20 +588,29 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
     setModal(v);
   };
   const save = async () => {
-    try {
-      if (modal === "add") {
-        await post("/homepage/client-videos/videos", form);
-        showToast("Video added!");
-      } else {
-        await put(`/homepage/client-videos/videos/${modal._id}`, form);
-        showToast("Video updated!");
-      }
-      setModal(null);
-      reload();
-    } catch {
-      showToast("Error saving", false);
+  try {
+    const updatedForm = {
+      ...form,
+      videoUrl: convertYouTubeToEmbed(form.videoUrl),
+    };
+
+    if (modal === "add") {
+      await post("/homepage/client-videos/videos", updatedForm);
+      showToast("Video added!");
+    } else {
+      await put(
+        `/homepage/client-videos/videos/${modal._id}`,
+        updatedForm
+      );
+      showToast("Video updated!");
     }
-  };
+
+    setModal(null);
+    reload();
+  } catch {
+    showToast("Error saving", false);
+  }
+};
   const remove = async (id) => {
     if (!window.confirm("Remove this video?")) return;
     await del(`/homepage/client-videos/videos/${id}`);
