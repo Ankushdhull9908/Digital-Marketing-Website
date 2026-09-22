@@ -44,8 +44,7 @@ const Footer = () => {
     { icon: <FaTwitter />, href: 'https://x.com/webtechsol1zrh' },
     { icon: <FaLinkedinIn />, href: 'https://www.linkedin.com/company/webtech-service/' },
     { icon: <FaInstagram />, href: 'https://www.instagram.com/webtech.service?utm_source=qr&stkn=MW03czZ3aDNpMGVqdQ==' },
-    
-    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/solutionswebtech515' },
+    { icon: <FaPinterestP />, href: 'https://in.pinterest.com/solutionswebtech515/' },
   ];
 
   return (
