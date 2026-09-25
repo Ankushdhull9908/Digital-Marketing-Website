@@ -1,5 +1,5 @@
 import express from "express";
-import CareerOpening from "../models/CareerOpening.js";
+import CareerOpening from "../models/careerModel.js";
 
 const router = express.Router();
 
