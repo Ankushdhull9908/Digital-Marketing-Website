@@ -110,8 +110,6 @@ const bottomRowProjects = allProjects
           ───────────────────────────────────────────────────────────────── */}
           <div className="mb-24">
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="flex flex-col md:flex-row items-center gap-4 mb-12 "
             >
@@ -134,12 +132,12 @@ const bottomRowProjects = allProjects
                     key={index} 
                     variants={fadeInUp}
                    
-                    className="flex items-center gap-4 p-6 rounded-2xl bg-base-200 border border-transparent hover:border-[#3D7E8C]/20 hover:bg-white hover:shadow-lg transition-all duration-300 group"
+                    className="flex items-center gap-4 p-6 rounded-2xl bg-base-200 border border-transparent "
                   >
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center group-hover:bg-[#3D7E8C] group-hover:text-white transition-colors">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#3D7E8C]/10 text-[#3D7E8C] flex items-center justify-center ">
                       {item.icon}
                     </div>
-                    <span className="font-bold text-base-content group-hover:text-slate-900 transition-colors">
+                    <span className="font-bold text-base-conten">
                       {item.text}
                     </span>
                   </motion.div>
