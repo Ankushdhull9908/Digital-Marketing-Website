@@ -176,7 +176,7 @@ const Career = () => {
                       <span className="text-xs font-black px-2.5 py-1 rounded bg-[#3D7E8C]/10 text-gray-300 uppercase tracking-wider">{job.department}</span>
                       <span className="text-base-content font-mono text-xs">{jobCode(job)}</span>
                     </div>
-                    <h3 className="text-xl font-black text-base-content   group-hover:text-[#F39221] transition-colors tracking-tight">{job.title}</h3>
+                    <h3 className="text-xl font-black text-[#F39221] transition-colors tracking-tight">{job.title}</h3>
                     <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400">
                       <span className="flex items-center gap-1"><MapPin size={14} className="text-gray-300" /> {job.location}</span>
                       <span className="flex items-center gap-1"><Clock size={14} className="text-slate-500" /> {job.type}</span>
