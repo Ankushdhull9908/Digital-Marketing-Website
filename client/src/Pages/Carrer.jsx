@@ -47,10 +47,10 @@ const Career = () => {
   const departments = ["All", ...Array.from(new Set(openPositions.map((j) => j.department)))];
 
   const benefits = [
-    { title: "Cutting-Edge Tech Stack", desc: "Work closely with React 18, Tailwind, and canvas engines on production frameworks.", icon: Terminal, color: "text-emerald-400" },
-    { title: "Flexible Work Culture", desc: "We support output over clock-ins. Manage your sprint checkpoints autonomously.", icon: Compass, color: "text-emerald-400" },
-    { title: "Health & Wellness", desc: "Complete medical coverage packages alongside flexible annual leaves and downtime credits.", icon: Heart, color: "text-emerald-400" },
-    { title: "Continuous Learning", desc: "Stipends for developer bootcamps, tech documentation access, and engineering resources.", icon: Zap, color: "text-emerald-400" },
+    { title: "Cutting-Edge Tech Stack", desc: "Work closely with React 18, Tailwind, and canvas engines on production frameworks.", icon: Terminal, color: "text-[#F39221]" },
+    { title: "Flexible Work Culture", desc: "We support output over clock-ins. Manage your sprint checkpoints autonomously.", icon: Compass, color: "text-[#F39221]" },
+    { title: "Health & Wellness", desc: "Complete medical coverage packages alongside flexible annual leaves and downtime credits.", icon: Heart, color: "text-[#F39221]" },
+    { title: "Continuous Learning", desc: "Stipends for developer bootcamps, tech documentation access, and engineering resources.", icon: Zap, color: "text-[#F39221]" },
   ];
 
   const filteredPositions = selectedDepartment === "All" 
@@ -112,7 +112,7 @@ const Career = () => {
             >
               <circle cx="100" cy="0" r="80" fill="white" />
             </svg>
-                <div className={`p-3.5 rounded-xl bg-slate-950 border border-slate-800/40 w-fit ${b.color}`}>
+                <div className={`p-3.5 rounded-xl  border border-slate-300/50 w-fit ${b.color}`}>
                   <IconComponent size={22} />
                 </div>
                 <h3 className="text-lg font-black text-[#F39221] mt-2 tracking-tight">{b.title}</h3>

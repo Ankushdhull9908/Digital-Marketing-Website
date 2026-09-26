@@ -58,12 +58,12 @@ useEffect(() => {
   const nav = useNavigate();
 
   const services = [
-    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/WhySEO" },
-    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/OurServices#special-section" },  
-    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-[#F39221]",    bg: "bg-[#3D7E8C]/10"     ,link:"/OurServices#special-section" },
-    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-[#F39221]",  bg: "bg-[#3D7E8C]/10"     ,link:"/OurServices#special-section" },
-    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-[#F39221]",     bg: "bg-[#3D7E8C]/10"        ,link:"/WhySEO" },
-    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-[#F39221]", bg: "bg-[#3D7E8C]/10"    ,link:"/OurServices#special-section" },
+    { title: "Search Engine Optimization (SEO)", desc: "Rank your website on top of Google and get organic traffic.",        icon: <Search />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/seo" },
+    { title: "Google Ads (PPC Services)",         desc: "Get instant leads and sales with highly targeted ad campaigns.",     icon: <Target />,   color: "text-[#F39221]",   bg: "bg-[#3D7E8C]/10" ,link:"/ppc" },  
+    { title: "Social Media Marketing (SMM)",      desc: "Increase brand awareness on platforms like Instagram and LinkedIn.", icon: <Share2 />,   color: "text-[#F39221]",    bg: "bg-[#3D7E8C]/10"     ,link:"/smm" },
+    { title: "Web Architecture",                  desc: "We create responsive, fast, and user-friendly websites.",           icon: <Layout />,   color: "text-[#F39221]",  bg: "bg-[#3D7E8C]/10"     ,link:"/web-architecture" },
+    { title: "Local SEO Services",                desc: "Become the #1 choice in your neighborhood and city.",               icon: <MapPin />,   color: "text-[#F39221]",     bg: "bg-[#3D7E8C]/10"        ,link:"/local-seo" },
+    { title: "Growth Analytics",                  desc: "Dominate your local market and attract nearby customers.",           icon: <BarChart />, color: "text-[#F39221]", bg: "bg-[#3D7E8C]/10"    ,link:"/growth-analytics" },
   ];
 
   return (

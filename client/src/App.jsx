@@ -41,6 +41,12 @@ import BlogsAdmin from "./Pages/admin/BlogsAdmin";
 import AnalyticsAdmin from "./Pages/admin/AnalyticsAdmin";
 import IndustriesAdmin from './Pages/admin/IndustriesAdmin'
 import CareerAdmin from './Pages/admin/Careeradmin'
+import GrowthAnalyticsPage from './Pages/GrowthAnalyticsPage'
+import LocalSeoPage from './Pages/LocalSeoPage'
+import PpcPage from './Pages/PpcPage'
+import SeoPage from './Pages/Seopage'
+import WebArchitecturePage from './Pages/WebArchitecturePage'
+import SmmPage from './Pages/Ssmpage'
 
 function App() {
   //
@@ -75,21 +81,28 @@ function App() {
         <Route path='/terms-and-conditions' element={<TermsAndConditions/>}/>
         <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
         <Route path="/dashboard" element={<AdminLayout />}>
-  <Route index element={<OverviewPage />} />
-  <Route path="homepage" element={<HomepageAdmin />} />
-  <Route path="resumes" element={<ResumesAdmin />} />
-  <Route path="faqs" element={<FAQAdmin />} />
-  <Route path="clients" element={<ClientsAdmin />} />
-  <Route path="packages" element={<PackagesAdmin />} />
-  <Route path="testimonials" element={<TestimonialsAdmin />} />
-  <Route path="contacts" element={<ContactsAdmin />} />
-  <Route path="jobs" element={<JobsAdmin />} />
-  <Route path="influencer" element={<InfluencerAdmin />} />
-  <Route path="blogs" element={<BlogsAdmin />} />
-  <Route path="analytics" element={<AnalyticsAdmin />} />
-  <Route path="industries" element={<IndustriesAdmin />} />
-  <Route path="career" element={<CareerAdmin />} />
+        <Route index element={<OverviewPage />} />
+        <Route path="homepage" element={<HomepageAdmin />} />
+        <Route path="resumes" element={<ResumesAdmin />} />
+        <Route path="faqs" element={<FAQAdmin />} />
+        <Route path="clients" element={<ClientsAdmin />} />
+        <Route path="packages" element={<PackagesAdmin />} />
+        <Route path="testimonials" element={<TestimonialsAdmin />} />
+        <Route path="contacts" element={<ContactsAdmin />} />
+        <Route path="jobs" element={<JobsAdmin />} />
+        <Route path="influencer" element={<InfluencerAdmin />} />
+        <Route path="blogs" element={<BlogsAdmin />} />
+        <Route path="analytics" element={<AnalyticsAdmin />} />
+        <Route path="industries" element={<IndustriesAdmin />} />
+        <Route path="career" element={<CareerAdmin />} />
 </Route>
+        <Route path="/growth-analytics" element={<GrowthAnalyticsPage />} />
+        <Route path="/local-seo" element={<LocalSeoPage />} />
+        <Route path="/ppc" element={<PpcPage />} />
+        <Route path="/seo" element={<SeoPage/>} />
+        <Route path="/smm" element={<SmmPage/>} />
+        <Route path="/web-architecture" element={<WebArchitecturePage/>} />
+
       </Routes>
       <Footer/>
     </>
