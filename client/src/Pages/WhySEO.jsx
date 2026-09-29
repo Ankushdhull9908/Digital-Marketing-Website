@@ -157,7 +157,7 @@ const WhySEO = () => {
               ))}
             </div>
 
-            <Link to="/contact" className="btn btn-block btn-lg bg-[#F39221] hover:bg-[#d8821d] border-none text-base-content rounded-2xl font-black tracking-widest uppercase">
+            <Link to="/contact" className="btn btn-block btn-lg bg-slate-50 hover:bg-[#d8821d] border-none text-base-content rounded-2xl font-black tracking-widest uppercase">
               Select This Plan
             </Link>
           </div>

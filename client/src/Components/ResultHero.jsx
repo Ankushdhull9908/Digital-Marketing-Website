@@ -312,7 +312,7 @@ const TestimonialCard = ({ testimonial }) => {
                   onClick={() => setActiveTab(d.id)}
                   className={`flex flex-col items-center justify-center flex-1 min-w-[180px] py-8 rounded-[2.5rem] transition-all duration-300 border-2 ${
                     activeTab === d.id
-                      ? 'bg-[#F39221] border-slate-900 text-slate-900 shadow-2xl scale-105 z-10'
+                      ? 'bg-[#F39221] border-slate-100 text-slate-900 shadow-2xl scale-105 z-10'
                       : 'bg-white border-slate-100 text-slate-400 hover:border-[#3D7E8C]/50'
                   }`}
                 >

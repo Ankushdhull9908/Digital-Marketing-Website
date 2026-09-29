@@ -182,7 +182,7 @@ const Career = () => {
                       <span className="flex items-center gap-1"><Clock size={14} className="text-slate-500" /> {job.type}</span>
                     </div>
                   </div>
-                  <button className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 group-hover:bg-[#F39221] group-hover:text-black transition-all self-end md:self-auto">
+                  <button className="p-4 rounded-xl bg-slate-900 border border-slate-800 text-slate-100 group-hover:bg-[#F39221] group-hover:text-slate-100 transition-all self-end md:self-auto">
                     <ChevronRight size={18} />
                   </button>
                 </motion.div>
