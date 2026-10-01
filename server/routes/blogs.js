@@ -57,8 +57,13 @@ router.post("/", async (req, res) => {
     await blog.save();
     res.status(201).json({ message: "Blog created", blog });
   } catch (err) {
-    res.status(400).json({ message: "Validation error", error: err.message });
-  }
+  console.log("BLOG CREATE ERROR:", err);
+
+  res.status(400).json({
+    message: "Blog creation failed",
+    error: err.message
+  });
+}
 });
 
 // ── PUT update blog (admin) ──────────────────────────────────────────────────

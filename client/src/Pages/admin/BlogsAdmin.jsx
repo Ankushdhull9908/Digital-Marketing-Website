@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {  Trash2,Plus,FileText} from "lucide-react";
+import {  Trash2,Plus,FileText,Eye,Edit3} from "lucide-react";
 import { get, post, put, del,} from "./shared/adminApi";
 import { Modal, Badge, ActionBtn, inp, label,ImageUpload } from "./shared/AdminUI";
 
