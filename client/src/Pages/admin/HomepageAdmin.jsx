@@ -514,41 +514,50 @@ function ProjectsSectionEditor({ data, reload, showToast }) {
     </>
   );
 }
+
+
 function convertYouTubeToEmbed(url) {
   if (!url) return "";
 
   try {
-    const parsedUrl = new URL(url);
+    const parsedUrl = new URL(url.trim());
+    const hostname = parsedUrl.hostname.replace(/^www\./, "");
+    let videoId = "";
 
-    // Already an embed URL
-    if (parsedUrl.pathname.startsWith("/embed/")) {
+    if (hostname === "youtu.be") {
+      videoId = parsedUrl.pathname.split("/")[1];
+    } else if (
+      hostname === "youtube.com" ||
+      hostname === "m.youtube.com"
+    ) {
+      const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+
+      if (parsedUrl.pathname === "/watch") {
+        videoId = parsedUrl.searchParams.get("v");
+      } else if (
+        ["shorts", "embed", "live"].includes(pathParts[0])
+      ) {
+        videoId = pathParts[1];
+      }
+    }
+
+    if (!videoId) {
+      console.warn("Unable to extract YouTube video ID:", url);
       return url;
     }
 
-    let videoId = "";
+    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
 
-    // youtube.com/watch?v=VIDEO_ID
-    if (
-      parsedUrl.hostname.includes("youtube.com") &&
-      parsedUrl.pathname === "/watch"
-    ) {
-      videoId = parsedUrl.searchParams.get("v");
-    }
+    console.log("Original URL:", url);
+    console.log("Converted Embed URL:", embedUrl);
 
-    // youtu.be/VIDEO_ID
-    else if (parsedUrl.hostname === "youtu.be") {
-      videoId = parsedUrl.pathname.substring(1);
-    }
-
-    if (videoId) {
-      return `https://www.youtube.com/embed/${videoId}`;
-    }
-
-    return url;
-  } catch {
+    return embedUrl;
+  } catch (error) {
+    console.error("Invalid YouTube URL:", error);
     return url;
   }
 }
+
 
 function ClientVideosSectionEditor({ data, reload, showToast }) {
   const [modal, setModal] = useState(null);
@@ -587,11 +596,16 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
     });
     setModal(v);
   };
-  const save = async () => {
+  
+const save = async () => {
   try {
+    const embedUrl = convertYouTubeToEmbed(form.videoUrl);
+
+    console.log("Final Embed URL being saved:", embedUrl);
+
     const updatedForm = {
       ...form,
-      videoUrl: convertYouTubeToEmbed(form.videoUrl),
+      videoUrl: embedUrl,
     };
 
     if (modal === "add") {
@@ -605,12 +619,16 @@ function ClientVideosSectionEditor({ data, reload, showToast }) {
       showToast("Video updated!");
     }
 
+    console.log("Video saved successfully:", updatedForm);
+
     setModal(null);
     reload();
-  } catch {
+  } catch (error) {
+    console.error("Error saving video:", error);
     showToast("Error saving", false);
   }
 };
+
   const remove = async (id) => {
     if (!window.confirm("Remove this video?")) return;
     await del(`/homepage/client-videos/videos/${id}`);
